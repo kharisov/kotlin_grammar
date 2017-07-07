@@ -1,4 +1,8 @@
 lexer grammar Kotlin_Lexer;
+@lexer::members {
+    int commentsOpened = 0;
+    int commentsClosed = 0;
+}
 /*------LEXER------*/
 //--Keywords
 //-Hard keywords
@@ -32,6 +36,7 @@ WHEN : 'when';
 INTERFACE : 'interface';
 TYPEOF : 'typeof';
 //-Soft keywords
+DYNAMIC : 'dynamic';
 FILE : 'file';
 IMPORT : 'import';
 CONSTRUCTOR : 'constructor';
@@ -222,8 +227,8 @@ SingleCharacter
 
 //-String Literals
 StringLiteral
-    : EscapedStringLiteral
-    | RawStringLiteral
+    : RawStringLiteral
+    | EscapedStringLiteral
     ;
 
 fragment
@@ -244,7 +249,12 @@ EscapedStringCharacter
 
 fragment
 RawStringLiteral
-    : '"""' .*? '"""' //match anything in """..."""
+    : '"""' RawStringCharacters? '"""' //match anything in """..."""
+    ;
+
+fragment
+RawStringCharacters
+    : .+
     ;
 
 //-Escape Sequence for Char and String Literals
@@ -265,17 +275,21 @@ NullLiteral
     ;
 
 //--Separators
+LCOMMENT : '/*';
+RCOMMENT : '*/';
 LPAREN : '(';
 RPAREN : ')';
 LBRACE : '{';
 RBRACE : '}';
 LBRACK : '[';
 RBRACK : ']';
+COLON : ':';
 SEMICOLON : ';';
 COMMA : ',';
 Dot : '.';
 
 //--Operators
+IMPLICATION     : '->';
 ASSIGN          : '=';
 ADD_ASSIGN      : '+=';
 SUB_ASSIGN      : '-=';
@@ -298,7 +312,7 @@ SUB             : '-';
 MUL             : '*';
 DIV             : '/';
 MOD             : '%';
-TYPE_RHS        : ':' | 'as' | 'as?';
+TYPE_RHS        : 'as' | 'as?';
 INC             : '++';
 DEC             : '--';
 BANG            : '!';
@@ -314,8 +328,19 @@ SEMI
 
 Identifier
     : JavaIdentifier
-    | '`' JavaIdentifier '`'
+    | BacktickedIdentifier
     ;
+
+fragment
+BacktickedIdentifier
+    : '`' BacktickedIdentifierCharacters '`'
+    ;
+
+fragment
+BacktickedIdentifierCharacters
+    : ~[`\n]+
+    ;
+
 
 fragment
 JavaIdentifier
@@ -343,13 +368,25 @@ JavaLetterOrDigit
 WS  :  [ \t\u000C]+ -> skip
     ;
 
-Comment
-    : ('/*' .*? Comment '*/'
-    | '/*' .*? '*/') -> channel(HIDDEN)
-    ;
-
 LineComment
     :   '//' ~[\r\n]* -> channel(HIDDEN)
     ;
 
+
+Comment
+    : LCOMMENT CommentParts? RCOMMENT
+    ;
+
+fragment
+CommentParts
+    : CommentPart+
+    ;
+
+fragment
+CommentPart
+    : Comment
+    | ~[*/]
+    | '*'+ ~[*/]
+    | '/'+ ~[*]
+    ;
 
