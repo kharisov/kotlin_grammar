@@ -2,10 +2,10 @@ grammar Kotlin_Parser;
 import Kotlin_Lexer;
 
 /*------PARSER------*/
-//--file structure
+//--File Structure
 
 kotlinFile
-    : preamble topLevelObject*
+    : preamble declaration* EOF
     ;
 
 preamble
@@ -24,27 +24,27 @@ importStatement
     : 'import' Identifier ('.' Identifier)* ('.' '*' | 'as' Identifier)? SEMI?
     ;
 
-topLevelObject
-    : class
-    | object
+declaration
+    : r_class
+    //| object
     | function
     | property
     | typeAlias
     ;
 
 typeAlias
-    : modifiers 'typealias' Identifier typeParameters? '=' type
+    : accessModifier* 'typealias' Identifier typeParameters? '=' type
     ;
 
-//--classes
-class
-    : modifiers ('class' | 'interface') Identifier typeParameters? primartConstructor?
+//--Classes
+r_class
+    : (classModifier| accessModifier | annotations)* ('class' | 'interface') Identifier typeParameters? primaryConstructor?
         (':' annotations delegationSpecifier (',' delegationSpecifier))?
-        typeContraints (classBody? | enumClassBody)
+        typeConstraints? (classBody | enumClassBody)?
     ;
 
 primaryConstructor
-    : (modifiers 'constructor')? ( '(' functionParameter (',' functionParameter)* ')')
+    : ((annotation | accessModifier)* 'constructor')? '(' functionParameter (',' functionParameter)* ')'
     ;
 
 classBody
@@ -70,23 +70,23 @@ typeParameters
     ;
 
 typeParameter
-    : modifiers Identifier (':' userType)?
+    : (typeParameterModifier | varianceAnnotation)* Identifier (':' userType)?
     ;
 
 typeConstraints
-    : ('where' typeConstraint (',' typeConstraint)*)?  //TODO
+    : 'where' typeConstraint (',' typeConstraint)*
     ;
 
 typeConstraint
-    : annotations Identifier ':' type
+    : annotations* Identifier ':' type
     ;
 
 memberDeclaration
     : companionObject
-    | object
+    //| object
     | function
     | property
-    | class
+    | r_class
     | typeAlias
     | initializerBlock
     | secondaryConstructor
@@ -97,12 +97,13 @@ initializerBlock
     ;
 
 companionObject
-    : modifiers 'companion' 'object' Identifier? (':' delegationSpecifier (',' delegationSpecifier)*)? classBody?
+    : (annotations | accessModifier)* 'companion' 'object' Identifier? (':' delegationSpecifier (',' delegationSpecifier)*)? classBody?
     ;
 
 function
-    : modifiers 'fun' typeParameters? (type '.')? Identifier typeParameters?
-        valueParameters (':' type)? typeConstraints functionBody
+    : (memberModifier | accessModifier | functionModifier | annotations)*
+        'fun' typeParameters? (type '.')? Identifier typeParameters?
+        valueParameters (':' type)? typeConstraints? functionBody
     ;
 
 valueParameters
@@ -110,7 +111,7 @@ valueParameters
     ;
 
 functionParameter
-    : modifiers parameter ('=' expression)?
+    : (annotations | parameterModifier)* parameter ('=' expression)?
     ;
 
 functionBody
@@ -123,8 +124,9 @@ block
     ;
 
 property
-    : modifiers ('val' | 'var') typeParameters? (type '.')?
-        (multipleVariableDeclarations | variableDeclarationEntry) typeConstraints
+    : (memberModifier | accessModifier | propertyModifier | annotations)*
+        ('val' | 'var') typeParameters? (type '.')?
+        (multipleVariableDeclarations | variableDeclarationEntry) typeConstraints?
         (('by' | '=') expression SEMI?)?    //TODO
         (getter? setter? | setter? getter?) SEMI?
     ;
@@ -138,34 +140,35 @@ multipleVariableDeclarations
     ;
 
 getter
-    : modifiers 'get'
-    | modifiers 'get' '(' ')' (':' type)? functionBody
+    : (accessModifier | functionModifier | annotations)* 'get'
+    | (accessModifier | functionModifier | annotations)* 'get' '(' ')' (':' type)? functionBody
     ;
 
 setter
-    : modifiers 'set'
-    | modifiers 'set' '(' modifiers (Identifier | parameter) ')' functionBody
+    : (accessModifier | functionModifier | annotations)* 'set'
+    | (accessModifier | functionModifier | annotations)* 'set'
+        '(' (annotations | parameterModifier)* (Identifier | parameter) ')' functionBody
     ;
 
 parameter
     : Identifier ':' type
     ;
 
-object
+/*object
     : 'object' Identifier primaryConstructor? (':' delegationSpecifier (',' delegationSpecifier)*)? classBody?
-    ;
+    ;*/
 
 secondaryConstructor
-    : modifiers 'constructor' valueParameters (':' constructorDelegationCall)? block
+    : (accessModifier | annotations)* 'constructor' valueParameters (':' constructorDelegationCall)? block
     ;
 
 constructorDelegationCall
     : 'this' valueArguments
-    | 'super' valuueArguments
+    | 'super' valueArguments
     ;
 
 
-//--enum
+//--Enum
 enumClassBody
     : '{' enumEntries? (';' members)? '}'
     ;
@@ -175,24 +178,21 @@ enumEntries
     ;
 
 enumEntry
-    : modifiers Identifier valueArguments? classBody?  //TODO
+    : annotations* Identifier valueArguments? classBody?  //TODO
     ;
 
-//--types
+//--Types
+/*
 type
-    : typeModifiers typeReference
+    : (suspendModifier | annotations)* typeReference
     ;
 
 typeReference
     : '(' typeReference ')'
-    | functionType
+    | functionalType
     | userType
-    | nullableType
+    | typeReference '?'
     | 'dynamic'
-    ;
-
-nullableType
-    : typeReference '?'
     ;
 
 userType
@@ -203,21 +203,45 @@ simpleUserType
     : Identifier ('<'(varianceAnnotation type | '*') (',' (varianceAnnotation type | '*'))* '>')?
     ;
 
-functionType
-    : (type '.')? '(' (parameter (',' parameter)*)? ')' '->' type?
+functionalType
+    : (type '.')? '(' (parameter (',' parameter)*)? ')' '->' type
+    ;
+*/
+
+type
+    : (suspendModifier | annotations)* (typeReference | functionalTypeReference)
     ;
 
-//--control structures
-if
+typeReference
+    : '(' typeReference ')'
+    | userType
+    | typeReference '?'
+    | 'dynamic'
+    ;
+
+userType
+    : simpleUserType ('.' simpleUserType)*
+    ;
+
+simpleUserType
+    : Identifier ('<'(varianceAnnotation type | '*') (',' (varianceAnnotation type | '*'))* '>')?
+    ;
+
+functionalTypeReference
+    : (typeReference '.')? '(' (parameter (',' parameter)*)? ')' '->' type ('.' functionalTypeReference)? //TODO (type?, modifiers before typeReference
+    ;
+
+//--Control Structures
+r_if
     : 'if' '(' expression ')' controlStructureBody SEMI? ('else' controlStructureBody)?
     ;
 
 controlStructureBody
     : block
-    | blockLevelExpresion
+    | blockLevelExpression
     ;
 
-try
+r_try
     : 'try' block catchBlock* finallyBlock?
     ;
 
@@ -230,17 +254,17 @@ finallyBlock
     ;
 
 loop
-    : for
-    | while
+    : r_for
+    | r_while
     | doWhile
     ;
 
-for
+r_for
     : 'for' '(' annotations (multipleVariableDeclarations | variableDeclarationEntry) 'in' expression ')'
         controlStructureBody
     ;
 
-while
+r_while
     : 'while' '(' expression ')' controlStructureBody
     ;
 
@@ -248,7 +272,7 @@ doWhile
     : 'do' controlStructureBody 'while' '(' expression ')'
     ;
 
-//--expressions
+//--Expressions
 expression
     : disjunction (assignmentOperation disjunction)*
     ;
@@ -262,7 +286,7 @@ conjunction
     ;
 
 equalityComparison
-    : comparison (equalityOperation comparison)
+    : comparison (equalityOperation comparison)*
     ;
 
 comparison
@@ -271,7 +295,7 @@ comparison
 
 namedInfix
     : elvisExpression (inOperation elvisExpression)*
-    | elvisExpression (isOpreation type)?
+    | elvisExpression (isOperation type)?
     ;
 
 elvisExpression
@@ -314,12 +338,12 @@ callableReference
 atomicExpression
     : '(' expression ')'
     | literalConstant
-    | functionLiteral
+    | functionalLiteral
     | 'this' labelReference?
     | 'super' ('<' type '>')? labelReference?
-    | if
+    | r_if
     | when
-    | try
+    | r_try
     | objectLiteral
     | jump
     | loop
@@ -334,16 +358,16 @@ labelDefinition
     : Identifier '@'
     ;
 
+
 literalConstant
     : BooleanLiteral
-    | stringLiteral
+    //| stringLiteral //TODO string
     | IntegerLiteral
-    | HexLiteral
-    | FloatLiteral
+    | FloatingPointLiteral
     | CharLiteral
     | NullLiteral
     ;
-
+/*
 stringLiteral
     : '"' stringElement* '"'
     ;
@@ -358,22 +382,15 @@ stringElement
 longTemplate
     : '${' expression '}'
     ;
-
-declaration //TODO синоним топлевелобджекта
-    : function
-    | property
-    | class
-    | typeAlias
-    | object
-    ;
+*/
 
 statement
-    : declaration
-    | blockLevelExpression
+    : blockLevelExpression
+    | declaration
     ;
 
 blockLevelExpression
-    : annotations '\n'+ expression
+    : annotations* '\n'* expression
     ;
 
 multiplicativeOperation
@@ -421,9 +438,9 @@ postfixUnaryOperation
     | memberAccessOperation postfixUnaryExpression
     ;
 
-callSuffix  //TODO smthwrong
-    : typeArguments? valueArguments annotatedLambda
-    | typeArguments annotatedLambda
+callSuffix  //TODO smthwrong (mb fixed)
+    : typeArguments? valueArguments annotatedLambda?
+    | typeArguments? annotatedLambda
     ;
 
 annotatedLambda
@@ -441,6 +458,7 @@ typeArguments
 valueArguments
     : '(' Identifier '=' '*'? expression (',' Identifier '=' '*'? expression)* ')'
     | '(' '*'? expression (',' '*'? expression)* ')'
+    | '(' ')'
     ;
 
 jump
@@ -476,3 +494,105 @@ objectLiteral
     : 'object' (':' delegationSpecifier (',' delegationSpecifier)*)? classBody
     ;
 
+//--When
+when
+    : 'when' ( '(' expression ')' )? '{' whenEntry* '}'
+    ;
+
+whenEntry
+    : whenCondition (',' whenCondition)* '->' controlStructureBody SEMI
+    | 'else'  '->' controlStructureBody SEMI
+    ;
+
+whenCondition
+    : expression
+    | ('in' | '!in') expression
+    | ('is' | '!is') type
+    ;
+
+//--Modifiers
+classModifier
+    : 'abstract'
+    | 'final'
+    | 'enum'
+    | 'open'
+    | 'annotation'
+    | 'sealed'
+    | 'data'
+    ;
+
+memberModifier
+    : 'override'
+    | 'open'
+    | 'final'
+    | 'abstract'
+    | 'lateinit'
+    ;
+
+accessModifier
+    : 'private'
+    | 'protected'
+    | 'public'
+    | 'internal'
+    ;
+
+varianceAnnotation
+    : 'in'
+    | 'out'
+    ;
+
+parameterModifier
+    : 'noinline'
+    | 'crossinline'
+    | 'vararg'
+    ;
+
+typeParameterModifier
+    : 'reified'
+    ;
+
+functionModifier
+    : 'tailrec'
+    | 'operator'
+    | 'infix'
+    | 'inline'
+    | 'external'
+    | suspendModifier
+    ;
+
+propertyModifier
+    : 'const'
+    ;
+
+suspendModifier
+    : 'suspend'
+    ;
+
+//--Annotations
+annotations
+    : (annotation | annotationList)+
+    ;
+
+annotation
+    : '@' (annotationUseSiteTarget ':')? unescapedAnnotation
+    ;
+
+annotationList
+    : '@' (annotationUseSiteTarget ':')? '[' unescapedAnnotation+ ']'
+    ;
+
+annotationUseSiteTarget
+    : 'field'
+    | 'file'
+    | 'property'
+    | 'get'
+    | 'set'
+    | 'receiver'
+    | 'param'
+    | 'setparam'
+    | 'delegate'
+    ;
+
+unescapedAnnotation
+    : Identifier ('.' Identifier)* typeArguments? valueArguments?
+    ;

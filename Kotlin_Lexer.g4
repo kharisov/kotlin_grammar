@@ -1,8 +1,4 @@
 lexer grammar Kotlin_Lexer;
-@lexer::members {
-    int commentsOpened = 0;
-    int commentsClosed = 0;
-}
 /*------LEXER------*/
 //--Keywords
 //-Hard keywords
@@ -209,7 +205,7 @@ FloatTypeSuffix
     ;
 
 //-Boolean Literals
-BooelanLiteral
+BooleanLiteral
     : 'true'
     | 'false'
     ;
@@ -249,12 +245,12 @@ EscapedStringCharacter
 
 fragment
 RawStringLiteral
-    : '"""' RawStringCharacters? '"""' //match anything in """..."""
+    : '"""' RawStringCharacters '"""' //match anything in """..."""
     ;
 
 fragment
 RawStringCharacters
-    : .+
+    : .+?
     ;
 
 //-Escape Sequence for Char and String Literals
@@ -284,7 +280,7 @@ RBRACE : '}';
 LBRACK : '[';
 RBRACK : ']';
 COLON : ':';
-SEMICOLON : ';';
+//SEMICOLON : ';';
 COMMA : ',';
 Dot : '.';
 
@@ -322,8 +318,8 @@ QUESTION_DOT    : '?.';
 AT : '@';
 
 SEMI
-    : '\r'? '\n'
-    | ';'
+    : ';'
+    //| '\r'? '\n'
     ;
 
 Identifier
@@ -365,8 +361,9 @@ JavaLetterOrDigit
         [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
 
-WS  :  [ \t\u000C]+ -> skip
+WS  :  [ \r\n\t\u000C]+ -> skip
     ;
+
 
 LineComment
     :   '//' ~[\r\n]* -> channel(HIDDEN)
