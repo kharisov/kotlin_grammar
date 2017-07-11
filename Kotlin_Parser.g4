@@ -13,42 +13,42 @@ preamble
     ;
 
 fileAnnotations
-    : '@' 'file' ':' ( '[' unescapedAnnotation+ ']' | unescapedAnnotation)
+    : AT FILE COLON ( LBRACK unescapedAnnotation+ RBRACK | unescapedAnnotation)
     ;
 
 packageHeader
-    : 'package' Identifier ('.' Identifier)* SEMI?
+    : PACKAGE Identifier (DOT Identifier)* SEMI?
     ;
 
 importStatement
-    : 'import' Identifier ('.' Identifier)* ('.' '*' | 'as' Identifier)? SEMI?
+    : IMPORT Identifier (DOT Identifier)* (DOT ASTERISK | AS Identifier)? SEMI?
     ;
 
 declaration
     : r_class
-    //| object
+    | object
     | function
     | property
     | typeAlias
     ;
 
 typeAlias
-    : accessModifier* 'typealias' Identifier typeParameters? '=' type
+    : accessModifier* TYPEALIAS Identifier typeParameters? ASSIGN type
     ;
 
 //--Classes
 r_class
-    : (classModifier| accessModifier | annotations)* ('class' | 'interface') Identifier typeParameters? primaryConstructor?
-        (':' annotations delegationSpecifier (',' delegationSpecifier))?
+    : (classModifier| accessModifier | annotations)* (CLASS | INTERFACE) Identifier typeParameters? primaryConstructor?
+        (COLON annotations delegationSpecifier (COMMA delegationSpecifier))?
         typeConstraints? (classBody | enumClassBody)?
     ;
 
 primaryConstructor
-    : ((annotation | accessModifier)* 'constructor')? '(' functionParameter (',' functionParameter)* ')'
+    : ((annotation | accessModifier)* CONSTRUCTOR)? LPAREN functionParameter (COMMA functionParameter)* RPAREN
     ;
 
 classBody
-    : '{' members '}'
+    : LBRACE members RBRACE
     ;
 
 members
@@ -62,28 +62,28 @@ delegationSpecifier
     ;
 
 explicitDelegation
-    : userType 'by' expression
+    : userType BY expression
     ;
 
 typeParameters
-    : '<' typeParameter (',' typeParameter)* '>'
+    : LT typeParameter (COMMA typeParameter)* GT
     ;
 
 typeParameter
-    : (typeParameterModifier | varianceAnnotation)* Identifier (':' userType)?
+    : (typeParameterModifier | varianceAnnotation)* Identifier (COLON userType)?
     ;
 
 typeConstraints
-    : 'where' typeConstraint (',' typeConstraint)*
+    : WHERE typeConstraint (COMMA typeConstraint)*
     ;
 
 typeConstraint
-    : annotations* Identifier ':' type
+    : annotations* Identifier COLON type
     ;
 
 memberDeclaration
     : companionObject
-    //| object
+    | object
     | function
     | property
     | r_class
@@ -93,88 +93,89 @@ memberDeclaration
     ;
 
 initializerBlock
-    : 'init' block
+    : INIT block
     ;
 
 companionObject
-    : (annotations | accessModifier)* 'companion' 'object' Identifier? (':' delegationSpecifier (',' delegationSpecifier)*)? classBody?
+    : (annotations | accessModifier)* COMPANION OBJECT Identifier? (COLON delegationSpecifier (COMMA delegationSpecifier)*)? classBody?
     ;
 
 function
     : (memberModifier | accessModifier | functionModifier | annotations)*
-        'fun' typeParameters? (type '.')? Identifier typeParameters?
-        valueParameters (':' type)? typeConstraints? functionBody
+        FUN typeParameters? (type DOT)? Identifier typeParameters?
+        valueParameters (COLON type)? typeConstraints? functionBody
     ;
 
 valueParameters
-    : '(' (functionParameter (',' functionParameter)*)? ')'
+    : LPAREN (functionParameter (COMMA functionParameter)*)? RPAREN
     ;
 
 functionParameter
-    : (annotations | parameterModifier)* parameter ('=' expression)?
+    : (annotations | parameterModifier)* parameter (ASSIGN expression)?
     ;
 
 functionBody
     : block
-    | '=' expression
+    | ASSIGN expression
     ;
 
 block
-    : '{' statements '}'
+    : LBRACE SEMI* RBRACE
+    | LBRACE statements RBRACE
     ;
 
 property
     : (memberModifier | accessModifier | propertyModifier | annotations)*
-        ('val' | 'var') typeParameters? (type '.')?
+        (VAL | VAR) typeParameters? (type DOT)?
         (multipleVariableDeclarations | variableDeclarationEntry) typeConstraints?
-        (('by' | '=') expression SEMI?)?    //TODO
+        ((BY | ASSIGN) expression SEMI?)?    //TODO
         (getter? setter? | setter? getter?) SEMI?
     ;
 
 variableDeclarationEntry
-    : Identifier (':' type)?
+    : Identifier (COLON type)?
     ;
 
 multipleVariableDeclarations
-    : '(' variableDeclarationEntry (',' variableDeclarationEntry)* ')'
+    : LPAREN variableDeclarationEntry (COMMA variableDeclarationEntry)* RPAREN
     ;
 
 getter
-    : (accessModifier | functionModifier | annotations)* 'get'
-    | (accessModifier | functionModifier | annotations)* 'get' '(' ')' (':' type)? functionBody
+    : (accessModifier | functionModifier | annotations)* GET
+    | (accessModifier | functionModifier | annotations)* GET LPAREN RPAREN (COLON type)? functionBody
     ;
 
 setter
-    : (accessModifier | functionModifier | annotations)* 'set'
-    | (accessModifier | functionModifier | annotations)* 'set'
-        '(' (annotations | parameterModifier)* (Identifier | parameter) ')' functionBody
+    : (accessModifier | functionModifier | annotations)* SET
+    | (accessModifier | functionModifier | annotations)* SET
+        LPAREN (annotations | parameterModifier)* (Identifier | parameter) RPAREN functionBody
     ;
 
 parameter
-    : Identifier ':' type
+    : Identifier COLON type
     ;
 
-/*object
-    : 'object' Identifier primaryConstructor? (':' delegationSpecifier (',' delegationSpecifier)*)? classBody?
-    ;*/
+object
+    : OBJECT Identifier primaryConstructor? (COLON delegationSpecifier (COMMA delegationSpecifier)*)? classBody?
+    ;
 
 secondaryConstructor
-    : (accessModifier | annotations)* 'constructor' valueParameters (':' constructorDelegationCall)? block
+    : (accessModifier | annotations)* CONSTRUCTOR valueParameters (COLON constructorDelegationCall)? block
     ;
 
 constructorDelegationCall
-    : 'this' valueArguments
-    | 'super' valueArguments
+    : THIS valueArguments
+    | SUPER valueArguments
     ;
 
 
 //--Enum
 enumClassBody
-    : '{' enumEntries? (';' members)? '}'
+    : LBRACE enumEntries? (SEMICOLON members)? RBRACE
     ;
 
 enumEntries
-    : enumEntry (',' enumEntry)* ','? ';'?
+    : enumEntry (COMMA enumEntry)* COMMA? SEMICOLON?
     ;
 
 enumEntry
@@ -188,23 +189,23 @@ type
     ;
 
 typeReference
-    : '(' typeReference ')'
+    : LPAREN typeReference RPAREN
     | functionalType
     | userType
-    | typeReference '?'
-    | 'dynamic'
+    | typeReference QUESTION
+    | DYNAMIC
     ;
 
 userType
-    : simpleUserType ('.' simpleUserType)*
+    : simpleUserType (DOT simpleUserType)*
     ;
 
 simpleUserType
-    : Identifier ('<'(varianceAnnotation type | '*') (',' (varianceAnnotation type | '*'))* '>')?
+    : Identifier (LT(varianceAnnotation type | ASTERISK) (COMMA (varianceAnnotation type | ASTERISK))* GT)?
     ;
 
 functionalType
-    : (type '.')? '(' (parameter (',' parameter)*)? ')' '->' type
+    : (type DOT)? LPAREN (parameter (COMMA parameter)*)? RPAREN IMPLICATION type
     ;
 */
 
@@ -213,27 +214,27 @@ type
     ;
 
 typeReference
-    : '(' typeReference ')'
+    : LPAREN typeReference RPAREN
     | userType
-    | typeReference '?'
-    | 'dynamic'
+    | typeReference QUESTION
+    | DYNAMIC
     ;
 
 userType
-    : simpleUserType ('.' simpleUserType)*
+    : simpleUserType (DOT simpleUserType)*
     ;
 
 simpleUserType
-    : Identifier ('<'(varianceAnnotation type | '*') (',' (varianceAnnotation type | '*'))* '>')?
+    : Identifier (LT(varianceAnnotation type | ASTERISK) (COMMA (varianceAnnotation type | ASTERISK))* GT)?
     ;
 
 functionalTypeReference
-    : (typeReference '.')? '(' (parameter (',' parameter)*)? ')' '->' type ('.' functionalTypeReference)? //TODO (type?, modifiers before typeReference
+    : (typeReference DOT)? LPAREN (parameter (COMMA parameter)*)? RPAREN IMPLICATION type (DOT functionalTypeReference)? //TODO (type?, modifiers before typeReference
     ;
 
 //--Control Structures
 r_if
-    : 'if' '(' expression ')' controlStructureBody SEMI? ('else' controlStructureBody)?
+    : IF LPAREN expression RPAREN controlStructureBody SEMI? (ELSE controlStructureBody)?
     ;
 
 controlStructureBody
@@ -242,15 +243,15 @@ controlStructureBody
     ;
 
 r_try
-    : 'try' block catchBlock* finallyBlock?
+    : TRY block catchBlock* finallyBlock?
     ;
 
 catchBlock
-    : 'catch' '(' annotations Identifier ':' userType ')' block
+    : CATCH LPAREN annotations Identifier COLON userType RPAREN block
     ;
 
 finallyBlock
-    : 'finally' block
+    : FINALLY block
     ;
 
 loop
@@ -260,16 +261,16 @@ loop
     ;
 
 r_for
-    : 'for' '(' annotations (multipleVariableDeclarations | variableDeclarationEntry) 'in' expression ')'
+    : FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) 'in' expression RPAREN
         controlStructureBody
     ;
 
 r_while
-    : 'while' '(' expression ')' controlStructureBody
+    : WHILE LPAREN expression RPAREN controlStructureBody
     ;
 
 doWhile
-    : 'do' controlStructureBody 'while' '(' expression ')'
+    : DO controlStructureBody WHILE LPAREN expression RPAREN
     ;
 
 //--Expressions
@@ -278,11 +279,11 @@ expression
     ;
 
 disjunction
-    : conjunction ( '||' conjunction)*
+    : conjunction ( OR conjunction)*
     ;
 
 conjunction
-    : equalityComparison ('&&' equalityComparison)*
+    : equalityComparison (AND equalityComparison)*
     ;
 
 equalityComparison
@@ -299,7 +300,7 @@ namedInfix
     ;
 
 elvisExpression
-    : infixFunctionCall ('?:' infixFunctionCall)*
+    : infixFunctionCall (ELVIS infixFunctionCall)*
     ;
 
 infixFunctionCall
@@ -307,7 +308,7 @@ infixFunctionCall
     ;
 
 rangeExpression
-    : additiveExpression ('..' additiveExpression)*
+    : additiveExpression (RANGE additiveExpression)*
     ;
 
 additiveExpression
@@ -332,15 +333,15 @@ postfixUnaryExpression
     ;
 
 callableReference
-    : (userType '?'*)? '::' Identifier typeArguments?
+    : (userType QUESTION*)? DOUBLE_COLON Identifier typeArguments?
     ;
 
 atomicExpression
-    : '(' expression ')'
+    : LPAREN expression RPAREN
     | literalConstant
     | functionalLiteral
-    | 'this' labelReference?
-    | 'super' ('<' type '>')? labelReference?
+    | THIS labelReference?
+    | SUPER (LT type GT)? labelReference?
     | r_if
     | when
     | r_try
@@ -351,11 +352,11 @@ atomicExpression
     ;
 
 labelReference
-    : '@' Identifier
+    : AT Identifier
     ;
 
 labelDefinition
-    : Identifier '@'
+    : Identifier AT
     ;
 
 
@@ -374,13 +375,13 @@ stringLiteral
 
 stringElement
     : RegularStringPart
-    | ShortTemplateEntry (Identifier | 'this')
+    | ShortTemplateEntry (Identifier | THIS)
     | EscapeSequence
     | longTemplate
     ;
 
 longTemplate
-    : '${' expression '}'
+    : '${' expression RBRACE
     ;
 */
 
@@ -390,49 +391,49 @@ statement
     ;
 
 blockLevelExpression
-    : annotations* '\n'* expression
+    : annotations* NL* expression
     ;
 
 multiplicativeOperation
-    : '*' | '/' | '%'
+    : ASTERISK | DIV | MOD
     ;
 
 additiveOperation
-    : '+' | '='
+    : ADD | ASSIGN
     ;
 
 inOperation
-    : 'in' | '!in'
+    : IN | BANG_IN
     ;
 
 typeOperation
-    : 'as' | 'as?' | ':'
+    : CAST | SAFE_CAST | COLON
     ;
 
 isOperation
-    : 'is' | '!is'
+    : IS | BANG_IS
     ;
 
 comparisonOperation
-    : '<' | '>' | '>=' | '<='
+    : LT | GT | GE | LE
     ;
 
 equalityOperation
-    : '!=' | '==' | '===' | '!=='
+    : EQUAL | NOTEQUAL
     ;
 
 assignmentOperation
-    : '=' | '+=' | '-=' | '*=' | '/=' | '%='
+    : ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN
     ;
 
 prefixUnaryOperation
-    : '-' | '+' | '++' | '--' | '!'
+    : SUB | ADD | INC | DEC | BANG
     | annotations
     | labelDefinition
     ;
 
 postfixUnaryOperation
-    : '++' | '--' | '!!'
+    : INC | DEC | DOUBLE_BANG
     | callSuffix
     | arrayAccess
     | memberAccessOperation postfixUnaryExpression
@@ -444,38 +445,38 @@ callSuffix  //TODO smthwrong (mb fixed)
     ;
 
 annotatedLambda
-    : ('@' unescapedAnnotation)* labelDefinition? functionalLiteral
+    : (AT unescapedAnnotation)* labelDefinition? functionalLiteral
     ;
 
 memberAccessOperation
-    : '.' | '?.' | '?'
+    : DOT | QUESTION_DOT | QUESTION
     ;
 
 typeArguments
-    : '<' type (',' type)* '>'
+    : LT type (COMMA type)* GT
     ;
 
 valueArguments
-    : '(' Identifier '=' '*'? expression (',' Identifier '=' '*'? expression)* ')'
-    | '(' '*'? expression (',' '*'? expression)* ')'
-    | '(' ')'
+    : LPAREN Identifier ASSIGN ASTERISK? expression (COMMA Identifier ASSIGN ASTERISK? expression)* RPAREN
+    | LPAREN ASTERISK? expression (COMMA ASTERISK? expression)* RPAREN
+    | LPAREN RPAREN
     ;
 
 jump
-    : 'throw' expression
-    | 'return' labelReference? expression?
-    | 'continue' labelReference?
-    | 'break' labelReference?
+    : THROW expression
+    | RETURN labelReference? expression?
+    | CONTINUE labelReference?
+    | BREAK labelReference?
     ;
 
 functionalLiteral
-    : '{' statements '}'
-    | '{' lambdaParameter (',' lambdaParameter)* '->' statements '}'
+    : LBRACE statements RBRACE  //TODO (statements?)
+    | LBRACE lambdaParameter (COMMA lambdaParameter)* IMPLICATION statements RBRACE
     ;
 
 lambdaParameter
     : variableDeclarationEntry
-    | multipleVariableDeclarations (':' type)?
+    | multipleVariableDeclarations (COLON type)?
     ;
 
 statements
@@ -487,85 +488,85 @@ constructorInvocation
     ;
 
 arrayAccess
-    : '[' expression (',' expression)* ']'
+    : LBRACK expression (COMMA expression)* RBRACK
     ;
 
 objectLiteral
-    : 'object' (':' delegationSpecifier (',' delegationSpecifier)*)? classBody
+    : OBJECT (COLON delegationSpecifier (COMMA delegationSpecifier)*)? classBody
     ;
 
 //--When
 when
-    : 'when' ( '(' expression ')' )? '{' whenEntry* '}'
+    : WHEN ( LPAREN expression RPAREN )? LBRACE whenEntry* RBRACE
     ;
 
 whenEntry
-    : whenCondition (',' whenCondition)* '->' controlStructureBody SEMI
-    | 'else'  '->' controlStructureBody SEMI
+    : whenCondition (COMMA whenCondition)* IMPLICATION controlStructureBody SEMI
+    | ELSE  IMPLICATION controlStructureBody SEMI
     ;
 
 whenCondition
     : expression
-    | ('in' | '!in') expression
-    | ('is' | '!is') type
+    | (IN | BANG_IN) expression
+    | (IS | BANG_IS) type
     ;
 
 //--Modifiers
 classModifier
-    : 'abstract'
-    | 'final'
-    | 'enum'
-    | 'open'
-    | 'annotation'
-    | 'sealed'
-    | 'data'
+    : ABSTRACT
+    | FINAL
+    | ENUM
+    | OPEN
+    | ANNOTATION
+    | SEALED
+    | DATA
     ;
 
 memberModifier
-    : 'override'
-    | 'open'
-    | 'final'
-    | 'abstract'
-    | 'lateinit'
+    : OVERRIDE
+    | OPEN
+    | FINAL
+    | ABSTRACT
+    | LATEINIT
     ;
 
 accessModifier
-    : 'private'
-    | 'protected'
-    | 'public'
-    | 'internal'
+    : PRIVATE
+    | PROTECTED
+    | PUBLIC
+    | INTERNAL
     ;
 
 varianceAnnotation
-    : 'in'
-    | 'out'
+    : IN
+    | OUT
     ;
 
 parameterModifier
-    : 'noinline'
-    | 'crossinline'
-    | 'vararg'
+    : NOINLINE
+    | CROSSLINE
+    | VARARG
     ;
 
 typeParameterModifier
-    : 'reified'
+    : REIFIED
     ;
 
 functionModifier
-    : 'tailrec'
-    | 'operator'
-    | 'infix'
-    | 'inline'
-    | 'external'
+    : TAILREC
+    | OPERATOR
+    | INFIX
+    | INLINE
+    | EXTERNAL
     | suspendModifier
     ;
 
 propertyModifier
-    : 'const'
+    : CONST
     ;
 
 suspendModifier
-    : 'suspend'
+    : SUSPEND
     ;
 
 //--Annotations
@@ -574,25 +575,25 @@ annotations
     ;
 
 annotation
-    : '@' (annotationUseSiteTarget ':')? unescapedAnnotation
+    : AT (annotationUseSiteTarget COLON)? unescapedAnnotation
     ;
 
 annotationList
-    : '@' (annotationUseSiteTarget ':')? '[' unescapedAnnotation+ ']'
+    : AT (annotationUseSiteTarget COLON)? LBRACK unescapedAnnotation+ RBRACK
     ;
 
 annotationUseSiteTarget
-    : 'field'
-    | 'file'
-    | 'property'
-    | 'get'
-    | 'set'
-    | 'receiver'
-    | 'param'
-    | 'setparam'
-    | 'delegate'
+    : FIELD
+    | FILE
+    | PROPERTY
+    | GET
+    | SET
+    | RECIEVER
+    | PARAM
+    | SETPARAM
+    | DELEGATE
     ;
 
 unescapedAnnotation
-    : Identifier ('.' Identifier)* typeArguments? valueArguments?
+    : Identifier (DOT Identifier)* typeArguments? valueArguments?
     ;

@@ -1,4 +1,7 @@
 lexer grammar Kotlin_Lexer;
+@lexer::members {
+    int stopIgnoring = 0;
+}
 /*------LEXER------*/
 //--Keywords
 //-Hard keywords
@@ -31,6 +34,7 @@ DO : 'do';
 WHEN : 'when';
 INTERFACE : 'interface';
 TYPEOF : 'typeof';
+
 //-Soft keywords
 DYNAMIC : 'dynamic';
 FILE : 'file';
@@ -67,6 +71,16 @@ INLINE : 'inline';
 EXTERNAL : 'external';
 CONST : 'const';
 SUSPEND : 'suspend';
+
+//-Not Keywords, But Tokens
+GET : 'get';
+SET : 'set';
+FIELD : 'field';
+PROPERTY : 'property';
+RECIEVER : 'receiver';
+PARAM : 'param';
+SETPARAM : 'setparam';
+DELEGATE : 'delegate';
 
 //--Literals
 //-Integer Literals
@@ -271,18 +285,30 @@ NullLiteral
     ;
 
 //--Separators
-LCOMMENT : '/*';
-RCOMMENT : '*/';
-LPAREN : '(';
-RPAREN : ')';
-LBRACE : '{';
-RBRACE : '}';
-LBRACK : '[';
-RBRACK : ']';
-COLON : ':';
-//SEMICOLON : ';';
-COMMA : ',';
-Dot : '.';
+IGNORE_SEMI
+    : (SEMICOLON
+    | NL) {stopIgnoring == 0}? -> channel(HIDDEN)
+    ;
+
+SEMI
+    : SEMICOLON
+    | NL
+    ;
+
+NL              : '\n';
+LCOMMENT        : '/*';
+RCOMMENT        : '*/';
+LPAREN          : '(';
+RPAREN          : ')';
+LBRACE          : '{' {stopIgnoring++;};
+RBRACE          : '}' {stopIgnoring--;};
+LBRACK          : '[';
+RBRACK          : ']';
+DOUBLE_COLON    : '::';
+COLON           : ':';
+SEMICOLON       : ';';
+COMMA           : ',';
+DOT             : '.';
 
 //--Operators
 IMPLICATION     : '->';
@@ -300,27 +326,25 @@ GT              : '>';
 LT              : '<';
 LE              : '<=';
 GE              : '>=';
-NAME_CHECK      : 'in' | '!in' | 'is' | '!is';
+BANG_IN         : '!in';
+BANG_IS         : '!is';
 ELVIS           : '?;';
 RANGE           : '..';
 ADD             : '+';
 SUB             : '-';
-MUL             : '*';
+ASTERISK        : '*';
 DIV             : '/';
 MOD             : '%';
-TYPE_RHS        : 'as' | 'as?';
+CAST            : 'as';
+SAFE_CAST       : 'as?';
 INC             : '++';
 DEC             : '--';
+DOUBLE_BANG     : '!!';
 BANG            : '!';
 QUESTION        : '?';
 QUESTION_DOT    : '?.';
+AT              : '@';
 
-AT : '@';
-
-SEMI
-    : ';'
-    //| '\r'? '\n'
-    ;
 
 Identifier
     : JavaIdentifier
@@ -361,12 +385,9 @@ JavaLetterOrDigit
         [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
 
-WS  :  [ \r\n\t\u000C]+ -> skip
-    ;
-
 
 LineComment
-    :   '//' ~[\r\n]* -> channel(HIDDEN)
+    :   '//' ~[\n]* -> channel(HIDDEN)
     ;
 
 
@@ -387,3 +408,5 @@ CommentPart
     | '/'+ ~[*]
     ;
 
+WS  :  [ \r\t\u000C]+ -> channel(HIDDEN)
+    ;
