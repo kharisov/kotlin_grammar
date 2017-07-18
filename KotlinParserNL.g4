@@ -223,26 +223,32 @@ functionalType
 */
 
 type
-    : (suspendModifier | annotations)* (typeReference | functionalTypeReference)
+    : (suspendModifier NL*| annotations NL*)* (functionalTypeReference| typeReference)
+    ;
+
+functionalTypeReference
+    : (typeReference NL* DOT NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
+        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)? //TODO (type?, suspend might only apply to func type
+    ;
+
+functionalTypeParameter
+    : parameter
+    | type
     ;
 
 typeReference
-    : LPAREN typeReference RPAREN
+    : LPAREN NL* typeReference NL* RPAREN
     | userType
-    | typeReference QUESTION
+    | typeReference NL* QUESTION
     | DYNAMIC
     ;
 
 userType
-    : simpleUserType (DOT simpleUserType)*
+    : simpleUserType (NL* DOT NL* simpleUserType)*
     ;
 
 simpleUserType
     : Identifier NL* (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
-    ;
-
-functionalTypeReference
-    : (typeReference DOT)? LPAREN (parameter (COMMA parameter)*)? RPAREN IMPLICATION type (DOT functionalTypeReference)? //TODO (type?, modifiers before typeReference
     ;
 
 //--Control Structures
@@ -274,7 +280,8 @@ loop
     ;
 
 r_for
-    : FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) 'in' expression RPAREN
+    : FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) IN expression RPAREN
+    | FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) IN expression RPAREN
         controlStructureBody
     ;
 
@@ -287,60 +294,60 @@ doWhile
     ;
 
 //--Expressions
-expression
-    : disjunction (assignmentOperation disjunction)*
+assignment
+    : expression (assignmentOperation NL* expression)*
     ;
 
-disjunction
-    : conjunction ( OR conjunction)*
+expression
+    : conjunction (NL* OR NL* conjunction)*
     ;
 
 conjunction
-    : equalityComparison (AND equalityComparison)*
+    : equalityComparison (NL* AND NL* equalityComparison)*
     ;
 
 equalityComparison
-    : comparison (equalityOperation comparison)*
+    : comparison (equalityOperation NL* comparison)*
     ;
 
 comparison
-    : namedInfix (comparisonOperation namedInfix)*
+    : namedInfix (comparisonOperation NL* namedInfix)*
     ;
 
 namedInfix
-    : elvisExpression (inOperation elvisExpression)*
-    | elvisExpression (isOperation type)?
+    : elvisExpression (inOperation NL* elvisExpression)*
+    | elvisExpression (isOperation NL* type)?
     ;
 
 elvisExpression
-    : infixFunctionCall (ELVIS infixFunctionCall)*
+    : infixFunctionCall (NL* ELVIS NL* infixFunctionCall)*
     ;
 
 infixFunctionCall
-    : rangeExpression (Identifier rangeExpression)*
+    : rangeExpression (Identifier NL* rangeExpression)*
     ;
 
 rangeExpression
-    : additiveExpression (RANGE additiveExpression)*
+    : additiveExpression (RANGE NL* additiveExpression)*
     ;
 
 additiveExpression
-    : multiplicativeExpression (additiveOperation multiplicativeExpression)*
+    : multiplicativeExpression (additiveOperation NL* multiplicativeExpression)*
     ;
 
 multiplicativeExpression
-    : typeRHS (multiplicativeOperation typeRHS)*
+    : typeRHS (multiplicativeOperation NL* typeRHS)*
     ;
 
 typeRHS
-    : prefixUnaryExpression (typeOperation prefixUnaryExpression)*
+    : prefixUnaryExpression (NL* typeOperation NL* prefixUnaryExpression)*
     ;
 
 prefixUnaryExpression
-    : prefixUnaryOperation* postfixUnaryExpression
+    : (prefixUnaryOperation NL*)* postfixUnaryExpression
     ;
 
-postfixUnaryExpression
+postfixUnaryExpression //TODO not every postfix ops can combine (a++++ not possible)
     : atomicExpression postfixUnaryOperation*
     //| callableReference postfixUnaryOperation*
     ;
@@ -350,8 +357,8 @@ postfixUnaryExpression
     ;
 */
 atomicExpression
-    : LPAREN expression RPAREN
-    | literalConstant
+    : literalConstant
+    | LPAREN NL* nestedExpression NL* RPAREN
     | functionalLiteral
     | THIS AT_ID?
     | SUPER (LT type GT)? AT_ID?
@@ -362,6 +369,67 @@ atomicExpression
     | jump
     | loop
     | Identifier
+    ;
+
+nestedExpression
+    : nestedConjunction (NL* OR NL* nestedConjunction)*
+    ;
+
+nestedConjunction
+    : nestedEqualityComparison (NL* AND NL* nestedEqualityComparison)*
+    ;
+
+nestedEqualityComparison
+    : nestedComparison (NL* equalityOperation NL* nestedComparison)*
+    ;
+
+nestedComparison
+    : nestedNamedInfix (NL* comparisonOperation NL* nestedNamedInfix)*
+    ;
+
+nestedNamedInfix
+    : nestedElvisExpression (NL* inOperation NL* nestedElvisExpression)*
+    | nestedElvisExpression (NL* isOperation NL* type)?
+    ;
+
+nestedElvisExpression
+    : nestedInfixFunctionCall (NL* ELVIS NL* nestedInfixFunctionCall)*
+    ;
+
+nestedInfixFunctionCall
+    : nestedRangeExpression (NL* Identifier NL* nestedRangeExpression)*
+    ;
+
+nestedRangeExpression
+    : nestedAdditiveExpression (NL* RANGE NL* nestedAdditiveExpression)*
+    ;
+
+nestedAdditiveExpression
+    : nestedMultiplicativeExpression (NL* additiveOperation NL* nestedMultiplicativeExpression )*
+    ;
+
+nestedMultiplicativeExpression
+    : nestedTypeRHS (NL* multiplicativeOperation NL* nestedTypeRHS )*
+    ;
+
+nestedTypeRHS
+    : nestedPrefixUnaryExpression (NL* typeOperation NL* nestedPrefixUnaryExpression )*
+    ;
+
+nestedPrefixUnaryExpression
+    : (prefixUnaryOperation NL*)* nestedPostfixUnaryExpression
+    ;
+
+nestedPostfixUnaryExpression //TODO not every postfix ops can combine (a++++ not possible)
+    : atomicExpression (NL* nestedPostfixUnaryOperation)*
+    //| callableReference postfixUnaryOperation*
+    ;
+
+nestedPostfixUnaryOperation //TODO repeat of postfixUnaryOperation
+    : INC | DEC | DOUBLE_BANG
+    | callSuffix
+    | arrayAccess
+    | memberAccessOperation NL* postfixUnaryExpression
     ;
 /*
 labelReference
@@ -374,7 +442,7 @@ labelDefinition
 */
 
 literalConstant
-    : BooleanLiteral
+    : (TRUE | FALSE)
     | StringLiteral //TODO string
     | IntegerLiteral
     | FloatingPointLiteral
@@ -400,6 +468,7 @@ longTemplate
 
 statement
     : blockLevelExpression
+    | assignment
     | declaration
     ;
 
@@ -412,7 +481,7 @@ multiplicativeOperation
     ;
 
 additiveOperation
-    : ADD | ASSIGN
+    : ADD | SUB
     ;
 
 inOperation
@@ -420,7 +489,7 @@ inOperation
     ;
 
 typeOperation
-    : CAST | SAFE_CAST | COLON
+    : AS | SAFE_CAST | COLON
     ;
 
 isOperation
@@ -449,16 +518,16 @@ postfixUnaryOperation
     : INC | DEC | DOUBLE_BANG
     | callSuffix
     | arrayAccess
-    | memberAccessOperation postfixUnaryExpression
+    | NL* memberAccessOperation NL* postfixUnaryExpression
     ;
 
 callSuffix  //TODO smthwrong (mb fixed)
-    : typeArguments? valueArguments annotatedLambda?
-    | typeArguments? annotatedLambda
+    : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
+    | (typeArguments NL*)? annotatedLambda
     ;
 
 annotatedLambda
-    : (AT_ID (DOT Identifier)* typeArguments? valueArguments?)* Label? functionalLiteral
+    : (AT_ID (NL* DOT NL* Identifier)* NL* (typeArguments NL*)? (valueArguments NL*)?)* (Label NL*)? functionalLiteral
     ;
 
 memberAccessOperation
@@ -477,24 +546,27 @@ valueArguments
     ;
 
 jump
-    : THROW expression
-    | RETURN AT_ID? expression?
-    | CONTINUE AT_ID?
-    | BREAK AT_ID?
+    : THROW NL* expression
+    | RETURN expression?
+    | LabeledReturn expression?
+    | CONTINUE
+    | LabeledContinue
+    | BREAK
+    | LabeledContinue
     ;
 
 functionalLiteral
-    : LBRACE statements RBRACE  //TODO (statements?)
-    | LBRACE lambdaParameter (COMMA lambdaParameter)* IMPLICATION statements RBRACE
+    : LBRACE NL* statements NL* RBRACE  //TODO (statements?)
+    | LBRACE NL* lambdaParameter (NL* COMMA NL* lambdaParameter)* NL* IMPLICATION NL* statements NL* RBRACE
     ;
 
 lambdaParameter
     : variableDeclarationEntry
-    | multipleVariableDeclarations (COLON type)?
+    | multipleVariableDeclarations (NL* COLON NL* type)?
     ;
 
 statements
-    : statement (semi+ statement)*
+    : statement (semi+ statement)* semi?
     ;
 
 constructorInvocation
@@ -502,11 +574,11 @@ constructorInvocation
     ;
 
 arrayAccess
-    : LBRACK expression (COMMA expression)* RBRACK
+    : LBRACK NL* expression (NL* COMMA NL* expression)* NL* RBRACK
     ;
 
 objectLiteral
-    : OBJECT (COLON delegationSpecifier (COMMA delegationSpecifier)*)? classBody
+    : OBJECT (NL* COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody
     ;
 
 //--When
@@ -620,3 +692,82 @@ semi
     : NL
     | SEMICOLON
     ;
+
+/*
+//--Expressions
+expression
+    : disjunction (assignmentOperation disjunction)*
+    ;
+
+disjunction
+    : conjunction ( OR conjunction)*
+    ;
+
+conjunction
+    : equalityComparison (AND equalityComparison)*
+    ;
+
+equalityComparison
+    : comparison (equalityOperation comparison)*
+    ;
+
+comparison
+    : namedInfix (comparisonOperation namedInfix)*
+    ;
+
+namedInfix
+    : elvisExpression (inOperation elvisExpression)*
+    | elvisExpression (isOperation type)?
+    ;
+
+elvisExpression
+    : infixFunctionCall (ELVIS infixFunctionCall)*
+    ;
+
+infixFunctionCall
+    : rangeExpression (Identifier rangeExpression)*
+    ;
+
+rangeExpression
+    : additiveExpression (RANGE additiveExpression)*
+    ;
+
+additiveExpression
+    : multiplicativeExpression (additiveOperation multiplicativeExpression)*
+    ;
+
+multiplicativeExpression
+    : typeRHS (multiplicativeOperation typeRHS)*
+    ;
+
+typeRHS
+    : prefixUnaryExpression (typeOperation prefixUnaryExpression)*
+    ;
+
+prefixUnaryExpression
+    : prefixUnaryOperation* postfixUnaryExpression
+    ;
+
+postfixUnaryExpression
+    : atomicExpression postfixUnaryOperation*
+    //| callableReference postfixUnaryOperation*
+    ;
+
+/*callableReference
+    : (userType QUESTION*)? DOUBLE_COLON Identifier typeArguments?
+    ;
+
+atomicExpression
+    : parenthesesedExpression
+    | literalConstant
+    | functionalLiteral
+    | THIS AT_ID?
+    | SUPER (LT type GT)? AT_ID?
+    | r_if
+    | when
+    | r_try
+    | objectLiteral
+    | jump
+    | loop
+    | Identifier
+    ;*/

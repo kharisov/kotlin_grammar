@@ -215,9 +215,9 @@ FloatTypeSuffix
     ;
 
 //-Boolean Literals
-BooleanLiteral
-    : 'true'
-    | 'false'
+BooleanLiteral //TODO not used
+    : TRUE
+    | FALSE
     ;
 
 //-Char Literals
@@ -331,7 +331,6 @@ SUB             : '-';
 ASTERISK        : '*';
 DIV             : '/';
 MOD             : '%';
-CAST            : 'as';
 SAFE_CAST       : 'as?';
 INC             : '++';
 DEC             : '--';
@@ -343,6 +342,18 @@ AT              : '@';
 
 FileAnnotation
     : AT FILE
+    ;
+
+LabeledReturn
+    : RETURN AT Identifier
+    ;
+
+LabeledContinue
+    : CONTINUE AT Identifier
+    ;
+
+LabeledBreak
+    : BREAK AT Identifier
     ;
 
 AT_ID
@@ -412,7 +423,7 @@ LineComment
 
 
 Comment
-    : LCOMMENT CommentParts? RCOMMENT
+    : LCOMMENT CommentParts? RCOMMENT -> channel(HIDDEN)
     ;
 
 fragment
