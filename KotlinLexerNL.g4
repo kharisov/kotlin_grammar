@@ -183,8 +183,8 @@ BinaryDgitOrUnderscore
 
 //-Floating-Point Literals
 FloatingPointLiteral
-    : Digits '.' Digits? ExponentPart? FloatTypeSuffix?
-    | '.' Digits ExponentPart? FloatTypeSuffix?
+    : Digits DOT Digits ExponentPart? FloatTypeSuffix?
+    | DOT Digits ExponentPart? FloatTypeSuffix?
     | Digits ExponentPart FloatTypeSuffix?
     | Digits FloatTypeSuffix
     ;
@@ -281,16 +281,10 @@ NullLiteral
     ;
 
 //--Separators
-/*IGNORE_SEMI
-    : (SEMICOLON
-    | NL) {stopIgnoring == 0}? -> channel(HIDDEN)
-    ;*/
-
-/*SEMI
-    : SEMICOLON
-    | NL
+MultipleSemicolons //Two semicolns without whitespace between = error
+    : SEMICOLON SEMICOLON
     ;
-*/
+
 NL              : '\n';
 LCOMMENT        : '/*';
 RCOMMENT        : '*/';
@@ -304,7 +298,6 @@ DOUBLE_COLON    : '::';
 COLON           : ':';
 SEMICOLON       : ';';
 COMMA           : ',';
-DOT             : '.';
 
 //--Operators
 IMPLICATION     : '->';
@@ -336,6 +329,7 @@ INC             : '++';
 DEC             : '--';
 DOUBLE_BANG     : '!!';
 BANG            : '!';
+DOT             : '.';
 QUESTION        : '?';
 QUESTION_DOT    : '?.';
 AT              : '@';

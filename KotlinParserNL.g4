@@ -4,8 +4,8 @@ import KotlinLexerNL;
 /*------PARSER------*/
 //--File Structure
 
-kotlinFile  //TODO (add soft keywords as possible names for rules using Identifier)
-    : preamble declaration* EOF
+kotlinFile
+    : preamble topLevel* EOF
     ;
 
 preamble
@@ -17,30 +17,39 @@ fileAnnotations
     ;
 
 packageHeader
-    : PACKAGE Identifier (NL* DOT Identifier)* semi*
+    : PACKAGE simpleName (NL* DOT simpleName)* semi*
     ;
 
 importStatement
-    : IMPORT Identifier (NL* DOT Identifier)* (NL* DOT ASTERISK | NL* AS Identifier)? semi*
+    : IMPORT simpleName (NL* DOT simpleName)* (NL* DOT ASTERISK | NL* AS simpleName)? semi*
     ;
 
-declaration
+topLevel
     : r_class
     | object
     | function
-    | property
+    | memberOrTopLevelProperty
     | typeAlias
     ;
 
 typeAlias
-    : accessModifier? NL* TYPEALIAS NL* Identifier NL* typeParameters? NL* ASSIGN NL* type semi*
+    : accessModifier? NL* TYPEALIAS NL* simpleName NL* typeParameters? NL* ASSIGN NL* type semi*
     ;
 
 //--Classes
-r_class //TODO typeConstraints only when there are defined type parameters
-    : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* Identifier NL* (typeParameters NL*)?
-        (primaryConstructor NL*)? (COLON NL* annotations* NL* delegationSpecifier NL* (COMMA NL* delegationSpecifier NL*)*)?
-        (typeConstraints NL*)? (classBody | enumClassBody)? semi*
+r_class
+    : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName
+        (NL* primaryConstructor)?
+        (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
+        (NL* classBody | NL* enumClassBody)? semi?
+    | (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters
+        (NL* primaryConstructor)?
+        (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* (constructorInvocation | userType))?
+        (NL* typeConstraints)? (NL* classBody | NL* enumClassBody)? semi?
+    | (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters
+        (NL* primaryConstructor)?
+        (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* explicitDelegation)?
+        (NL+ typeConstraints)? (NL* classBody | NL* enumClassBody)? semi?
     ;
 
 primaryConstructor
@@ -78,7 +87,7 @@ typeParameters
     ;
 
 typeParameter
-    : (typeParameterModifier NL*| varianceAnnotation NL*)* Identifier NL* (COLON NL* userType)?
+    : (typeParameterModifier NL*| varianceAnnotation NL*)* simpleName NL* (COLON NL* userType)?
     ;
 
 typeConstraints
@@ -86,14 +95,14 @@ typeConstraints
     ;
 
 typeConstraint
-    : (annotations NL*)* Identifier NL* COLON NL* type
+    : (annotations NL*)* simpleName NL* COLON NL* type
     ;
 
 memberDeclaration
     : companionObject
     | object
     | function
-    | property
+    | memberOrTopLevelProperty
     | r_class
     | typeAlias
     | initializerBlock
@@ -106,13 +115,13 @@ initializerBlock
     ;
 
 companionObject
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* COMPANION NL* OBJECT NL* Identifier?
+    : (annotations NL*| accessModifier NL*| FINAL NL*)* COMPANION NL* OBJECT NL* simpleName?
         (NL* COLON NL* delegationSpecifier (NL* COMMA delegationSpecifier)*)? NL* classBody? semi?
     ;
 
 function
     : (memberModifier NL*| accessModifier NL*| functionModifier NL*| annotations NL*)*
-        FUN NL* (typeParameters NL*)? (type NL* DOT NL*)? Identifier NL*
+        FUN NL* (typeParameters NL*)? (type NL* DOT NL*)? simpleName NL*
         valueParameters NL* (COLON NL* type NL*)? NL* (typeConstraints NL*)? functionBody semi?
     ;
 
@@ -134,16 +143,31 @@ block
     | LBRACE semi* statements semi* RBRACE
     ;
 
-property //TODO (lazy), typeConstraints only..., devide local and global properties
+memberOrTopLevelProperty //TODO (lazy), typeConstraints only..., devide local and global properties, 'const' only with 'val'
     : (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        (VAL | VAR) NL* typeParameters? NL* (type NL* DOT NL*)?
-        (multipleVariableDeclarations | variableDeclarationEntry) NL* (typeConstraints NL*)?
-        ((BY | ASSIGN) NL* expression)? //TODO 1 SEMICOLON or 0-... NL
-        (getter? NL* SEMICOLON? NL* setter? | setter? NL* SEMICOLON? NL* getter?) semi?
+        (VAL | VAR) NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
+        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
+        (VAL | VAR) NL* (type NL* DOT NL*)? variableDeclarationEntry
+        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    ;
+
+
+localProperty
+    : (annotations NL*)* (VAL | VAR) NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL*
+        typeConstraints? (NL* (BY | ASSIGN) NL* expression)?
+    | (annotations NL*)* (VAL | VAR) NL* (type NL* DOT NL*)? variableDeclarationEntry
+        (NL* (BY | ASSIGN) NL* expression)?
+    | (annotations NL*)* (VAL | VAR) NL* typeParameters NL* multipleVariableDeclarations NL*
+        typeConstraints? (NL* (BY | ASSIGN) NL* expression)?
+    | (annotations NL*)* (VAL | VAR) NL* multipleVariableDeclarations
+        (NL* (BY | ASSIGN) NL* expression)?
     ;
 
 variableDeclarationEntry
-    : Identifier (NL* COLON NL* type)?
+    : simpleName (NL* COLON NL* type)?
     ;
 
 multipleVariableDeclarations
@@ -159,15 +183,15 @@ getter
 setter
     : (accessModifier NL*| functionModifier NL*| annotations NL*)* SET
     | (accessModifier NL*| functionModifier NL*| annotations NL*)* SET NL*
-        LPAREN NL* (annotations NL*| parameterModifier NL*)* (Identifier | parameter) NL* RPAREN NL* functionBody
+        LPAREN NL* (annotations NL*| parameterModifier NL*)* (simpleName | parameter) NL* RPAREN NL* functionBody
     ;
 
 parameter
-    : Identifier NL* COLON NL* type
+    : simpleName NL* COLON NL* type
     ;
 
 object
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* Identifier NL* (primaryConstructor NL*)?
+    : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* simpleName NL* (primaryConstructor NL*)?
         (COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody? semi?
     ;
 
@@ -192,7 +216,7 @@ enumEntries
     ;
 
 enumEntry
-    : (annotations NL*)* Identifier NL* (valueArguments NL*)? classBody?  //TODO
+    : (annotations NL*)* simpleName NL* (valueArguments NL*)? classBody?  //TODO
     ;
 
 //--Types
@@ -214,7 +238,7 @@ userType
     ;
 
 simpleUserType
-    : Identifier (LT(varianceAnnotation type | ASTERISK) (COMMA (varianceAnnotation type | ASTERISK))* GT)?
+    : simpleName (LT(varianceAnnotation type | ASTERISK) (COMMA (varianceAnnotation type | ASTERISK))* GT)?
     ;
 
 functionalType
@@ -228,7 +252,7 @@ type
 
 functionalTypeReference
     : (typeReference NL* DOT NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
-        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)? //TODO (type?, suspend might only apply to func type
+        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)? //TODO (type?, suspend might only apply to func type)
     ;
 
 functionalTypeParameter
@@ -248,29 +272,34 @@ userType
     ;
 
 simpleUserType
-    : Identifier NL* (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
+    : simpleName NL* (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
     ;
 
 //--Control Structures
 r_if
-    : IF LPAREN expression RPAREN controlStructureBody semi? (ELSE controlStructureBody)?
+    : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* controlStructureBody)? //TODO strange semicolon usage
+    ;
+
+condition
+    : LPAREN NL* nestedExpression NL* RPAREN
     ;
 
 controlStructureBody
     : block
     | blockLevelExpression
+    | assignment
     ;
 
 r_try
-    : TRY block catchBlock* finallyBlock?
+    : TRY NL* block (NL* catchBlock)* (NL* finallyBlock)?
     ;
 
 catchBlock
-    : CATCH LPAREN annotations Identifier COLON userType RPAREN block
+    : CATCH NL* LPAREN NL* annotations NL* simpleName NL* COLON NL* userType NL* RPAREN NL* block
     ;
 
 finallyBlock
-    : FINALLY block
+    : FINALLY NL* block
     ;
 
 loop
@@ -280,17 +309,16 @@ loop
     ;
 
 r_for
-    : FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) IN expression RPAREN
-    | FOR LPAREN annotations (multipleVariableDeclarations | variableDeclarationEntry) IN expression RPAREN
-        controlStructureBody
+    : FOR NL* LPAREN NL* (annotations NL*)* (multipleVariableDeclarations | variableDeclarationEntry) NL*
+        IN NL* nestedExpression NL* RPAREN NL* controlStructureBody
     ;
 
 r_while
-    : WHILE LPAREN expression RPAREN controlStructureBody
+    : WHILE NL* LPAREN NL* nestedExpression NL* RPAREN NL* controlStructureBody
     ;
 
 doWhile
-    : DO controlStructureBody WHILE LPAREN expression RPAREN
+    : DO NL* controlStructureBody NL* WHILE NL* LPAREN NL* nestedExpression NL* RPAREN
     ;
 
 //--Expressions
@@ -324,7 +352,7 @@ elvisExpression
     ;
 
 infixFunctionCall
-    : rangeExpression (Identifier NL* rangeExpression)*
+    : rangeExpression (simpleName NL* rangeExpression)*
     ;
 
 rangeExpression
@@ -353,7 +381,7 @@ postfixUnaryExpression //TODO not every postfix ops can combine (a++++ not possi
     ;
 
 /*callableReference
-    : (userType QUESTION*)? DOUBLE_COLON Identifier typeArguments?
+    : (userType QUESTION*)? DOUBLE_COLON simpleName typeArguments?
     ;
 */
 atomicExpression
@@ -368,10 +396,10 @@ atomicExpression
     | objectLiteral
     | jump
     | loop
-    | Identifier
+    | simpleName
     ;
 
-nestedExpression
+nestedExpression //TODO check if used everywhere it should be used
     : nestedConjunction (NL* OR NL* nestedConjunction)*
     ;
 
@@ -397,7 +425,7 @@ nestedElvisExpression
     ;
 
 nestedInfixFunctionCall
-    : nestedRangeExpression (NL* Identifier NL* nestedRangeExpression)*
+    : nestedRangeExpression (NL* simpleName NL* nestedRangeExpression)*
     ;
 
 nestedRangeExpression
@@ -433,11 +461,11 @@ nestedPostfixUnaryOperation //TODO repeat of postfixUnaryOperation
     ;
 /*
 labelReference
-    : AT Identifier
+    : AT simpleName
     ;
 
 labelDefinition
-    : Identifier AT
+    : simpleName AT
     ;
 */
 
@@ -456,7 +484,7 @@ stringLiteral
 
 stringElement
     : RegularStringPart
-    | ShortTemplateEntry (Identifier | THIS)
+    | ShortTemplateEntry (simpleName | THIS)
     | EscapeSequence
     | longTemplate
     ;
@@ -470,6 +498,14 @@ statement
     : blockLevelExpression
     | assignment
     | declaration
+    ;
+
+declaration
+    : r_class
+    | object
+    | function
+    | localProperty
+    | typeAlias
     ;
 
 blockLevelExpression
@@ -527,7 +563,7 @@ callSuffix  //TODO smthwrong (mb fixed)
     ;
 
 annotatedLambda
-    : (AT_ID (NL* DOT NL* Identifier)* NL* (typeArguments NL*)? (valueArguments NL*)?)* (Label NL*)? functionalLiteral
+    : (AT_ID (NL* DOT NL* simpleName)* NL* (typeArguments NL*)? (valueArguments NL*)?)* (Label NL*)? functionalLiteral
     ;
 
 memberAccessOperation
@@ -539,8 +575,8 @@ typeArguments
     ;
 
 valueArguments
-    : LPAREN NL* Identifier NL* ASSIGN NL* (ASTERISK NL*)? expression
-        (NL* COMMA NL* Identifier NL* ASSIGN NL* (ASTERISK NL*)? expression)* NL* RPAREN
+    : LPAREN NL* simpleName NL* ASSIGN NL* (ASTERISK NL*)? expression
+        (NL* COMMA NL* simpleName NL* ASSIGN NL* (ASTERISK NL*)? expression)* NL* RPAREN
     | LPAREN NL* (ASTERISK NL*)? expression (NL* COMMA NL* (ASTERISK NL*)? expression)* NL* RPAREN
     | LPAREN NL* RPAREN
     ;
@@ -574,7 +610,7 @@ constructorInvocation
     ;
 
 arrayAccess
-    : LBRACK NL* expression (NL* COMMA NL* expression)* NL* RBRACK
+    : LBRACK NL* nestedExpression (NL* COMMA NL* expression)* NL* RBRACK
     ;
 
 objectLiteral
@@ -583,18 +619,18 @@ objectLiteral
 
 //--When
 when
-    : WHEN ( LPAREN expression RPAREN )? LBRACE whenEntry* RBRACE
+    : WHEN NL* (LPAREN NL* nestedExpression NL* RPAREN NL*)? LBRACE NL* (whenEntry NL*)* RBRACE
     ;
 
 whenEntry
-    : whenCondition (COMMA whenCondition)* IMPLICATION controlStructureBody semi
-    | ELSE  IMPLICATION controlStructureBody semi
+    : whenCondition NL* (COMMA NL* whenCondition NL*)* IMPLICATION NL* controlStructureBody semi?
+    | ELSE NL* IMPLICATION NL* controlStructureBody semi?
     ;
 
 whenCondition
     : expression
-    | (IN | BANG_IN) expression
-    | (IS | BANG_IS) type
+    | (IN | BANG_IN) NL* expression
+    | (IS | BANG_IS) NL* type
     ;
 
 //--Modifiers
@@ -661,15 +697,15 @@ annotations
     ;
 
 annotation
-    : AT_ID (NL* DOT NL* Identifier)* NL* typeArguments? NL* valueArguments?
-    | AnnotationTarget NL* COLON NL* Identifier (NL* DOT Identifier)* NL* typeArguments? NL* valueArguments? NL*
+    : AT_ID (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments?
+    | AnnotationTarget NL* COLON NL* simpleName (NL* DOT simpleName)* NL* typeArguments? NL* valueArguments? NL*
     ;
 
 annotationList
-    : AT_ID NL* LBRACK NL* Identifier (NL* DOT Identifier)*  NL* typeArguments? NL* valueArguments?
-        (NL* Identifier NL* (NL* DOT NL* Identifier)* NL* typeArguments? NL* valueArguments?)* NL* RBRACK
-    | AnnotationTarget NL* COLON NL* LBRACK NL* Identifier (NL* DOT NL* Identifier)* NL* typeArguments? NL* valueArguments?
-        (NL* Identifier (NL* DOT NL* Identifier)* NL* typeArguments? NL* valueArguments?)* NL* RBRACK
+    : AT_ID NL* LBRACK NL* simpleName (NL* DOT simpleName)*  NL* typeArguments? NL* valueArguments?
+        (NL* simpleName NL* (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments?)* NL* RBRACK
+    | AnnotationTarget NL* COLON NL* LBRACK NL* simpleName (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments?
+        (NL* simpleName (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments?)* NL* RBRACK
     ;
 
 annotationUseSiteTarget
@@ -685,13 +721,65 @@ annotationUseSiteTarget
     ;
 
 unescapedAnnotation
-    : Identifier (DOT Identifier)* typeArguments? valueArguments?
+    : simpleName (DOT simpleName)* typeArguments? valueArguments?
+    ;
+
+simpleName
+    : Identifier
+    | softKeywords
+    ;
+
+softKeywords
+    : DYNAMIC
+    | FILE
+    | IMPORT
+    | CONSTRUCTOR
+    | BY
+    | WHERE
+    | INIT
+    | COMPANION
+    | CATCH
+    | FINALLY
+    | ABSTRACT
+    | FINAL
+    | ENUM
+    | OPEN
+    | ANNOTATION
+    | SEALED
+    | DATA
+    | OVERRIDE
+    | LATEINIT
+    | PRIVATE
+    | PROTECTED
+    | PUBLIC
+    | INTERNAL
+    | OUT
+    | NOINLINE
+    | CROSSLINE
+    | VARARG
+    | REIFIED
+    | TAILREC
+    | OPERATOR
+    | INFIX
+    | INLINE
+    | EXTERNAL
+    | CONST
+    | SUSPEND
+    | GET
+    | SET
+    | FIELD
+    | PROPERTY
+    | RECIEVER
+    | PARAM
+    | SETPARAM
+    | DELEGATE
     ;
 
 semi
     : NL
     | SEMICOLON
     ;
+
 
 /*
 //--Expressions
@@ -725,7 +813,7 @@ elvisExpression
     ;
 
 infixFunctionCall
-    : rangeExpression (Identifier rangeExpression)*
+    : rangeExpression (simpleName rangeExpression)*
     ;
 
 rangeExpression
@@ -754,7 +842,7 @@ postfixUnaryExpression
     ;
 
 /*callableReference
-    : (userType QUESTION*)? DOUBLE_COLON Identifier typeArguments?
+    : (userType QUESTION*)? DOUBLE_COLON simpleName typeArguments?
     ;
 
 atomicExpression
@@ -769,5 +857,5 @@ atomicExpression
     | objectLiteral
     | jump
     | loop
-    | Identifier
+    | simpleName
     ;*/
