@@ -59,11 +59,11 @@ primaryConstructor
     ;
 
 constructorValueParameters
-    : LPAREN NL* (constructorParameter (NL* COMMA constructorParameter)*)? NL* RPAREN
+    : LPAREN NL* (constructorParameter (NL* COMMA NL* constructorParameter)* NL*)? RPAREN
     ;
 
 constructorParameter
-    : (annotations NL*| parameterModifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* expression NL*)?
+    : (annotations NL*| parameterModifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* nestedExpression NL*)?
     ;
 
 classBody
@@ -132,7 +132,7 @@ valueParameters
     ;
 
 functionParameter
-    : (annotations NL*| parameterModifier NL*)* parameter NL* (ASSIGN NL* expression NL*)?
+    : (annotations NL*| parameterModifier NL*)* parameter NL* (ASSIGN NL* nestedExpression NL*)?
     ;
 
 functionBody
@@ -145,13 +145,21 @@ block
     | LBRACE semi* statements semi* RBRACE
     ;
 
-memberOrTopLevelProperty //TODO, 'const' only with 'val', check constraints conflicting with delegate expression one more time
-    : (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        (VAL | VAR) NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
+memberOrTopLevelProperty //TODO check constraints conflicting with delegate expression one more time
+    : (memberModifier NL*| accessModifier NL*| annotations NL*)*
+        VAR NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        (VAL | VAR) NL* (type NL* DOT NL*)? variableDeclarationEntry
+        VAL NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
+        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    | (memberModifier NL*| accessModifier NL*| annotations NL*)*
+        VAR NL* (type NL* DOT NL*)? variableDeclarationEntry
+        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
+        VAL NL* (type NL* DOT NL*)? variableDeclarationEntry
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     ;
@@ -221,40 +229,14 @@ enumEntry
     : (annotations NL*)* simpleName NL* (valueArguments NL*)? classBody?
     ;
 
-//--Types
-/*
 type
-    : (suspendModifier | annotations)* typeReference
-    ;
-
-typeReference
-    : LPAREN typeReference RPAREN
-    | functionalType
-    | userType
-    | typeReference QUESTION
-    | DYNAMIC
-    ;
-
-userType
-    : simpleUserType (DOT simpleUserType)*
-    ;
-
-simpleUserType
-    : simpleName (LT(varianceAnnotation type | ASTERISK) (COMMA (varianceAnnotation type | ASTERISK))* GT)?
-    ;
-
-functionalType
-    : (type DOT)? LPAREN (parameter (COMMA parameter)*)? RPAREN IMPLICATION type
-    ;
-*/
-
-type
-    : (suspendModifier NL*| annotations NL*)* (functionalTypeReference| typeReference)
+    : (annotations NL*)* typeReference
+    | (suspendModifier NL*| annotations NL*)* functionalTypeReference
     ;
 
 functionalTypeReference
     : (typeReference NL* DOT NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
-        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)? //TODO (suspend might only apply to func type)
+        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)?
     ;
 
 functionalTypeParameter
@@ -274,7 +256,7 @@ userType
     ;
 
 simpleUserType
-    : simpleName NL* (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
+    : simpleName (NL* LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
     ;
 
 //--Control Structures
@@ -371,20 +353,31 @@ multiplicativeExpression
 
 typeRHS
     : prefixUnaryExpression (NL* typeOperation NL* prefixUnaryExpression)*
+    | prefixUnaryExpression (NL* typeOperation NL* type)? //TODO is right?
     ;
 
 prefixUnaryExpression
     : (prefixUnaryOperation NL*)* postfixUnaryExpression
     ;
 
-postfixUnaryExpression //TODO not every postfix ops can combine (a++++ not possible)
+postfixUnaryExpression //TODO reflection tests, (reflection)callSuffix, userType.. QUESTION*
     : atomicExpression postfixUnaryOperation*
-    //| callableReference postfixUnaryOperation*
+    | DOUBLE_COLON NL* simpleName postfixUnaryOperation*
+    | userTypeWithoutNL doubleColonSuffix postfixUnaryOperation*
     ;
 
-/*callableReference
-    : (userType QUESTION*)? DOUBLE_COLON simpleName typeArguments?
-    ;*/
+
+doubleColonSuffix
+    : DOUBLE_COLON NL* (simpleName | CLASS)
+    ;
+
+userTypeWithoutNL
+    : simpleUserTypeWithoutNL (NL* DOT NL* simpleUserTypeWithoutNL)*
+    ;
+
+simpleUserTypeWithoutNL
+    : simpleName (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
+    ;
 
 atomicExpression
     : literalConstant
@@ -401,7 +394,7 @@ atomicExpression
     | simpleName
     ;
 
-nestedExpression //TODO check if used everywhere it should be used
+nestedExpression
     : nestedConjunction (NL* OR NL* nestedConjunction)*
     ;
 
@@ -444,35 +437,22 @@ nestedMultiplicativeExpression
 
 nestedTypeRHS
     : nestedPrefixUnaryExpression (NL* typeOperation NL* nestedPrefixUnaryExpression )*
+    | nestedPrefixUnaryExpression (NL* typeOperation NL* type)?
     ;
 
 nestedPrefixUnaryExpression
     : (prefixUnaryOperation NL*)* nestedPostfixUnaryExpression
     ;
 
-nestedPostfixUnaryExpression //TODO not every postfix ops can combine (a++++ not possible)
-    : atomicExpression (NL* nestedPostfixUnaryOperation)*
-    //| callableReference postfixUnaryOperation*
+nestedPostfixUnaryExpression
+    : atomicExpression (NL* postfixUnaryOperation)*
+    | DOUBLE_COLON NL* simpleName (NL* postfixUnaryOperation)*
+    | userType NL* doubleColonSuffix (NL* postfixUnaryOperation)* //TODO userType QUESTION*
     ;
-
-nestedPostfixUnaryOperation //TODO repeat of postfixUnaryOperation
-    : INC | DEC | DOUBLE_BANG
-    | callSuffix
-    | arrayAccess
-    | memberAccessOperation NL* postfixUnaryExpression
-    ;
-/*
-labelReference
-    : AT simpleName
-    ;
-
-labelDefinition
-    : simpleName AT
-    ;
-*/
 
 literalConstant
-    : (TRUE | FALSE)
+    : TRUE
+    | FALSE
     | escapedString
     | rawString
     | IntegerLiteral
@@ -543,7 +523,7 @@ inOperation
     : IN | BANG_IN
     ;
 
-typeOperation
+typeOperation //TODO colon needed?
     : AS | SAFE_CAST | COLON
     ;
 
@@ -574,9 +554,11 @@ postfixUnaryOperation
     | callSuffix
     | arrayAccess
     | NL* memberAccessOperation NL* postfixUnaryExpression
+    | doubleColonSuffix
     ;
 
-callSuffix  //TODO smthwrong (mb fixed)
+
+callSuffix
     : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
     | (typeArguments NL*)? annotatedLambda
     ;
@@ -593,10 +575,10 @@ typeArguments
     : LT NL* type (NL* COMMA NL* type)* NL* GT
     ;
 
-valueArguments
-    : LPAREN NL* simpleName NL* ASSIGN NL* (ASTERISK NL*)? expression
-        (NL* COMMA NL* simpleName NL* ASSIGN NL* (ASTERISK NL*)? expression)* NL* RPAREN
-    | LPAREN NL* (ASTERISK NL*)? expression (NL* COMMA NL* (ASTERISK NL*)? expression)* NL* RPAREN
+valueArguments //TODO asterisk
+    : LPAREN NL* (nestedExpression NL* COMMA NL*)* (simpleName NL* ASSIGN NL* (ASTERISK NL*)? nestedExpression NL* COMMA NL*)*
+        simpleName NL* ASSIGN NL* (ASTERISK NL*)? nestedExpression NL* RPAREN
+    | LPAREN NL* (ASTERISK NL*)? nestedExpression (NL* COMMA NL* (ASTERISK NL*)? nestedExpression)* NL* RPAREN
     | LPAREN NL* RPAREN
     ;
 
@@ -611,8 +593,9 @@ jump
     ;
 
 functionalLiteral
-    : LBRACE NL* (statements NL*)? RBRACE
-    | LBRACE NL* lambdaParameter (NL* COMMA NL* lambdaParameter)* NL* IMPLICATION NL* statements NL* RBRACE
+    : LBRACE semi* RBRACE
+    | LBRACE semi* statements semi* RBRACE
+    | LBRACE NL* lambdaParameter (NL* COMMA NL* lambdaParameter)* NL* IMPLICATION semi* statements semi* RBRACE
     ;
 
 lambdaParameter
@@ -629,7 +612,7 @@ constructorInvocation
     ;
 
 arrayAccess
-    : LBRACK NL* nestedExpression (NL* COMMA NL* expression)* NL* RBRACK
+    : LBRACK NL* nestedExpression (NL* COMMA NL* nestedExpression)* NL* RBRACK
     ;
 
 objectLiteral
@@ -741,83 +724,3 @@ semi
     : NL
     | SEMICOLON
     ;
-
-
-/*
-//--Expressions
-expression
-    : disjunction (assignmentOperation disjunction)*
-    ;
-
-disjunction
-    : conjunction ( OR conjunction)*
-    ;
-
-conjunction
-    : equalityComparison (AND equalityComparison)*
-    ;
-
-equalityComparison
-    : comparison (equalityOperation comparison)*
-    ;
-
-comparison
-    : namedInfix (comparisonOperation namedInfix)*
-    ;
-
-namedInfix
-    : elvisExpression (inOperation elvisExpression)*
-    | elvisExpression (isOperation type)?
-    ;
-
-elvisExpression
-    : infixFunctionCall (ELVIS infixFunctionCall)*
-    ;
-
-infixFunctionCall
-    : rangeExpression (simpleName rangeExpression)*
-    ;
-
-rangeExpression
-    : additiveExpression (RANGE additiveExpression)*
-    ;
-
-additiveExpression
-    : multiplicativeExpression (additiveOperation multiplicativeExpression)*
-    ;
-
-multiplicativeExpression
-    : typeRHS (multiplicativeOperation typeRHS)*
-    ;
-
-typeRHS
-    : prefixUnaryExpression (typeOperation prefixUnaryExpression)*
-    ;
-
-prefixUnaryExpression
-    : prefixUnaryOperation* postfixUnaryExpression
-    ;
-
-postfixUnaryExpression
-    : atomicExpression postfixUnaryOperation*
-    //| callableReference postfixUnaryOperation*
-    ;
-
-/*callableReference
-    : (userType QUESTION*)? DOUBLE_COLON simpleName typeArguments?
-    ;
-
-atomicExpression
-    : parenthesesedExpression
-    | literalConstant
-    | functionalLiteral
-    | THIS AT_ID?
-    | SUPER (LT type GT)? AT_ID?
-    | r_if
-    | when
-    | r_try
-    | objectLiteral
-    | jump
-    | loop
-    | simpleName
-    ;*/
