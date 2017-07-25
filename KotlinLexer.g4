@@ -83,7 +83,7 @@ SoftKeyword
     : DYNAMIC | FILE | IMPORT | CONSTRUCTOR | BY | WHERE | INIT | COMPANION | CATCH | FINALLY | ABSTRACT | FINAL
         | ENUM | OPEN | ANNOTATION | SEALED | DATA | OVERRIDE | LATEINIT | PRIVATE | PROTECTED | PUBLIC | INTERNAL
         | OUT | NOINLINE | CROSSLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
-        | SUSPEND | GET | SET | FIELD | PROPERTY | RECIEVER | PARAM | SETPARAM | DELEGATE | INNER
+        | SUSPEND | GET | SET | FIELD | PROPERTY | RECIEVER | PARAM | SETPARAM | DELEGATE | INNER | HEADER | IMPL
     ;
 
 //--Literals
@@ -277,6 +277,12 @@ RAW_STRING_START: '"""' -> pushMode(IN_RAW_STRING);
 STRING_START    : '"' -> pushMode(IN_ESCAPED_STRING);
 
 //--Operators
+BangInIsWithWS // !in and !is cannot be tokens, because lexer will not match !isTrue as BANG IDENTIFIER, so
+                //! and in|is should be separate tokens, but than this rule is needed to match 3 ! in 1..2 as error
+    : BANG [ \t]+ IN [ \t]+
+    | BANG [ \t]+ IS [ \t]+
+    ;
+
 IMPLICATION     : '->';
 ASSIGN          : '=';
 ADD_ASSIGN      : '+=';
@@ -292,8 +298,8 @@ GT              : '>';
 LT              : '<';
 LE              : '<=';
 GE              : '>=';
-BANG_IN         : '!in';
-BANG_IS         : '!is';
+//BANG_IN         : '!in';
+//BANG_IS         : '!is';
 ELVIS           : '?:';
 RANGE           : '..';
 ADD             : '+';
@@ -310,6 +316,7 @@ DOT             : '.';
 QUESTION        : '?';
 QUESTION_DOT    : '?.';
 AT              : '@';
+//TODO !!.
 
 FileAnnotation
     : AT FILE

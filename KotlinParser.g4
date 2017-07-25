@@ -7,23 +7,23 @@ options { tokenVocab = KotlinLexer; }
 //--File Structure
 
 kotlinFile
-    : NL* preamble topLevel* EOF
+    : NL* preamble (topLevel semi*)* EOF
     ;
 
 preamble
-    : fileAnnotations? packageHeader? importStatement*
+    : (fileAnnotations NL*)? (packageHeader semi*)? (importStatement semi*)*
     ;
 
 fileAnnotations
-    : FileAnnotation NL* COLON NL* ( LBRACK NL* unescapedAnnotation (NL* unescapedAnnotation)* NL* RBRACK NL* | unescapedAnnotation NL*)
+    : FileAnnotation NL* COLON NL* ( LBRACK NL* unescapedAnnotation (NL* unescapedAnnotation)* NL* RBRACK | unescapedAnnotation)
     ;
 
 packageHeader
-    : PACKAGE simpleName (NL* DOT simpleName)* semi*
+    : PACKAGE simpleName (NL* DOT simpleName)* semi?
     ;
 
 importStatement
-    : IMPORT simpleName (NL* DOT simpleName)* (NL* DOT ASTERISK | NL* AS simpleName)? semi*
+    : IMPORT simpleName (NL* DOT simpleName)* (NL* DOT ASTERISK | NL* AS simpleName)? semi?
     ;
 
 topLevel
@@ -39,7 +39,7 @@ typeAlias
     ;
 
 //--Classes
-r_class
+r_class //TODO mb devide interface, class, enum class and abstract class
     : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName
         (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
@@ -124,7 +124,7 @@ companionObject
 function
     : (memberModifier NL*| accessModifier NL*| functionModifier NL*| annotations NL*)*
         FUN NL* (typeParameters NL*)? (type NL* DOT NL*)? simpleName NL*
-        valueParameters NL* (COLON NL* type NL*)? NL* (typeConstraints NL*)? functionBody semi?
+        valueParameters NL* (COLON NL* type NL*)? NL* (typeConstraints NL*)? functionBody? semi?
     ;
 
 valueParameters
@@ -145,7 +145,7 @@ block
     | LBRACE semi* statements semi* RBRACE
     ;
 
-memberOrTopLevelProperty //TODO check constraints conflicting with delegate expression one more time
+memberOrTopLevelProperty //TODO var<T> l : Int is valid, but book says it's not allowed to declare generic non-extension type
     : (memberModifier NL*| accessModifier NL*| annotations NL*)*
         VAR NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
@@ -202,7 +202,7 @@ parameter
 
 object
     : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* simpleName NL* (primaryConstructor NL*)?
-        (COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody? semi?
+        (COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody semi?
     ;
 
 secondaryConstructor
@@ -260,8 +260,8 @@ simpleUserType
     ;
 
 //--Control Structures
-r_if
-    : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* controlStructureBody)? //TODO strange semicolon usage
+r_if //1 semicolon is allowed between if body and elser body
+    : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* controlStructureBody)?
     ;
 
 condition
@@ -353,22 +353,23 @@ multiplicativeExpression
 
 typeRHS
     : prefixUnaryExpression (NL* typeOperation NL* prefixUnaryExpression)*
-    | prefixUnaryExpression (NL* typeOperation NL* type)? //TODO is right?
+    | prefixUnaryExpression (NL* typeOperation NL* type)?
     ;
 
 prefixUnaryExpression
     : (prefixUnaryOperation NL*)* postfixUnaryExpression
     ;
 
-postfixUnaryExpression //TODO reflection tests, (reflection)callSuffix, userType.. QUESTION*
-    : atomicExpression postfixUnaryOperation*
-    | DOUBLE_COLON NL* simpleName postfixUnaryOperation*
-    | userTypeWithoutNL doubleColonSuffix postfixUnaryOperation*
+postfixUnaryExpression //TODO reflection tests, userType.. QUESTION*
+    : atomicExpression postfixUnaryOperation* doubleColonSuffix?
+    | DOUBLE_COLON NL* simpleName ((postfixUnaryOperationWithoutCallSuffix | doubleColonSuffix)
+        postfixUnaryOperation* doubleColonSuffix?)?
+    | userTypeWithoutNL doubleColonSuffix
     ;
 
-
 doubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS)
+    : DOUBLE_COLON NL* (simpleName | CLASS) ((postfixUnaryOperationWithoutCallSuffix | doubleColonSuffix)
+        postfixUnaryOperation* doubleColonSuffix?)?
     ;
 
 userTypeWithoutNL
@@ -444,11 +445,29 @@ nestedPrefixUnaryExpression
     : (prefixUnaryOperation NL*)* nestedPostfixUnaryExpression
     ;
 
-nestedPostfixUnaryExpression
-    : atomicExpression (NL* postfixUnaryOperation)*
-    | DOUBLE_COLON NL* simpleName (NL* postfixUnaryOperation)*
-    | userType NL* doubleColonSuffix (NL* postfixUnaryOperation)* //TODO userType QUESTION*
+nestedPostfixUnaryExpression //TODO userType QUESTION*
+    : atomicExpression (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?
+    | DOUBLE_COLON NL* simpleName ((NL* nestedPostfixUnaryOperationWithoutCallSuffix | NL* nestedDoubleColonSuffix)
+        (NL* nestedPostfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
+    | userType NL* nestedDoubleColonSuffix
     ;
+
+nestedDoubleColonSuffix
+    : DOUBLE_COLON NL* (simpleName | CLASS) ((NL* postfixUnaryOperationWithoutCallSuffix | NL* nestedDoubleColonSuffix)
+        (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
+    ;
+
+nestedPostfixUnaryOperation
+    : callSuffix
+    | nestedPostfixUnaryOperationWithoutCallSuffix
+    ;
+
+nestedPostfixUnaryOperationWithoutCallSuffix
+    : INC | DEC | DOUBLE_BANG
+    | arrayAccess
+    | NL* memberAccessOperation NL* postfixUnaryExpression
+    ;
+
 
 literalConstant
     : TRUE
@@ -520,15 +539,15 @@ additiveOperation
     ;
 
 inOperation
-    : IN | BANG_IN
+    : IN | BANG IN
     ;
 
-typeOperation //TODO colon needed?
-    : AS | SAFE_CAST | COLON
+typeOperation //colon needed?
+    : AS | SAFE_CAST
     ;
 
 isOperation
-    : IS | BANG_IS
+    : IS | BANG IS
     ;
 
 comparisonOperation
@@ -550,13 +569,15 @@ prefixUnaryOperation
     ;
 
 postfixUnaryOperation
-    : INC | DEC | DOUBLE_BANG
-    | callSuffix
-    | arrayAccess
-    | NL* memberAccessOperation NL* postfixUnaryExpression
-    | doubleColonSuffix
+    : callSuffix
+    | postfixUnaryOperationWithoutCallSuffix
     ;
 
+postfixUnaryOperationWithoutCallSuffix
+    : INC | DEC | DOUBLE_BANG
+    | arrayAccess
+    | NL* memberAccessOperation NL* postfixUnaryExpression
+    ;
 
 callSuffix
     : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
@@ -575,7 +596,7 @@ typeArguments
     : LT NL* type (NL* COMMA NL* type)* NL* GT
     ;
 
-valueArguments //TODO asterisk
+valueArguments
     : LPAREN NL* (nestedExpression NL* COMMA NL*)* (simpleName NL* ASSIGN NL* (ASTERISK NL*)? nestedExpression NL* COMMA NL*)*
         simpleName NL* ASSIGN NL* (ASTERISK NL*)? nestedExpression NL* RPAREN
     | LPAREN NL* (ASTERISK NL*)? nestedExpression (NL* COMMA NL* (ASTERISK NL*)? nestedExpression)* NL* RPAREN
@@ -616,7 +637,7 @@ arrayAccess
     ;
 
 objectLiteral
-    : OBJECT (NL* COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody
+    : OBJECT (NL* COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody?
     ;
 
 //--When
@@ -631,8 +652,8 @@ whenEntry
 
 whenCondition
     : expression
-    | (IN | BANG_IN) NL* expression
-    | (IS | BANG_IS) NL* type
+    | (IN | BANG IN) NL* expression
+    | (IS | BANG IS) NL* type
     ;
 
 //--Modifiers
@@ -717,7 +738,14 @@ unescapedAnnotation
 
 simpleName
     : Identifier
-    | SoftKeyword
+    | softKeyword
+    ;
+
+softKeyword
+    : DYNAMIC | FILE | IMPORT | CONSTRUCTOR | BY | WHERE | INIT | COMPANION | CATCH | FINALLY | ABSTRACT | FINAL
+        | ENUM | OPEN | ANNOTATION | SEALED | DATA | OVERRIDE | LATEINIT | PRIVATE | PROTECTED | PUBLIC | INTERNAL
+        | OUT | NOINLINE | CROSSLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
+        | SUSPEND | GET | SET | FIELD | PROPERTY | RECIEVER | PARAM | SETPARAM | DELEGATE | INNER | HEADER | IMPL
     ;
 
 semi
