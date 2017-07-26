@@ -32,7 +32,7 @@ INTERFACE : 'interface';
 TYPEOF : 'typeof';
 
 //-Soft keywords
-DYNAMIC     : 'dynamic';
+DYNAMIC     : 'dynamic'; //TODO not used in kotlin targeting JVM
 FILE        : 'file';
 IMPORT      : 'import';
 CONSTRUCTOR : 'constructor';
@@ -57,7 +57,7 @@ PUBLIC      : 'public';
 INTERNAL    : 'internal';
 OUT         : 'out';
 NOINLINE    : 'noinline';
-CROSSLINE   : 'crossline';
+CROSSINLINE : 'crossinline';
 VARARG      : 'vararg';
 REIFIED     : 'reified';
 TAILREC     : 'tailrec';
@@ -76,13 +76,13 @@ RECIEVER    : 'receiver';
 PARAM       : 'param';
 SETPARAM    : 'setparam';
 DELEGATE    : 'delegate';
-HEADER      : 'header'; //TODO not used
-IMPL        : 'impl'; //TODO not used
+HEADER      : 'header'; //TODO not yet used, but may be in future
+IMPL        : 'impl'; //TODO not yet used, but may be in future
 
 SoftKeyword
     : DYNAMIC | FILE | IMPORT | CONSTRUCTOR | BY | WHERE | INIT | COMPANION | CATCH | FINALLY | ABSTRACT | FINAL
         | ENUM | OPEN | ANNOTATION | SEALED | DATA | OVERRIDE | LATEINIT | PRIVATE | PROTECTED | PUBLIC | INTERNAL
-        | OUT | NOINLINE | CROSSLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
+        | OUT | NOINLINE | CROSSINLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
         | SUSPEND | GET | SET | FIELD | PROPERTY | RECIEVER | PARAM | SETPARAM | DELEGATE | INNER | HEADER | IMPL
     ;
 
@@ -316,7 +316,6 @@ DOT             : '.';
 QUESTION        : '?';
 QUESTION_DOT    : '?.';
 AT              : '@';
-//TODO !!.
 
 FileAnnotation
     : AT FILE
@@ -380,18 +379,18 @@ fragment
 JavaLetter //
     :   [a-zA-Z_] // these are the "java letters" below 0x7F
     |   // covers all characters above 0x7F which are not a surrogate
-        ~[\u0000-\u007F\uD800-\uDBFF�]//TODO fix this � somehow, \uFFFD not working
+        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]//\uFFFD = �
     |   // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
-        [\uD800-\uDBFF] [\uDC00-\uDFFF�]
+        [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
 
 fragment
 JavaLetterOrDigit
     :   [a-zA-Z0-9_] // these are the "java letters or digits" below 0x7F
     |   // covers all characters above 0x7F which are not a surrogate
-        ~[\u0000-\u007F\uD800-\uDBFF�]
+        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]
     |   // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
-        [\uD800-\uDBFF] [\uDC00-\uDFFF�]
+        [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
 
 
@@ -445,7 +444,7 @@ RegularStringPart
 
 mode IN_RAW_STRING;
 
-RAW_STRING_END //TODO mb make it a bit complicated
+RAW_STRING_END //may be improved with some code insertion
     : '"""' '"'* -> popMode
     ;
 

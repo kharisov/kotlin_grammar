@@ -63,7 +63,7 @@ constructorValueParameters
     ;
 
 constructorParameter
-    : (annotations NL*| parameterModifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* nestedExpression NL*)?
+    : (annotations NL*| parameterModifier NL* | memberModifier NL* | accessModifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* nestedExpression NL*)?
     ;
 
 classBody
@@ -123,12 +123,12 @@ companionObject
 
 function
     : (memberModifier NL*| accessModifier NL*| functionModifier NL*| annotations NL*)*
-        FUN NL* (typeParameters NL*)? (type NL* DOT NL*)? simpleName NL*
+        FUN NL* (typeParameters NL*)? (type NL* (DOT | QUESTION_DOT) NL*)? simpleName NL*
         valueParameters NL* (COLON NL* type NL*)? NL* (typeConstraints NL*)? functionBody? semi?
     ;
 
 valueParameters
-    : LPAREN NL* (functionParameter (NL* COMMA functionParameter)*)? NL* RPAREN
+    : LPAREN NL* (functionParameter (NL* COMMA NL* functionParameter)* NL*)? RPAREN
     ;
 
 functionParameter
@@ -147,28 +147,27 @@ block
 
 memberOrTopLevelProperty //TODO var<T> l : Int is valid, but book says it's not allowed to declare generic non-extension type
     : (memberModifier NL*| accessModifier NL*| annotations NL*)*
-        VAR NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
+        VAR NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL* typeConstraints
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        VAL NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL* typeConstraints
+        VAL NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL* typeConstraints
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     | (memberModifier NL*| accessModifier NL*| annotations NL*)*
-        VAR NL* (type NL* DOT NL*)? variableDeclarationEntry
+        VAR NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        VAL NL* (type NL* DOT NL*)? variableDeclarationEntry
+        VAL NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     ;
 
-
 localProperty
-    : (annotations NL*)* (VAL | VAR) NL* typeParameters NL* (type NL* DOT NL*)? variableDeclarationEntry NL*
+    : (annotations NL*)* (VAL | VAR) NL* typeParameters NL* variableDeclarationEntry NL* //(type NL* (DOT | QUESTION_DOT) NL*)?
         typeConstraints? (NL* (BY | ASSIGN) NL* expression)?
-    | (annotations NL*)* (VAL | VAR) NL* (type NL* DOT NL*)? variableDeclarationEntry
+    | (annotations NL*)* (VAL | VAR) NL* variableDeclarationEntry //(type NL* (DOT | QUESTION_DOT) NL*)?
         (NL* (BY | ASSIGN) NL* expression)?
     | (annotations NL*)* (VAL | VAR) NL* typeParameters NL* multipleVariableDeclarations NL*
         typeConstraints? (NL* (BY | ASSIGN) NL* expression)?
@@ -230,25 +229,26 @@ enumEntry
     ;
 
 type
-    : (annotations NL*)* typeReference
-    | (suspendModifier NL*| annotations NL*)* functionalTypeReference
-    ;
-
-functionalTypeReference
-    : (typeReference NL* DOT NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
-        NL* IMPLICATION NL* type (NL* DOT NL* functionalTypeReference)?
-    ;
-
-functionalTypeParameter
-    : parameter
-    | type
+    : typeReference
+    | functionalTypeReference
     ;
 
 typeReference
-    : LPAREN NL* typeReference NL* RPAREN
+    : typeReference NL* QUESTION
+    | LPAREN NL* typeReference NL* RPAREN
+    | annotatedTypeReference
     | userType
-    | typeReference NL* QUESTION
-    | DYNAMIC
+    //| DYNAMIC
+    ;
+
+annotatedTypeReference
+    : (annotations NL*)+ notAnnotatedTypeReference
+    ;
+
+notAnnotatedTypeReference
+    : notAnnotatedTypeReference NL* QUESTION
+    | LPAREN NL* notAnnotatedTypeReference NL* RPAREN
+    | userType
     ;
 
 userType
@@ -257,6 +257,33 @@ userType
 
 simpleUserType
     : simpleName (NL* LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
+    ;
+
+functionalTypeReference
+    : functionalUserType
+    | functionalTypeReference NL* QUESTION
+    | LPAREN NL* functionalTypeReference NL* RPAREN
+    | annotatedFunctionalTypeReference
+    ;
+
+annotatedFunctionalTypeReference
+    : (suspendModifier NL*| annotations NL*)+ notAnnotatedFunctionalTypeReference
+    ;
+
+notAnnotatedFunctionalTypeReference
+    : functionalUserType
+    | notAnnotatedFunctionalTypeReference NL* QUESTION
+    | LPAREN NL* notAnnotatedFunctionalTypeReference NL* RPAREN
+    ;
+
+functionalTypeParameter
+    : parameter
+    | type
+    ;
+
+functionalUserType
+    : (typeReference NL* (DOT | QUESTION_DOT) NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
+        NL* IMPLICATION NL* type (NL* (DOT | QUESTION_DOT) NL* functionalTypeReference)?
     ;
 
 //--Control Structures
@@ -279,7 +306,7 @@ r_try
     ;
 
 catchBlock
-    : CATCH NL* LPAREN NL* annotations NL* simpleName NL* COLON NL* userType NL* RPAREN NL* block
+    : CATCH NL* LPAREN NL* (annotations NL*)* simpleName NL* COLON NL* userType NL* RPAREN NL* block
     ;
 
 finallyBlock
@@ -360,16 +387,16 @@ prefixUnaryExpression
     : (prefixUnaryOperation NL*)* postfixUnaryExpression
     ;
 
-postfixUnaryExpression //TODO reflection tests, userType.. QUESTION*
+postfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
     : atomicExpression postfixUnaryOperation* doubleColonSuffix?
-    | DOUBLE_COLON NL* simpleName ((postfixUnaryOperationWithoutCallSuffix | doubleColonSuffix)
-        postfixUnaryOperation* doubleColonSuffix?)?
+    | DOUBLE_COLON NL* simpleName doubleColonSuffix
+    | DOUBLE_COLON NL* simpleName (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
     | userTypeWithoutNL doubleColonSuffix
     ;
 
 doubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS) ((postfixUnaryOperationWithoutCallSuffix | doubleColonSuffix)
-        postfixUnaryOperation* doubleColonSuffix?)?
+    : DOUBLE_COLON NL* (simpleName | CLASS) doubleColonSuffix
+    | DOUBLE_COLON NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
     ;
 
 userTypeWithoutNL
@@ -445,15 +472,17 @@ nestedPrefixUnaryExpression
     : (prefixUnaryOperation NL*)* nestedPostfixUnaryExpression
     ;
 
-nestedPostfixUnaryExpression //TODO userType QUESTION*
+nestedPostfixUnaryExpression //userType QUESTION* reserved syntax for future use
     : atomicExpression (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?
-    | DOUBLE_COLON NL* simpleName ((NL* nestedPostfixUnaryOperationWithoutCallSuffix | NL* nestedDoubleColonSuffix)
+    | DOUBLE_COLON NL* simpleName NL* nestedDoubleColonSuffix
+    | DOUBLE_COLON NL* simpleName (NL* nestedPostfixUnaryOperationWithoutCallSuffix
         (NL* nestedPostfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
     | userType NL* nestedDoubleColonSuffix
     ;
 
 nestedDoubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS) ((NL* postfixUnaryOperationWithoutCallSuffix | NL* nestedDoubleColonSuffix)
+    : DOUBLE_COLON NL* (simpleName | CLASS) NL* nestedDoubleColonSuffix
+    | DOUBLE_COLON NL* (simpleName | CLASS) (NL* postfixUnaryOperationWithoutCallSuffix
         (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
     ;
 
@@ -690,7 +719,7 @@ varianceAnnotation
 
 parameterModifier
     : NOINLINE
-    | CROSSLINE
+    | CROSSINLINE
     | VARARG
     ;
 
@@ -744,7 +773,7 @@ simpleName
 softKeyword
     : DYNAMIC | FILE | IMPORT | CONSTRUCTOR | BY | WHERE | INIT | COMPANION | CATCH | FINALLY | ABSTRACT | FINAL
         | ENUM | OPEN | ANNOTATION | SEALED | DATA | OVERRIDE | LATEINIT | PRIVATE | PROTECTED | PUBLIC | INTERNAL
-        | OUT | NOINLINE | CROSSLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
+        | OUT | NOINLINE | CROSSINLINE | VARARG | REIFIED | TAILREC | OPERATOR | INFIX | INLINE | EXTERNAL | CONST
         | SUSPEND | GET | SET | FIELD | PROPERTY | RECIEVER | PARAM | SETPARAM | DELEGATE | INNER | HEADER | IMPL
     ;
 
@@ -752,3 +781,33 @@ semi
     : NL
     | SEMICOLON
     ;
+
+/*type
+      : (annotations NL*)* typeReference
+      | (suspendModifier NL*| annotations NL*)* functionalTypeReference
+      ;
+
+  functionalTypeReference
+      : (typeReference NL* (DOT | QUESTION_DOT) NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
+          NL* IMPLICATION NL* type (NL* (DOT | QUESTION_DOT) NL* functionalTypeReference)?
+      ;
+
+  functionalTypeParameter
+      : parameter
+      | type
+      ;
+
+  typeReference
+      : typeReference NL* QUESTION
+      | LPAREN NL* typeReference NL* RPAREN
+      | userType
+      //| DYNAMIC
+      ;
+
+  userType
+      : simpleUserType (NL* DOT NL* simpleUserType)*
+      ;
+
+  simpleUserType
+      : simpleName (NL* LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
+      ;*/
