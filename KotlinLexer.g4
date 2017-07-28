@@ -317,8 +317,24 @@ QUESTION        : '?';
 QUESTION_DOT    : '?.';
 AT              : '@';
 
+AnnotationListStart
+    : AT LBRACK
+    ;
+
 FileAnnotation
     : AT FILE
+    ;
+
+AnnotationTarget
+    : AT (FIELD
+          | PROPERTY
+          | GET
+          | SET
+          | RECIEVER
+          | PARAM
+          | SETPARAM
+          | DELEGATE)
+    | FileAnnotation
     ;
 
 LabeledReturn
@@ -336,19 +352,6 @@ LabeledBreak
 AT_ID
     : AT Identifier
     ;
-
-AnnotationTarget
-    : AT (FIELD
-          | PROPERTY
-          | GET
-          | SET
-          | RECIEVER
-          | PARAM
-          | SETPARAM
-          | DELEGATE)
-    | FileAnnotation
-    ;
-
 
 Label
     : Identifier AT
