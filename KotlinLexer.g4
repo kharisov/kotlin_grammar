@@ -317,6 +317,10 @@ QUESTION        : '?';
 QUESTION_DOT    : '?.';
 AT              : '@';
 
+QuestionDoubleColon
+    : QUESTION+ DOUBLE_COLON
+    ;
+
 AnnotationListStart
     : AT LBRACK
     ;

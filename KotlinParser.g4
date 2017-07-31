@@ -42,7 +42,7 @@ typeAlias
     ;
 
 //--Classes
-r_class //TODO mb devide interface, class, enum class and abstract class, document behavior when class body is matched as lambda
+r_class //TODO mb devide interface, class, enum class and abstract class
     : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName
         (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
@@ -128,8 +128,8 @@ initializerBlock
     ;
 
 companionObject
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* COMPANION NL* OBJECT NL* simpleName?
-        (NL* COLON NL* delegationSpecifier (NL* COMMA delegationSpecifier)*)? NL* classBody? semi?
+    : (annotations NL*| accessModifier NL*| FINAL NL*)* COMPANION NL* (annotations NL*| accessModifier NL*| FINAL NL*)*
+        OBJECT NL* simpleName? (NL* COLON NL* delegationSpecifier (NL* COMMA delegationSpecifier)*)? NL* classBody? semi?
     ;
 
 function
@@ -191,7 +191,7 @@ variableDeclarationEntry
     ;
 
 multipleVariableDeclarations
-    : LPAREN NL* (annotations NL*) variableDeclarationEntry (NL* COMMA NL* (annotations NL*) variableDeclarationEntry)* NL* RPAREN
+    : LPAREN NL* (annotations NL*)* variableDeclarationEntry (NL* COMMA NL* (annotations NL*)* variableDeclarationEntry)* NL* RPAREN
     ;
 
 getter
@@ -211,8 +211,8 @@ parameter
     ;
 
 object
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* simpleName NL* (primaryConstructor NL*)?
-        (COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody? semi?
+    : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* simpleName
+        (NL* COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody? semi?
     ;
 
 secondaryConstructor
@@ -306,7 +306,8 @@ notAnnotatedFunctionalUserType
 
 //--Control Structures
 r_if //1 semicolon is allowed between if body and elser body
-    : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* controlStructureBody)?
+    : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* (controlStructureBody | SEMICOLON))?
+    | IF NL* condition NL* (SEMICOLON NL*)? ELSE NL* (controlStructureBody | SEMICOLON)?
     ;
 
 condition
@@ -339,15 +340,15 @@ loop
 
 r_for
     : FOR NL* LPAREN NL* (annotations NL*)* (multipleVariableDeclarations | variableDeclarationEntry) NL*
-        IN NL* nestedExpression NL* RPAREN NL* controlStructureBody
+        IN NL* nestedExpression NL* RPAREN NL* (controlStructureBody | SEMICOLON)
     ;
 
 r_while
-    : WHILE NL* LPAREN NL* nestedExpression NL* RPAREN NL* controlStructureBody
+    : WHILE NL* LPAREN NL* nestedExpression NL* RPAREN NL* NL* (controlStructureBody | SEMICOLON)
     ;
 
 doWhile
-    : DO NL* controlStructureBody NL* WHILE NL* LPAREN NL* nestedExpression NL* RPAREN
+    : DO ((controlStructureBody | SEMICOLON) NL*)? WHILE NL* LPAREN NL* nestedExpression NL* RPAREN
     ;
 
 //--Expressions
@@ -407,14 +408,18 @@ prefixUnaryExpression
 
 postfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
     : atomicExpression postfixUnaryOperation* doubleColonSuffix?
-    | DOUBLE_COLON NL* simpleName doubleColonSuffix
-    | DOUBLE_COLON NL* simpleName (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
+    | doubleColon NL* simpleName doubleColonSuffix
+    | doubleColon NL* simpleName (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
     | userTypeWithoutNL doubleColonSuffix
     ;
 
 doubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS) doubleColonSuffix
-    | DOUBLE_COLON NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
+    : doubleColon NL* (simpleName | CLASS) doubleColonSuffix
+    | doubleColon NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
+    ;
+
+doubleColon
+    : DOUBLE_COLON | QuestionDoubleColon | QUESTION+ DOUBLE_COLON
     ;
 
 userTypeWithoutNL
@@ -497,15 +502,15 @@ nestedPrefixUnaryExpression
 
 nestedPostfixUnaryExpression //userType QUESTION* reserved syntax for future use
     : atomicExpression (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?
-    | DOUBLE_COLON NL* simpleName NL* nestedDoubleColonSuffix
-    | DOUBLE_COLON NL* simpleName (NL* nestedPostfixUnaryOperationWithoutCallSuffix
+    | doubleColon NL* simpleName NL* nestedDoubleColonSuffix
+    | doubleColon NL* simpleName (NL* nestedPostfixUnaryOperationWithoutCallSuffix
         (NL* nestedPostfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
     | userType NL* nestedDoubleColonSuffix
     ;
 
 nestedDoubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS) NL* nestedDoubleColonSuffix
-    | DOUBLE_COLON NL* (simpleName | CLASS) (NL* postfixUnaryOperationWithoutCallSuffix
+    : doubleColon NL* (simpleName | CLASS) NL* nestedDoubleColonSuffix
+    | doubleColon NL* (simpleName | CLASS) (NL* postfixUnaryOperationWithoutCallSuffix
         (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
     ;
 
@@ -567,16 +572,16 @@ rawLongTemplate
 statement
     : blockLevelExpression
     | assignment
-    | declaration
+    | Label* declaration
     ;
 
 declaration
     : r_class
-    | r_enum
+    //| r_enum
     | object
     | function
     | localProperty
-    | typeAlias
+    //| typeAlias
     ;
 
 blockLevelExpression
@@ -616,7 +621,7 @@ assignmentOperation
     ;
 
 prefixUnaryOperation
-    : SUB | ADD | INC | DEC | BANG
+    : SUB | ADD | INC | DEC | BANG | DOUBLE_BANG
     | annotations
     | Label
     ;
@@ -669,7 +674,7 @@ jump
 functionalLiteral
     : LBRACE semi* RBRACE
     | LBRACE semi* statements semi* RBRACE
-    | LBRACE NL* (lambdaParameter (NL* COMMA NL* lambdaParameter)* NL*)? IMPLICATION semi* statements semi* RBRACE
+    | LBRACE NL* (lambdaParameter (NL* COMMA NL* lambdaParameter)* NL*)? IMPLICATION semi* (statements semi*)? RBRACE
     ;
 
 lambdaParameter
@@ -857,14 +862,14 @@ delegationPrefixUnaryExpression
 
 delegationPostfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
     : atomicExpression delegationPostfixUnaryOperation* delegationDoubleColonSuffix?
-    | DOUBLE_COLON NL* simpleName delegationDoubleColonSuffix
-    | DOUBLE_COLON NL* simpleName (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* delegationDoubleColonSuffix?)?
+    | doubleColon NL* simpleName delegationDoubleColonSuffix
+    | doubleColon NL* simpleName (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* delegationDoubleColonSuffix?)?
     | userTypeWithoutNL delegationDoubleColonSuffix
     ;
 
 delegationDoubleColonSuffix
-    : DOUBLE_COLON NL* (simpleName | CLASS) doubleColonSuffix
-    | DOUBLE_COLON NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* doubleColonSuffix?)?
+    : doubleColon NL* (simpleName | CLASS) doubleColonSuffix
+    | doubleColon NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* doubleColonSuffix?)?
     ;
 
 delegationPostfixUnaryOperation
