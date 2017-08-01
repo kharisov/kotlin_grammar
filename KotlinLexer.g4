@@ -1,7 +1,7 @@
 lexer grammar KotlinLexer;
 /*------LEXER------*/
 //--Keywords
-//-Hard keywords
+//-Hard keywords (can't be used as identifiers)
 PACKAGE : 'package';
 AS : 'as';
 TYPEALIAS : 'typealias';
@@ -31,8 +31,8 @@ WHEN : 'when';
 INTERFACE : 'interface';
 TYPEOF : 'typeof';
 
-//-Soft keywords
-DYNAMIC     : 'dynamic'; //TODO not used in kotlin targeting JVM
+//-Soft keywords (can be used as identifiers)
+DYNAMIC     : 'dynamic';
 FILE        : 'file';
 IMPORT      : 'import';
 CONSTRUCTOR : 'constructor';
@@ -76,8 +76,8 @@ RECIEVER    : 'receiver';
 PARAM       : 'param';
 SETPARAM    : 'setparam';
 DELEGATE    : 'delegate';
-HEADER      : 'header'; //TODO not yet used, but may be in future
-IMPL        : 'impl'; //TODO not yet used, but may be in future
+HEADER      : 'header'; //not yet used, reserved future
+IMPL        : 'impl'; //not yet used, reserved future
 
 SoftKeyword
     : DYNAMIC | FILE | IMPORT | CONSTRUCTOR | BY | WHERE | INIT | COMPANION | CATCH | FINALLY | ABSTRACT | FINAL
@@ -108,7 +108,6 @@ fragment
 BinaryIntegerLiteral
     : BinaryNumber IntegerTypeSuffix?
     ;
-
 
 fragment
 IntegerTypeSuffix
@@ -223,7 +222,7 @@ FloatTypeSuffix
     ;
 
 //-Boolean Literals
-BooleanLiteral //not used
+BooleanLiteral //not used, because 'true' and 'false' are matched as TRUE and FALSE tokens, and not as BooleanLiteral
     : TRUE
     | FALSE
     ;
@@ -256,8 +255,8 @@ NullLiteral //Not used
     ;
 
 //--Separators
-MultipleSemicolons //Two semicolns without whitespace between = error
-    : SEMICOLON SEMICOLON
+MultipleSemicolons //Two semicolns without whitespace between = error. So we match ';;' as token, but it is never used
+    : SEMICOLON SEMICOLON //and parser will throw an error if meet this
     ;
 
 NL              : '\r'? '\n';
@@ -277,8 +276,8 @@ RAW_STRING_START: '"""' -> pushMode(IN_RAW_STRING);
 STRING_START    : '"' -> pushMode(IN_ESCAPED_STRING);
 
 //--Operators
-BangInIsWithWS // !in and !is cannot be tokens, because lexer will not match !isTrue as BANG IDENTIFIER, so
-                //! and in|is should be separate tokens, but than this rule is needed to match 3 ! in 1..2 as error
+BangInIsWithWS // '!in' and '!is' cannot be tokens, because lexer will not match '!isTrue' as BANG IDENTIFIER, so
+                //'!' and 'in'|'is' should be separate tokens, but than this rule is needed to match '3 ! in 1..2' as error
     : BANG [ \t]+ IN [ \t]+
     | BANG [ \t]+ IS [ \t]+
     ;
@@ -298,8 +297,6 @@ GT              : '>';
 LT              : '<';
 LE              : '<=';
 GE              : '>=';
-//BANG_IN         : '!in';
-//BANG_IS         : '!is';
 ELVIS           : '?:';
 RANGE           : '..';
 ADD             : '+';
@@ -386,7 +383,7 @@ fragment
 JavaLetter //
     :   [a-zA-Z_] // these are the "java letters" below 0x7F
     |   // covers all characters above 0x7F which are not a surrogate
-        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]//\uFFFD = �
+        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]//\uFFFD = �(replacement character)
     |   // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
         [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
@@ -395,16 +392,14 @@ fragment
 JavaLetterOrDigit
     :   [a-zA-Z0-9_] // these are the "java letters or digits" below 0x7F
     |   // covers all characters above 0x7F which are not a surrogate
-        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]
+        ~[\u0000-\u007F\uD800-\uDBFF\uFFFD]//\uFFFD = �(replacement character)
     |   // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
         [\uD800-\uDBFF] [\uDC00-\uDFFF]
     ;
 
-
 LineComment
     :   '//' ~[\n]* -> channel(HIDDEN)
     ;
-
 
 BlockComment
     : LCOMMENT CommentParts? RCOMMENT -> channel(HIDDEN)
@@ -419,7 +414,7 @@ fragment
 CommentPart
     : BlockComment
     | ~[*/]
-    | '*'+ ~[*/]
+    | '*'+  //~[*/]
     | '/'+ ~[*]
     ;
 

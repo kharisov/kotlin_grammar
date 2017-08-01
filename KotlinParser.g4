@@ -5,9 +5,7 @@ options { tokenVocab = KotlinLexer; }
 
 /*------PARSER------*/
 //--File Structure
-
-//TODO test modifiers
-
+//Starting rule
 kotlinFile
     : NL* preamble (topLevel semi*)* EOF
     ;
@@ -28,6 +26,7 @@ importStatement
     : IMPORT simpleName (NL* DOT simpleName)* (NL* DOT ASTERISK | NL* AS simpleName)? semi?
     ;
 
+//-Top level objects - those, which might be declared in global scope
 topLevel
     : r_class
     | r_enum
@@ -41,7 +40,11 @@ typeAlias
     : (accessModifier NL*)? TYPEALIAS NL* simpleName NL* typeParameters? NL* ASSIGN NL* type semi?
     ;
 
-//--Classes
+//-Class
+/*Three rules for class are needed because of delegationSpecifiers and typeConstraints.
+ Type constraints are not allowed, when there are no typeParameters. Also, if the delegationSpecifier
+ is the one ending with expression, type constraints must start with new line, because parser can't make difference
+ between 'where' as keyword and as infix call*/
 r_class //TODO mb devide interface, class, enum class and abstract class
     : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName
         (NL* primaryConstructor)?
@@ -58,7 +61,7 @@ r_class //TODO mb devide interface, class, enum class and abstract class
     ;
 
 r_enum
-    : (classModifier NL*| accessModifier NL*| annotations NL*)* ENUM NL* (classModifier NL*| accessModifier NL*| annotations NL*)*
+    : (FINAL NL*| accessModifier NL*| annotations NL*)* ENUM NL* (classModifier NL*| accessModifier NL*| annotations NL*)*
         CLASS NL* simpleName (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
         (NL* enumClassBody)? semi?
@@ -110,6 +113,7 @@ typeConstraint
     : (annotations NL*)* simpleName NL* COLON NL* type
     ;
 
+//-Member Declaration
 memberDeclaration
     : companionObject
     | object
@@ -156,6 +160,9 @@ block
     | LBRACE semi* statements semi* RBRACE
     ;
 
+
+/*Properties declarations in global scope and in class body differ from local properties, so this rules are devided.
+ Also rules have several variants, because some forms are not ccompatible with others*/
 memberOrTopLevelProperty //TODO var<T> l : Int is valid, but book says it's not allowed to declare generic non-extension type
     : (memberModifier NL*| accessModifier NL*| annotations NL*)*
         VAR NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL* typeConstraints?
@@ -236,9 +243,12 @@ enumEntries
     ;
 
 enumEntry
-    : (annotations NL*)* simpleName NL* (valueArguments NL*)? classBody?
+    : (annotations NL* | INLINE NL*)* simpleName NL* (valueArguments NL*)? classBody?
     ;
 
+//-Types
+/*Type rule has such a complex structure, to allow only one single modifier and annotations list in one level of
+ nesting*/
 type
     : typeReference
     | functionalTypeReference (NL* (DOT | QUESTION_DOT) NL* functionalTypeReference)?
@@ -251,7 +261,7 @@ typeReference
     | LPAREN NL* typeReference NL* RPAREN
     | annotatedTypeReference
     | userType
-    //| DYNAMIC
+    | DYNAMIC //TODO prohibit as reciever
     ;
 
 annotatedTypeReference
@@ -305,7 +315,7 @@ notAnnotatedFunctionalUserType
     ;
 
 //--Control Structures
-r_if //1 semicolon is allowed between if body and elser body
+r_if //1 semicolon is allowed between if body and else body
     : IF NL* condition NL* controlStructureBody (NL* (SEMICOLON NL*)? ELSE NL* (controlStructureBody | SEMICOLON))?
     | IF NL* condition NL* (SEMICOLON NL*)? ELSE NL* (controlStructureBody | SEMICOLON)?
     ;
@@ -406,6 +416,7 @@ prefixUnaryExpression
     : (prefixUnaryOperation NL*)* postfixUnaryExpression
     ;
 
+//doubleColonSuffix is made in this way to prohibit syntax, reserved for future - 'asd::asd()'
 postfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
     : atomicExpression postfixUnaryOperation* doubleColonSuffix?
     | doubleColon NL* simpleName doubleColonSuffix
@@ -430,7 +441,70 @@ simpleUserTypeWithoutNL
     : simpleName (LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
     ;
 
-atomicExpression
+
+multiplicativeOperation
+    : ASTERISK | DIV | MOD
+    ;
+
+additiveOperation
+    : ADD | SUB
+    ;
+
+inOperation
+    : IN | BANG IN
+    ;
+
+typeOperation
+    : AS | SAFE_CAST
+    ;
+
+isOperation
+    : IS | BANG IS
+    ;
+
+comparisonOperation
+    : LT | GT | GE | LE
+    ;
+
+equalityOperation
+    : EQUAL | NOTEQUAL
+    ;
+
+assignmentOperation
+    : ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN
+    ;
+
+prefixUnaryOperation
+    : SUB | ADD | INC | DEC | BANG | DOUBLE_BANG
+    | annotations
+    | Label
+    ;
+
+postfixUnaryOperation
+    : callSuffix
+    | postfixUnaryOperationWithoutCallSuffix
+    ;
+
+postfixUnaryOperationWithoutCallSuffix
+    : INC | DEC | DOUBLE_BANG
+    | arrayAccess
+    | NL* memberAccessOperation NL* postfixUnaryExpression
+    ;
+
+callSuffix //TODO proibit several lambdas in one suffix (appear in posfixOperation*)
+    : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
+    | (typeArguments NL*)? annotatedLambda
+    ;
+
+annotatedLambda
+    : (annotations NL*)* (Label NL*)? functionalLiteral
+    ;
+
+memberAccessOperation
+    : DOT | QUESTION_DOT | QUESTION
+    ;
+
+atomicExpression //TODO different for nested?
     : literalConstant
     | LPAREN NL* nestedExpression NL* RPAREN
     | functionalLiteral
@@ -447,9 +521,10 @@ atomicExpression
     ;
 
 anonymousFunction
-    : (annotations NL*)* FUN NL* valueParameters NL* (COLON NL* type NL*)? functionBody
+    : (annotations NL*)* FUN NL* (type NL* (DOT | QUESTION_DOT) NL*)? valueParameters NL* (COLON NL* type NL*)? functionBody
     ;
 
+//Nested expressions are used inside () or {} or []
 nestedExpression
     : nestedConjunction (NL* OR NL* nestedConjunction)*
     ;
@@ -525,7 +600,6 @@ nestedPostfixUnaryOperationWithoutCallSuffix
     | NL* memberAccessOperation NL* postfixUnaryExpression
     ;
 
-
 literalConstant
     : TRUE
     | FALSE
@@ -575,83 +649,19 @@ statement
     | Label* declaration
     ;
 
-declaration
+declaration //Local
     : r_class
-    //| r_enum
     | object
     | function
     | localProperty
-    //| typeAlias
     ;
 
 blockLevelExpression
     : (annotations NL*)* expression
     ;
 
-multiplicativeOperation
-    : ASTERISK | DIV | MOD
-    ;
-
-additiveOperation
-    : ADD | SUB
-    ;
-
-inOperation
-    : IN | BANG IN
-    ;
-
-typeOperation //colon needed?
-    : AS | SAFE_CAST
-    ;
-
-isOperation
-    : IS | BANG IS
-    ;
-
-comparisonOperation
-    : LT | GT | GE | LE
-    ;
-
-equalityOperation
-    : EQUAL | NOTEQUAL
-    ;
-
-assignmentOperation
-    : ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN
-    ;
-
-prefixUnaryOperation
-    : SUB | ADD | INC | DEC | BANG | DOUBLE_BANG
-    | annotations
-    | Label
-    ;
-
-postfixUnaryOperation
-    : callSuffix
-    | postfixUnaryOperationWithoutCallSuffix
-    ;
-
-postfixUnaryOperationWithoutCallSuffix
-    : INC | DEC | DOUBLE_BANG
-    | arrayAccess
-    | NL* memberAccessOperation NL* postfixUnaryExpression
-    ;
-
-callSuffix
-    : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
-    | (typeArguments NL*)? annotatedLambda
-    ;
-
-annotatedLambda
-    : (annotations NL*)* (Label NL*)? functionalLiteral
-    ;
-
-memberAccessOperation
-    : DOT | QUESTION_DOT | QUESTION
-    ;
-
 typeArguments
-    : LT NL* type (NL* COMMA NL* type)* NL* GT
+    : LT NL* (type | ASTERISK) (NL* COMMA NL* (type | ASTERISK))* NL* GT
     ;
 
 valueArguments
@@ -709,8 +719,8 @@ whenEntry
     ;
 
 whenCondition
-    : expression
-    | (IN | BANG IN) NL* expression
+    : nestedExpression
+    | (IN | BANG IN) NL* nestedExpression
     | (IS | BANG IS) NL* type
     ;
 
@@ -778,7 +788,7 @@ annotations
     ;
 
 annotation
-    : AT_ID (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments? //TODO type arguments after every simpleName?
+    : AT_ID (NL* DOT NL* simpleName)* NL* typeArguments? NL* valueArguments?
     | AnnotationTarget NL* COLON NL* simpleName (NL* DOT simpleName)* NL* typeArguments? NL* valueArguments? NL*
     ;
 
@@ -810,6 +820,7 @@ semi
     | SEMICOLON
     ;
 
+//Delegation expression is used in delegationSpecifier in class declaration. It has a bit different postfix operations
 delegationExpression
     : delegationConjunction (NL* OR NL* delegationConjunction)*
     ;
@@ -880,55 +891,3 @@ delegationPostfixUnaryOperation
 delegationCallSuffix
     : (typeArguments NL*)? valueArguments
     ;
-
-/*type
-      : (annotations NL*)* typeReference
-      | (suspendModifier NL*| annotations NL*)* functionalTypeReference
-      ;
-
-  functionalTypeReference
-      : (typeReference NL* (DOT | QUESTION_DOT) NL*)? LPAREN (NL* functionalTypeParameter (NL* COMMA NL* functionalTypeParameter)*)? NL* RPAREN
-          NL* IMPLICATION NL* type (NL* (DOT | QUESTION_DOT) NL* functionalTypeReference)?
-      ;
-
-  functionalTypeParameter
-      : parameter
-      | type
-      ;
-
-  typeReference
-      : typeReference NL* QUESTION
-      | LPAREN NL* typeReference NL* RPAREN
-      | userType
-      //| DYNAMIC
-      ;
-
-  userType
-      : simpleUserType (NL* DOT NL* simpleUserType)*
-      ;
-
-  simpleUserType
-      : simpleName (NL* LT NL*(varianceAnnotation? NL* type | ASTERISK) (NL* COMMA NL* (varianceAnnotation? NL* type | ASTERISK))* NL* GT)?
-      ;*/
-
-/*expression
-      : atomicExpression
-      | expression postfixUnaryOperation* doubleColonSuffix?
-      | DOUBLE_COLON NL* simpleName doubleColonSuffix
-      | DOUBLE_COLON NL* simpleName (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
-      | userTypeWithoutNL doubleColonSuffix
-      | (prefixUnaryOperation NL*)* expression
-      | expression (NL* typeOperation NL* expression)*
-      | expression (NL* typeOperation NL* type)?
-      | expression (multiplicativeOperation NL* expression)*
-      | expression (additiveOperation NL* expression)*
-      | expression (RANGE NL* expression)*
-      | expression (simpleName NL* expression)*
-      | expression (NL* ELVIS NL* expression)*
-      | expression (inOperation NL* expression)*
-      | expression (isOperation NL* type)?
-      | expression (comparisonOperation NL* expression)*
-      | expression (equalityOperation NL* expression)*
-      | expression (NL* AND NL* expression)*
-      | expression (NL* OR NL* expression)*
-      ;*/
