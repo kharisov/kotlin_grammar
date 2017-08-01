@@ -1,7 +1,7 @@
-## Project
+# Project
 Target language independent ANTLR4 grammar for Kotlin.
 
-# Known bugs and erroneous behavior
+## Known bugs and erroneous behavior
 1. 'dynamic' type is allowed as reciever.
 2. Several annotated lambdas are allowed in call suffix.
 
