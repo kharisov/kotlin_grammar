@@ -82,14 +82,15 @@ public class ParserTester {
                     else {
                         failedTests.add(testCounter);
                         System.out.println("Test failed! This test was meant to be erroneous, but it passed");
-                        mismatchedOut.append(f.getCanonicalPath() + " Compiler failed, but Parser passed" +  System.lineSeparator());
+                        mismatchedOut.append(f.getCanonicalPath() + " Not valid file, but Parser passed" +  System.lineSeparator());
                     }
                 } catch (RuntimeException e) {
                     if (exceptions.contains(f.getName()) || exceptions.contains(f.getCanonicalPath()))
                         System.out.println("Test passed! This test was meant to be erroneous");
                     else {
                         failedTests.add(testCounter);
-                        mismatchedOut.append(f.getCanonicalPath() + " Compiler passed, but Parser failed" +  System.lineSeparator());
+                        System.out.println("Test failed!");
+                        mismatchedOut.append(f.getCanonicalPath() + " Valid file, but Parser failed" +  System.lineSeparator());
                     }
                 }
             }
