@@ -1,0 +1,2285 @@
+
+File: TopLevelProperty.kt
+Path: H:\psi\propertyDelegate\TopLevelProperty.kt
+Test: 1 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: OnlyBy.kt
+Path: H:\psi\propertyDelegate\OnlyBy.kt
+Test: 2 of 405
+line 3:0 no viable alternative at input 'val'
+Test passed! This test was meant to be erroneous
+
+File: PropertyWithoutTypeRef.kt
+Path: H:\psi\propertyDelegate\PropertyWithoutTypeRef.kt
+Test: 3 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: PropertyWithInitializer.kt
+Path: H:\psi\propertyDelegate\PropertyWithInitializer.kt
+Test: 4 of 405
+line 1:18 no viable alternative at input 'A() ='
+Test passed! This test was meant to be erroneous
+
+File: GetterInSameLine.kt
+Path: H:\psi\propertyDelegate\GetterInSameLine.kt
+Test: 5 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: PropertyWithGetter.kt
+Path: H:\psi\propertyDelegate\PropertyWithGetter.kt
+Test: 6 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: DelegateAndInitializer.kt
+Path: H:\psi\propertyDelegate\DelegateAndInitializer.kt
+Test: 7 of 405
+line 3:19 extraneous input '=' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: PropertyInClass.kt
+Path: H:\psi\propertyDelegate\PropertyInClass.kt
+Test: 8 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: TwoProperties.kt
+Path: H:\psi\propertyDelegate\TwoProperties.kt
+Test: 9 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BracketsInDelegate.kt
+Path: H:\psi\propertyDelegate\BracketsInDelegate.kt
+Test: 10 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: LocalProperty.kt
+Path: H:\psi\propertyDelegate\LocalProperty.kt
+Test: 11 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ForWithMultiDecl.kt
+Path: H:\psi\ForWithMultiDecl.kt
+Test: 12 of 405
+line 8:9 no viable alternative at input 'for (val'
+Test passed! This test was meant to be erroneous
+
+File: FunctionLiterals_ERR.kt
+Path: H:\psi\FunctionLiterals_ERR.kt
+Test: 13 of 405
+line 4:8 no viable alternative at input '{(a ->'
+Test passed! This test was meant to be erroneous
+
+File: EnumWithAnnotationKeyword.kt
+Path: H:\psi\EnumWithAnnotationKeyword.kt
+Test: 14 of 405
+line 1:16 no viable alternative at input 'data annotation enum'
+Test passed! This test was meant to be erroneous
+
+File: Constructors.kt
+Path: H:\psi\Constructors.kt
+Test: 15 of 405
+line 5:28 no viable alternative at input 'private ('
+Test passed! This test was meant to be erroneous
+
+File: DoubleColon.kt
+Path: H:\psi\DoubleColon.kt
+Test: 16 of 405
+line 38:6 no viable alternative at input '::class'
+Test passed! This test was meant to be erroneous
+
+File: SimpleClassMembers_ERR.kt
+Path: H:\psi\SimpleClassMembers_ERR.kt
+Test: 17 of 405
+line 3:17 extraneous input '-' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: SemicolonAfterIf.kt
+Path: H:\psi\SemicolonAfterIf.kt
+Test: 18 of 405
+Test passed!
+
+File: EnumEntrySpaceMember.kt
+Path: H:\psi\EnumEntrySpaceMember.kt
+Test: 19 of 405
+line 4:4 no viable alternative at input 'fun'
+Test passed! This test was meant to be erroneous
+
+File: IntegerLiteral.kt
+Path: H:\psi\IntegerLiteral.kt
+Test: 20 of 405
+line 12:10 no viable alternative at input 'array<Any>(\n        1,\n        0x1,\n        0X1,\n        0b1,\n        0B1,\n        1L,\n        0x1L,\n        0X1L,\n        0b1L,\n        0B1L,\n        1l,'
+Test passed! This test was meant to be erroneous
+
+File: MultiVariableDeclarations.kt
+Path: H:\psi\MultiVariableDeclarations.kt
+Test: 21 of 405
+line 15:9 no viable alternative at input ')'
+Test passed! This test was meant to be erroneous
+
+File: IfWithPropery.kt
+Path: H:\psi\IfWithPropery.kt
+Test: 22 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BlockCommentUnmatchedClosing_ERR.kt
+Path: H:\psi\BlockCommentUnmatchedClosing_ERR.kt
+Test: 23 of 405
+line 2:4 no viable alternative at input '{\n    */'
+Test passed! This test was meant to be erroneous
+
+File: FunctionExpressions_ERR.kt
+Path: H:\psi\FunctionExpressions_ERR.kt
+Test: 24 of 405
+line 1:12 no viable alternative at input 'fun )'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteFunctionLiteral.kt
+Path: H:\psi\IncompleteFunctionLiteral.kt
+Test: 25 of 405
+line 2:11 no viable alternative at input '{a: Int}'
+Test passed! This test was meant to be erroneous
+
+File: SoftKeywords.kt
+Path: H:\psi\SoftKeywords.kt
+Test: 26 of 405
+line 10:0 no viable alternative at input 'public protected private internal\nabstract\nopen\nopen\nannotation\noverride'
+Test passed! This test was meant to be erroneous
+
+File: NewlinesInParentheses.kt
+Path: H:\psi\NewlinesInParentheses.kt
+Test: 27 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: LocalDeclarations.kt
+Path: H:\psi\LocalDeclarations.kt
+Test: 28 of 405
+line 7:8 no viable alternative at input 'out val'
+Test passed! This test was meant to be erroneous
+
+File: Inner.kt
+Path: H:\psi\Inner.kt
+Test: 29 of 405
+Test passed!
+
+File: PrimaryConstructorModifiers_ERR.kt
+Path: H:\psi\PrimaryConstructorModifiers_ERR.kt
+Test: 30 of 405
+line 3:22 no viable alternative at input 'private {'
+Test passed! This test was meant to be erroneous
+
+File: FunctionNoParameterList.kt
+Path: H:\psi\FunctionNoParameterList.kt
+Test: 31 of 405
+line 3:4 no viable alternative at input 'foo\n    class'
+Test passed! This test was meant to be erroneous
+
+File: BlockCommentAtBeginningOfFile2.kt
+Path: H:\psi\BlockCommentAtBeginningOfFile2.kt
+Test: 32 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: When_ERR.kt
+Path: H:\psi\When_ERR.kt
+Test: 33 of 405
+line 5:8 no viable alternative at input 'when (e) {\n    is  ->'
+Test passed! This test was meant to be erroneous
+
+File: DocCommentOnPackageDirectiveLine.kt
+Path: H:\psi\DocCommentOnPackageDirectiveLine.kt
+Test: 34 of 405
+Test passed!
+
+File: EOLsOnRollback.kt
+Path: H:\psi\EOLsOnRollback.kt
+Test: 35 of 405
+line 6:4 extraneous input 'typealias' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: BabySteps_ERR.kt
+Path: H:\psi\BabySteps_ERR.kt
+Test: 36 of 405
+line 3:45 no viable alternative at input 'class Runnable<a,a>(a : doo = 0) : foo(d=0), ,'
+Test passed! This test was meant to be erroneous
+
+File: DynamicSoftKeyword.kt
+Path: H:\psi\DynamicSoftKeyword.kt
+Test: 37 of 405
+line 1:0 extraneous input 'dynamic' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: Imports.kt
+Path: H:\psi\Imports.kt
+Test: 38 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: CallsInWhen.kt
+Path: H:\psi\CallsInWhen.kt
+Test: 39 of 405
+line 5:13 no viable alternative at input 'when (a) {\n    a.foo -> a\n    a.foo() -> a\n    a.foo<T> ->'
+Test passed! This test was meant to be erroneous
+
+File: DocCommentForFirstDeclaration.kt
+Path: H:\psi\DocCommentForFirstDeclaration.kt
+Test: 40 of 405
+Test passed!
+
+File: Super.kt
+Path: H:\psi\Super.kt
+Test: 41 of 405
+line 5:10 no viable alternative at input 'super<>'
+Test passed! This test was meant to be erroneous
+
+File: FileStart_ERR.kt
+Path: H:\psi\FileStart_ERR.kt
+Test: 42 of 405
+line 1:0 extraneous input '/' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: FunctionLiterals.kt
+Path: H:\psi\FunctionLiterals.kt
+Test: 43 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ModifierAsSelector.kt
+Path: H:\psi\ModifierAsSelector.kt
+Test: 44 of 405
+Test passed!
+
+File: SoftKeywordsInTypeArguments.kt
+Path: H:\psi\SoftKeywordsInTypeArguments.kt
+Test: 45 of 405
+line 8:0 no viable alternative at input 'Foo<out Int>\n\n}'
+Test passed! This test was meant to be erroneous
+
+File: EmptyFile.kt
+Path: H:\psi\EmptyFile.kt
+Test: 46 of 405
+Test passed!
+
+File: Functions.kt
+Path: H:\psi\Functions.kt
+Test: 47 of 405
+line 2:12 extraneous input '(' expecting {'.', '?.'}
+Test passed! This test was meant to be erroneous
+
+File: semicolonBetweenDeclarations.kt
+Path: H:\psi\semicolonBetweenDeclarations.kt
+Test: 48 of 405
+line 4:9 no viable alternative at input '1;;'
+Test passed! This test was meant to be erroneous
+
+File: CommentsBindingInLambda.kt
+Path: H:\psi\CommentsBindingInLambda.kt
+Test: 49 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: CollectionLiterals_ERR.kt
+Path: H:\psi\CollectionLiterals_ERR.kt
+Test: 50 of 405
+line 2:4 no viable alternative at input '{\n    ['
+Test passed! This test was meant to be erroneous
+
+File: NotIsAndNotIn.kt
+Path: H:\psi\NotIsAndNotIn.kt
+Test: 51 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BackslashInString.kt
+Path: H:\psi\BackslashInString.kt
+Test: 52 of 405
+line 2:5 token recognition error at: '\\n'
+Test passed! This test was meant to be erroneous
+
+File: TypeModifiers_ERR.kt
+Path: H:\psi\TypeModifiers_ERR.kt
+Test: 53 of 405
+line 2:16 extraneous input '(' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TypeConstraints.kt
+Path: H:\psi\TypeConstraints.kt
+Test: 54 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: PropertiesFollowedByInitializers.kt
+Path: H:\psi\PropertiesFollowedByInitializers.kt
+Test: 55 of 405
+line 2:18 extraneous input '=' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: TypeParametersBeforeName.kt
+Path: H:\psi\TypeParametersBeforeName.kt
+Test: 56 of 405
+line 2:19 extraneous input '(' expecting {'.', '?.'}
+Test passed! This test was meant to be erroneous
+
+File: EnumEntryCommaPublicMember.kt
+Path: H:\psi\EnumEntryCommaPublicMember.kt
+Test: 57 of 405
+line 4:11 no viable alternative at input 'fun'
+Test passed! This test was meant to be erroneous
+
+File: AssertNotNull.kt
+Path: H:\psi\AssertNotNull.kt
+Test: 58 of 405
+line 6:11 no viable alternative at input 'true!!!\n'
+Test passed! This test was meant to be erroneous
+
+File: ObjectLiteralAsStatement.kt
+Path: H:\psi\ObjectLiteralAsStatement.kt
+Test: 59 of 405
+Test passed!
+
+File: DoubleColon_ERR.kt
+Path: H:\psi\DoubleColon_ERR.kt
+Test: 60 of 405
+line 2:8 no viable alternative at input 'a::b('
+Test passed! This test was meant to be erroneous
+
+File: PropertyInvokes.kt
+Path: H:\psi\PropertyInvokes.kt
+Test: 61 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: destructuringInLambdas.kt
+Path: H:\psi\destructuringInLambdas.kt
+Test: 62 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: StringTemplates.kt
+Path: H:\psi\StringTemplates.kt
+Test: 63 of 405
+line 12:11 token recognition error at: '\n'
+Test passed! This test was meant to be erroneous
+
+File: NewLinesValidOperations.kt
+Path: H:\psi\NewLinesValidOperations.kt
+Test: 64 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EnumIn.kt
+Path: H:\psi\EnumIn.kt
+Test: 65 of 405
+Test passed!
+
+File: EnumCommas.kt
+Path: H:\psi\EnumCommas.kt
+Test: 66 of 405
+Test passed!
+
+File: MapEntry.kt
+Path: H:\psi\platformTypesRecovery\MapEntry.kt
+Test: 67 of 405
+line 2:20 no viable alternative at input '(Mutable)Map'
+Test passed! This test was meant to be erroneous
+
+File: ParenthesizedNotPlatform.kt
+Path: H:\psi\platformTypesRecovery\ParenthesizedNotPlatform.kt
+Test: 68 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BeforeDot.kt
+Path: H:\psi\platformTypesRecovery\BeforeDot.kt
+Test: 69 of 405
+line 2:9 no viable alternative at input '!'
+Test passed! This test was meant to be erroneous
+
+File: QualifiedCollections.kt
+Path: H:\psi\platformTypesRecovery\QualifiedCollections.kt
+Test: 70 of 405
+line 2:17 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: WrongWordInParentheses.kt
+Path: H:\psi\platformTypesRecovery\WrongWordInParentheses.kt
+Test: 71 of 405
+line 2:16 no viable alternative at input '(Foo)List'
+Test passed! This test was meant to be erroneous
+
+File: Qualified.kt
+Path: H:\psi\platformTypesRecovery\Qualified.kt
+Test: 72 of 405
+line 2:25 no viable alternative at input '!'
+Test passed! This test was meant to be erroneous
+
+File: Array.kt
+Path: H:\psi\platformTypesRecovery\Array.kt
+Test: 73 of 405
+line 2:16 no viable alternative at input '<'
+Test passed! This test was meant to be erroneous
+
+File: FunctionsNotPlatform.kt
+Path: H:\psi\platformTypesRecovery\FunctionsNotPlatform.kt
+Test: 74 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Simple.kt
+Path: H:\psi\platformTypesRecovery\Simple.kt
+Test: 75 of 405
+line 2:15 no viable alternative at input '!'
+Test passed! This test was meant to be erroneous
+
+File: Collections.kt
+Path: H:\psi\platformTypesRecovery\Collections.kt
+Test: 76 of 405
+line 2:20 no viable alternative at input '(Mutable)List'
+Test passed! This test was meant to be erroneous
+
+File: TypeExpressionAmbiguities_ERR.kt
+Path: H:\psi\TypeExpressionAmbiguities_ERR.kt
+Test: 77 of 405
+line 3:24 no viable alternative at input 'fooo<Double?addddd>()'
+Test passed! This test was meant to be erroneous
+
+File: ExtensionsWithQNReceiver.kt
+Path: H:\psi\ExtensionsWithQNReceiver.kt
+Test: 78 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: SimpleExpressions.kt
+Path: H:\psi\SimpleExpressions.kt
+Test: 79 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: NestedComments.kt
+Path: H:\psi\NestedComments.kt
+Test: 80 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EnumShortCommas.kt
+Path: H:\psi\EnumShortCommas.kt
+Test: 81 of 405
+Test passed!
+
+File: TripleDot.kt
+Path: H:\psi\TripleDot.kt
+Test: 82 of 405
+line 1:0 extraneous input '..' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: SimpleClassMembers.kt
+Path: H:\psi\SimpleClassMembers.kt
+Test: 83 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: TraitConstructor.kt
+Path: H:\psi\TraitConstructor.kt
+Test: 84 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: destructuringInLambdas_ERR.kt
+Path: H:\psi\destructuringInLambdas_ERR.kt
+Test: 85 of 405
+line 2:19 no viable alternative at input 'a8.filter { ((x,'
+Test passed! This test was meant to be erroneous
+
+File: TypeAlias.kt
+Path: H:\psi\TypeAlias.kt
+Test: 86 of 405
+Test passed!
+
+File: LineCommentForFirstDeclaration.kt
+Path: H:\psi\LineCommentForFirstDeclaration.kt
+Test: 87 of 405
+Test passed!
+
+File: AbsentInnerType.kt
+Path: H:\psi\AbsentInnerType.kt
+Test: 88 of 405
+line 1:9 extraneous input '?' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: recoveryWrongDelegationName.kt
+Path: H:\psi\secondaryConstructors\recoveryWrongDelegationName.kt
+Test: 89 of 405
+line 2:20 no viable alternative at input 'superr'
+Test passed! This test was meant to be erroneous
+
+File: recoveryNoDelegationCallAfterColon.kt
+Path: H:\psi\secondaryConstructors\recoveryNoDelegationCallAfterColon.kt
+Test: 90 of 405
+line 3:4 no viable alternative at input 'val'
+Test passed! This test was meant to be erroneous
+
+File: enumParsing.kt
+Path: H:\psi\secondaryConstructors\enumParsing.kt
+Test: 91 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: recoveryWithoutParameterList.kt
+Path: H:\psi\secondaryConstructors\recoveryWithoutParameterList.kt
+Test: 92 of 405
+line 2:16 extraneous input ':' expecting '('
+Test passed! This test was meant to be erroneous
+
+File: recoveryWithoutBodyWrongDelegationName.kt
+Path: H:\psi\secondaryConstructors\recoveryWithoutBodyWrongDelegationName.kt
+Test: 93 of 405
+line 2:19 no viable alternative at input 'thi'
+Test passed! This test was meant to be erroneous
+
+File: recoveryJustConstructorKeywordSameLineBrace.kt
+Path: H:\psi\secondaryConstructors\recoveryJustConstructorKeywordSameLineBrace.kt
+Test: 94 of 405
+line 3:4 extraneous input 'val' expecting '('
+Test passed! This test was meant to be erroneous
+
+File: emptyBody.kt
+Path: H:\psi\secondaryConstructors\emptyBody.kt
+Test: 95 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: recoveryJustConstructorKeyword.kt
+Path: H:\psi\secondaryConstructors\recoveryJustConstructorKeyword.kt
+Test: 96 of 405
+line 3:4 extraneous input 'val' expecting '('
+Test passed! This test was meant to be erroneous
+
+File: basic.kt
+Path: H:\psi\secondaryConstructors\basic.kt
+Test: 97 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: recoveryEmptyDelegationType.kt
+Path: H:\psi\secondaryConstructors\recoveryEmptyDelegationType.kt
+Test: 98 of 405
+line 2:26 no viable alternative at input '('
+Test passed! This test was meant to be erroneous
+
+File: anonymousInitializer.kt
+Path: H:\psi\secondaryConstructors\anonymousInitializer.kt
+Test: 99 of 405
+line 4:12 no viable alternative at input 'private init'
+Test passed! This test was meant to be erroneous
+
+File: PackageNameJustDot.kt
+Path: H:\psi\packages\PackageNameJustDot.kt
+Test: 100 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageSimpleNameLeadingDoubleDot.kt
+Path: H:\psi\packages\PackageSimpleNameLeadingDoubleDot.kt
+Test: 101 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageModifiers.kt
+Path: H:\psi\packages\PackageModifiers.kt
+Test: 102 of 405
+line 1:12 no viable alternative at input 'public @[a] package'
+Test passed! This test was meant to be erroneous
+
+File: PackageBlockFirst.kt
+Path: H:\psi\packages\PackageBlockFirst.kt
+Test: 103 of 405
+line 1:15 extraneous input '{' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: PackageLongNameBetweenDots.kt
+Path: H:\psi\packages\PackageLongNameBetweenDots.kt
+Test: 104 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageLongNameDoubleID.kt
+Path: H:\psi\packages\PackageLongNameDoubleID.kt
+Test: 105 of 405
+line 1:10 extraneous input 'b' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: PackageLeadingDotDoubleID.kt
+Path: H:\psi\packages\PackageLeadingDotDoubleID.kt
+Test: 106 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageLongNameLeadingDoubleDot.kt
+Path: H:\psi\packages\PackageLongNameLeadingDoubleDot.kt
+Test: 107 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageNameDoubleDot.kt
+Path: H:\psi\packages\PackageNameDoubleDot.kt
+Test: 108 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageLongNameLeadingDot.kt
+Path: H:\psi\packages\PackageLongNameLeadingDot.kt
+Test: 109 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: PackageSimpleNameLeadingDot.kt
+Path: H:\psi\packages\PackageSimpleNameLeadingDot.kt
+Test: 110 of 405
+line 1:8 no viable alternative at input '.'
+Test passed! This test was meant to be erroneous
+
+File: EnumEntryCommaMember.kt
+Path: H:\psi\EnumEntryCommaMember.kt
+Test: 111 of 405
+line 4:4 no viable alternative at input '\n\n    fun'
+Test passed! This test was meant to be erroneous
+
+File: EnumEntrySemicolonMember.kt
+Path: H:\psi\EnumEntrySemicolonMember.kt
+Test: 112 of 405
+Test passed!
+
+File: NonTypeBeforeDotInBaseClass.kt
+Path: H:\psi\NonTypeBeforeDotInBaseClass.kt
+Test: 113 of 405
+line 2:18 no viable alternative at input 'super'
+Test passed! This test was meant to be erroneous
+
+File: ImportSoftKW.kt
+Path: H:\psi\ImportSoftKW.kt
+Test: 114 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: DynamicReceiver.kt
+Path: H:\psi\DynamicReceiver.kt
+Test: 115 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EnumEntryCommaInlineMember.kt
+Path: H:\psi\EnumEntryCommaInlineMember.kt
+Test: 116 of 405
+line 4:11 no viable alternative at input 'fun'
+Test passed! This test was meant to be erroneous
+
+File: LineCommentAfterFileAnnotations.kt
+Path: H:\psi\LineCommentAfterFileAnnotations.kt
+Test: 117 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: TypealiasIsKeyword.kt
+Path: H:\psi\TypealiasIsKeyword.kt
+Test: 118 of 405
+line 1:4 no viable alternative at input 'val typealias'
+Test passed! This test was meant to be erroneous
+
+File: ByClauses.kt
+Path: H:\psi\ByClauses.kt
+Test: 119 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EnumInlinePublic.kt
+Path: H:\psi\EnumInlinePublic.kt
+Test: 120 of 405
+line 3:10 no viable alternative at input 'private'
+Test passed! This test was meant to be erroneous
+
+File: Interface.kt
+Path: H:\psi\Interface.kt
+Test: 121 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: DefaultKeyword.kt
+Path: H:\psi\DefaultKeyword.kt
+Test: 122 of 405
+line 26:0 extraneous input 'companion' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: Expressions_ERR.kt
+Path: H:\psi\Expressions_ERR.kt
+Test: 123 of 405
+line 3:10 token recognition error at: '~'
+Test passed! This test was meant to be erroneous
+
+File: Labels.kt
+Path: H:\psi\Labels.kt
+Test: 124 of 405
+line 8:11 no viable alternative at input 'return@ (@'
+Test passed! This test was meant to be erroneous
+
+File: DuplicateAccessor.kt
+Path: H:\psi\DuplicateAccessor.kt
+Test: 125 of 405
+line 3:4 no viable alternative at input '0\n    get'
+Test passed! This test was meant to be erroneous
+
+File: CommentsBindingInStatementBlock.kt
+Path: H:\psi\CommentsBindingInStatementBlock.kt
+Test: 126 of 405
+Test passed!
+
+File: FunctionsWithoutName.kt
+Path: H:\psi\FunctionsWithoutName.kt
+Test: 127 of 405
+line 2:0 extraneous input 'fun' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: BlockCommentAtBeginningOfFile4.kt
+Path: H:\psi\BlockCommentAtBeginningOfFile4.kt
+Test: 128 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: EnumShortWithOverload.kt
+Path: H:\psi\EnumShortWithOverload.kt
+Test: 129 of 405
+Test passed!
+
+File: Imports_ERR.kt
+Path: H:\psi\Imports_ERR.kt
+Test: 130 of 405
+line 33:7 token recognition error at: '^'
+Test passed! This test was meant to be erroneous
+
+File: NamedClassObject.kt
+Path: H:\psi\NamedClassObject.kt
+Test: 131 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Reserved.kt
+Path: H:\psi\Reserved.kt
+Test: 132 of 405
+line 2:4 no viable alternative at input 'typeof'
+Test passed! This test was meant to be erroneous
+
+File: Properties.kt
+Path: H:\psi\Properties.kt
+Test: 133 of 405
+line 5:0 extraneous input 'val' expecting {'.', '?.'}
+Test passed! This test was meant to be erroneous
+
+File: TypeAlias_ERR.kt
+Path: H:\psi\TypeAlias_ERR.kt
+Test: 134 of 405
+line 2:0 no viable alternative at input 'typealias'
+Test passed! This test was meant to be erroneous
+
+File: FunctionCalls.kt
+Path: H:\psi\FunctionCalls.kt
+Test: 135 of 405
+line 26:13 no viable alternative at input 'p(qux<a, b>)'
+Test passed! This test was meant to be erroneous
+
+File: DynamicTypes.kt
+Path: H:\psi\DynamicTypes.kt
+Test: 136 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: TypeModifiers.kt
+Path: H:\psi\TypeModifiers.kt
+Test: 137 of 405
+line 1:16 extraneous input 'a' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: FunctionTypes.kt
+Path: H:\psi\FunctionTypes.kt
+Test: 138 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: FunctionTypes_ERR.kt
+Path: H:\psi\FunctionTypes_ERR.kt
+Test: 139 of 405
+line 1:19 no viable alternative at input ')'
+Test passed! This test was meant to be erroneous
+
+File: CollectionLiterals.kt
+Path: H:\psi\CollectionLiterals.kt
+Test: 140 of 405
+line 2:4 no viable alternative at input '{\n    ['
+Test passed! This test was meant to be erroneous
+
+File: SimpleModifiers.kt
+Path: H:\psi\SimpleModifiers.kt
+Test: 141 of 405
+line 7:0 no viable alternative at input 'abstract\nopen\nopen\nannotation\noverride'
+Test passed! This test was meant to be erroneous
+
+File: FloatingPointLiteral.kt
+Path: H:\psi\FloatingPointLiteral.kt
+Test: 142 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EmptyName.kt
+Path: H:\psi\EmptyName.kt
+Test: 143 of 405
+line 1:4 token recognition error at: '``'
+Test passed! This test was meant to be erroneous
+
+File: ParameterNameMising.kt
+Path: H:\psi\ParameterNameMising.kt
+Test: 144 of 405
+line 1:13 extraneous input '<' expecting ':'
+Test passed! This test was meant to be erroneous
+
+File: BlockCommentAtBeginningOfFile3.kt
+Path: H:\psi\BlockCommentAtBeginningOfFile3.kt
+Test: 145 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: EnumEntryCommaAnnotatedMember.kt
+Path: H:\psi\EnumEntryCommaAnnotatedMember.kt
+Test: 146 of 405
+line 4:12 no viable alternative at input 'fun'
+Test passed! This test was meant to be erroneous
+
+File: FunctionsWithoutName_ERR.kt
+Path: H:\psi\FunctionsWithoutName_ERR.kt
+Test: 147 of 405
+line 1:4 no viable alternative at input ')'
+Test passed! This test was meant to be erroneous
+
+File: HangOnLonelyModifier.kt
+Path: H:\psi\HangOnLonelyModifier.kt
+Test: 148 of 405
+line 2:0 no viable alternative at input '{\nin'
+Test passed! This test was meant to be erroneous
+
+File: FunctionsWithFunctionReceiversAnnotations.kt
+Path: H:\psi\functionReceivers\FunctionsWithFunctionReceiversAnnotations.kt
+Test: 149 of 405
+line 3:32 extraneous input '.' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: PropertiesWithFunctionReceivers.kt
+Path: H:\psi\functionReceivers\PropertiesWithFunctionReceivers.kt
+Test: 150 of 405
+line 15:8 no viable alternative at input 'open set'
+Test failed!
+
+File: PropertiesWithFunctionReceiversAnnotations.kt
+Path: H:\psi\functionReceivers\PropertiesWithFunctionReceiversAnnotations.kt
+Test: 151 of 405
+line 3:32 extraneous input '.' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: FunctionsWithFunctionReceivers.kt
+Path: H:\psi\functionReceivers\FunctionsWithFunctionReceivers.kt
+Test: 152 of 405
+line 3:32 extraneous input '.' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: FunctionsWithFunctionReceiversRecovery.kt
+Path: H:\psi\functionReceivers\FunctionsWithFunctionReceiversRecovery.kt
+Test: 153 of 405
+line 1:18 extraneous input '<' expecting '('
+Test passed! This test was meant to be erroneous
+
+File: PropertiesWithFunctionReceiversRecovery.kt
+Path: H:\psi\functionReceivers\PropertiesWithFunctionReceiversRecovery.kt
+Test: 154 of 405
+line 1:18 extraneous input '<' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: FunctionTypesWithFunctionReceivers.kt
+Path: H:\psi\functionReceivers\FunctionTypesWithFunctionReceivers.kt
+Test: 155 of 405
+line 8:0 extraneous input 'typealias' expecting '->'
+Test passed! This test was meant to be erroneous
+
+File: Properties_ERR.kt
+Path: H:\psi\Properties_ERR.kt
+Test: 156 of 405
+line 1:4 no viable alternative at input 'var -'
+Test passed! This test was meant to be erroneous
+
+File: EnumEntryTwoCommas.kt
+Path: H:\psi\EnumEntryTwoCommas.kt
+Test: 157 of 405
+line 2:10 no viable alternative at input ','
+Test passed! This test was meant to be erroneous
+
+File: EnumMissingName.kt
+Path: H:\psi\EnumMissingName.kt
+Test: 158 of 405
+line 2:10 no viable alternative at input '('
+Test passed! This test was meant to be erroneous
+
+File: namelessObjectAsEnumMember.kt
+Path: H:\psi\namelessObjectAsEnumMember.kt
+Test: 159 of 405
+line 6:10 no viable alternative at input 'inner object'
+Test passed! This test was meant to be erroneous
+
+File: recovery.kt
+Path: H:\psi\primaryConstructor\recovery.kt
+Test: 160 of 405
+line 1:16 no viable alternative at input '@Ann (x:'
+Test passed! This test was meant to be erroneous
+
+File: valid.kt
+Path: H:\psi\primaryConstructor\valid.kt
+Test: 161 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: local.kt
+Path: H:\psi\primaryConstructor\local.kt
+Test: 162 of 405
+line 3:4 extraneous input 'class' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: recoveryNestedClassAmbiguity.kt
+Path: H:\psi\primaryConstructor\recoveryNestedClassAmbiguity.kt
+Test: 163 of 405
+line 5:0 no viable alternative at input 'private @Ann ()\n}'
+Test passed! This test was meant to be erroneous
+
+File: nestedClassAmbiguity.kt
+Path: H:\psi\primaryConstructor\nestedClassAmbiguity.kt
+Test: 164 of 405
+line 26:16 extraneous input 'constructor' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: DocCommentsBinding.kt
+Path: H:\psi\DocCommentsBinding.kt
+Test: 165 of 405
+Test passed!
+
+File: InterfaceWithEnumKeyword.kt
+Path: H:\psi\InterfaceWithEnumKeyword.kt
+Test: 166 of 405
+line 1:5 extraneous input 'interface' expecting 'class'
+Test passed! This test was meant to be erroneous
+
+File: When.kt
+Path: H:\psi\When.kt
+Test: 167 of 405
+line 38:8 no viable alternative at input 'when (val'
+Test passed! This test was meant to be erroneous
+
+File: EnumEntrySemicolonInlineMember.kt
+Path: H:\psi\EnumEntrySemicolonInlineMember.kt
+Test: 168 of 405
+Test passed!
+
+File: ParameterType.kt
+Path: H:\psi\ParameterType.kt
+Test: 169 of 405
+line 1:11 extraneous input ')' expecting ':'
+Test passed! This test was meant to be erroneous
+
+File: TryRecovery.kt
+Path: H:\psi\TryRecovery.kt
+Test: 170 of 405
+line 10:4 no viable alternative at input 'try {\n    } catch ( {\n    }\n\n    try'
+Test passed! This test was meant to be erroneous
+
+File: CommentsBinding.kt
+Path: H:\psi\CommentsBinding.kt
+Test: 171 of 405
+line 73:19 extraneous input '=' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: EnumEntrySpaceInlineMember.kt
+Path: H:\psi\EnumEntrySpaceInlineMember.kt
+Test: 172 of 405
+line 4:4 no viable alternative at input 'inline'
+Test passed! This test was meant to be erroneous
+
+File: Precedence.kt
+Path: H:\psi\Precedence.kt
+Test: 173 of 405
+line 32:8 no viable alternative at input 'b ->'
+Test passed! This test was meant to be erroneous
+
+File: noParameterYet.kt
+Path: H:\psi\annotation\noParameterYet.kt
+Test: 174 of 405
+line 1:19 no viable alternative at input ')'
+Test passed! This test was meant to be erroneous
+
+File: ShortAnnotations.kt
+Path: H:\psi\annotation\ShortAnnotations.kt
+Test: 175 of 405
+line 1:0 extraneous input 'foo' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: annotationsOnParenthesizedTypes.kt
+Path: H:\psi\annotation\annotationsOnParenthesizedTypes.kt
+Test: 176 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: oldAnnotationsRecovery.kt
+Path: H:\psi\annotation\oldAnnotationsRecovery.kt
+Test: 177 of 405
+line 1:0 extraneous input '[' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: annotationAsArg.kt
+Path: H:\psi\annotation\options\annotationAsArg.kt
+Test: 178 of 405
+Test passed!
+
+File: local.kt
+Path: H:\psi\annotation\options\local.kt
+Test: 179 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: java.kt
+Path: H:\psi\annotation\options\java.kt
+Test: 180 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: annotationAsArgComplex.kt
+Path: H:\psi\annotation\options\annotationAsArgComplex.kt
+Test: 181 of 405
+Test passed!
+
+File: newModifiers.kt
+Path: H:\psi\annotation\modifiersMigration\newModifiers.kt
+Test: 182 of 405
+line 1:16 no viable alternative at input 'data annotation tailrec'
+Test passed! This test was meant to be erroneous
+
+File: oldUsages.kt
+Path: H:\psi\annotation\modifiersMigration\oldUsages.kt
+Test: 183 of 405
+line 6:4 extraneous input 'kotlin' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: primaryConstructor.kt
+Path: H:\psi\annotation\at\primaryConstructor.kt
+Test: 184 of 405
+line 1:19 no viable alternative at input '@Ann1("") ('
+Test passed! This test was meant to be erroneous
+
+File: danglingBlockLevelAnnotations.kt
+Path: H:\psi\annotation\at\danglingBlockLevelAnnotations.kt
+Test: 185 of 405
+line 4:4 no viable alternative at input '@Ann\n    }'
+Test passed! This test was meant to be erroneous
+
+File: blockLevelExpressionsNoNewLine.kt
+Path: H:\psi\annotation\at\blockLevelExpressionsNoNewLine.kt
+Test: 186 of 405
+line 26:6 no viable alternative at input 'do\n'
+Test passed! This test was meant to be erroneous
+
+File: expressionJustAtTyped.kt
+Path: H:\psi\annotation\at\expressionJustAtTyped.kt
+Test: 187 of 405
+line 2:11 no viable alternative at input 'return @'
+Test passed! This test was meant to be erroneous
+
+File: annotationValueArgumentsAmbiguity.kt
+Path: H:\psi\annotation\at\annotationValueArgumentsAmbiguity.kt
+Test: 188 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: blockLevelExpressions.kt
+Path: H:\psi\annotation\at\blockLevelExpressions.kt
+Test: 189 of 405
+line 45:6 no viable alternative at input 'do\n'
+Test passed! This test was meant to be erroneous
+
+File: annotationAtFileStart.kt
+Path: H:\psi\annotation\at\annotationAtFileStart.kt
+Test: 190 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: enumEntries.kt
+Path: H:\psi\annotation\at\enumEntries.kt
+Test: 191 of 405
+line 6:12 no viable alternative at input '@Ann'
+Test passed! This test was meant to be erroneous
+
+File: validExpressions.kt
+Path: H:\psi\annotation\at\validExpressions.kt
+Test: 192 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: modifierAtFileStart.kt
+Path: H:\psi\annotation\at\modifierAtFileStart.kt
+Test: 193 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: declarationsJustAtTyped.kt
+Path: H:\psi\annotation\at\declarationsJustAtTyped.kt
+Test: 194 of 405
+line 1:8 no viable alternative at input 'private @'
+Test passed! This test was meant to be erroneous
+
+File: validDeclarations.kt
+Path: H:\psi\annotation\at\validDeclarations.kt
+Test: 195 of 405
+line 27:15 no viable alternative at input '\n        @inject @[inline] private @open get() = 1\n\n    @open @ann init'
+Test passed! This test was meant to be erroneous
+
+File: lambdaRecovery.kt
+Path: H:\psi\annotation\lambdaRecovery.kt
+Test: 196 of 405
+line 2:8 no viable alternative at input 'bar @'
+Test passed! This test was meant to be erroneous
+
+File: AnnotationsOnPatterns.kt
+Path: H:\psi\annotation\AnnotationsOnPatterns.kt
+Test: 197 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: recovery.kt
+Path: H:\psi\annotation\targeted\onParam\recovery.kt
+Test: 198 of 405
+line 1:26 no viable alternative at input '@param:Ann :'
+Test passed! This test was meant to be erroneous
+
+File: simple.kt
+Path: H:\psi\annotation\targeted\onParam\simple.kt
+Test: 199 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: targetExpected.kt
+Path: H:\psi\annotation\targeted\onParam\targetExpected.kt
+Test: 200 of 405
+line 1:15 extraneous input '@' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: modifiers.kt
+Path: H:\psi\annotation\targeted\onParam\modifiers.kt
+Test: 201 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: manyInOneAnnotationBlock.kt
+Path: H:\psi\annotation\targeted\onField\manyInOneAnnotationBlock.kt
+Test: 202 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: delegate.kt
+Path: H:\psi\annotation\targeted\onField\delegate.kt
+Test: 203 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: inWrongPlace.kt
+Path: H:\psi\annotation\targeted\onField\inWrongPlace.kt
+Test: 204 of 405
+line 4:0 no viable alternative at input '@field:Deprecated\n\n@field:Deprecated\npackage'
+Test passed! This test was meant to be erroneous
+
+File: simpleFieldAnnotation.kt
+Path: H:\psi\annotation\targeted\onField\simpleFieldAnnotation.kt
+Test: 205 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: fqName.kt
+Path: H:\psi\annotation\targeted\onField\fqName.kt
+Test: 206 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: manyInOneAnnotationBlock.kt
+Path: H:\psi\annotation\targeted\onFile\manyInOneAnnotationBlock.kt
+Test: 207 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: withoutFileAnnotationAndPackageDeclaration.kt
+Path: H:\psi\annotation\targeted\onFile\withoutFileAnnotationAndPackageDeclaration.kt
+Test: 208 of 405
+Test passed!
+
+File: nonFIleAnnotationBeforePackage.kt
+Path: H:\psi\annotation\targeted\onFile\nonFIleAnnotationBeforePackage.kt
+Test: 209 of 405
+line 2:0 no viable alternative at input '@foo\n@file'
+Test passed! This test was meant to be erroneous
+
+File: single.kt
+Path: H:\psi\annotation\targeted\onFile\single.kt
+Test: 210 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: fileAnnotationInWrongPlace.kt
+Path: H:\psi\annotation\targeted\onFile\fileAnnotationInWrongPlace.kt
+Test: 211 of 405
+line 3:0 extraneous input '@file' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: manyAnnotationBlocks.kt
+Path: H:\psi\annotation\targeted\onFile\manyAnnotationBlocks.kt
+Test: 212 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: withoutPackageWithSimpleAnnotation.kt
+Path: H:\psi\annotation\targeted\onFile\withoutPackageWithSimpleAnnotation.kt
+Test: 213 of 405
+line 3:0 no viable alternative at input '@foo @bar\n@file'
+Test passed! This test was meant to be erroneous
+
+File: withoutPackage.kt
+Path: H:\psi\annotation\targeted\onFile\withoutPackage.kt
+Test: 214 of 405
+line 3:0 no viable alternative at input '@foo @bar\n@file'
+Test passed! This test was meant to be erroneous
+
+File: simple.kt
+Path: H:\psi\annotation\targeted\onGetSetSparam\simple.kt
+Test: 215 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: twoAnnotationLists.kt
+Path: H:\psi\annotation\targeted\onGetSetSparam\twoAnnotationLists.kt
+Test: 216 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: inWrongPlace.kt
+Path: H:\psi\annotation\targeted\onGetSetSparam\inWrongPlace.kt
+Test: 217 of 405
+line 8:0 no viable alternative at input '@get:Deprecated\n@set:Deprecated\n@setparam:Deprecated\n\n@get:Deprecated\n@set:Deprecated\n@setparam:Deprecated\npackage'
+Test passed! This test was meant to be erroneous
+
+File: recovery.kt
+Path: H:\psi\annotation\list\recovery.kt
+Test: 218 of 405
+line 1:2 no viable alternative at input '@[]'
+Test passed! This test was meant to be erroneous
+
+File: basic.kt
+Path: H:\psi\annotation\list\basic.kt
+Test: 219 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: lambda.kt
+Path: H:\psi\annotation\lambda.kt
+Test: 220 of 405
+line 37:15 no viable alternative at input 'foo label@ @ann'
+Test passed! This test was meant to be erroneous
+
+File: Annotations_ERR.kt
+Path: H:\psi\annotation\Annotations_ERR.kt
+Test: 221 of 405
+line 5:0 no viable alternative at input 'abstract\nopen\nenum'
+Test passed! This test was meant to be erroneous
+
+File: forParameters.kt
+Path: H:\psi\annotation\forParameters.kt
+Test: 222 of 405
+line 4:15 no viable alternative at input 'for (@[ann])'
+Test passed! This test was meant to be erroneous
+
+File: multiDeclaration.kt
+Path: H:\psi\annotation\multiDeclaration.kt
+Test: 223 of 405
+line 2:20 no viable alternative at input 'data'
+Test passed! This test was meant to be erroneous
+
+File: AnnotatedExpressions.kt
+Path: H:\psi\annotation\AnnotatedExpressions.kt
+Test: 224 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: annotationsOnNullableTypes.kt
+Path: H:\psi\annotation\annotationsOnNullableTypes.kt
+Test: 225 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Annotations.kt
+Path: H:\psi\annotation\Annotations.kt
+Test: 226 of 405
+line 5:0 no viable alternative at input 'abstract\nopen\nenum'
+Test passed! This test was meant to be erroneous
+
+File: LineCommentsInBlock.kt
+Path: H:\psi\LineCommentsInBlock.kt
+Test: 227 of 405
+Test passed!
+
+File: EnumOldConstructorSyntax.kt
+Path: H:\psi\EnumOldConstructorSyntax.kt
+Test: 228 of 405
+line 2:9 no viable alternative at input ':'
+Test passed! This test was meant to be erroneous
+
+File: DocCommentAfterFileAnnotations.kt
+Path: H:\psi\DocCommentAfterFileAnnotations.kt
+Test: 229 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: LongPackageName.kt
+Path: H:\psi\LongPackageName.kt
+Test: 230 of 405
+Test passed!
+
+File: Queue.kt
+Path: H:\psi\examples\Queue.kt
+Test: 231 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IMap.kt
+Path: H:\psi\examples\map\IMap.kt
+Test: 232 of 405
+Test passed!
+
+File: MutableArray.kt
+Path: H:\psi\examples\array\MutableArray.kt
+Test: 233 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IPushPop.kt
+Path: H:\psi\examples\IPushPop.kt
+Test: 234 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: With.kt
+Path: H:\psi\examples\With.kt
+Test: 235 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BitArith.kt
+Path: H:\psi\examples\BitArith.kt
+Test: 236 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: UnionFind.kt
+Path: H:\psi\examples\UnionFind.kt
+Test: 237 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: FunctionsAndTypes.kt
+Path: H:\psi\examples\FunctionsAndTypes.kt
+Test: 238 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Builder.kt
+Path: H:\psi\examples\Builder.kt
+Test: 239 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: PriorityQueueAsPushPop.kt
+Path: H:\psi\examples\priorityqueues\PriorityQueueAsPushPop.kt
+Test: 240 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BinaryHeap.kt
+Path: H:\psi\examples\priorityqueues\BinaryHeap.kt
+Test: 241 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IPriorityQueue.kt
+Path: H:\psi\examples\priorityqueues\IPriorityQueue.kt
+Test: 242 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IOSamples.kt
+Path: H:\psi\examples\io\IOSamples.kt
+Test: 243 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BinaryTree.kt
+Path: H:\psi\examples\BinaryTree.kt
+Test: 244 of 405
+line 55:26 no viable alternative at input 'when (compare(item, node.value.value)) {\n        EQ -> false\n        LS -> add(ref node.'
+Test passed! This test was meant to be erroneous
+
+File: UpdateOperation.kt
+Path: H:\psi\examples\UpdateOperation.kt
+Test: 245 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Graph.kt
+Path: H:\psi\examples\Graph.kt
+Test: 246 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IMutableSet.kt
+Path: H:\psi\examples\collections\IMutableSet.kt
+Test: 247 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ArrayList.kt
+Path: H:\psi\examples\collections\ArrayList.kt
+Test: 248 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IIterator.kt
+Path: H:\psi\examples\collections\IIterator.kt
+Test: 249 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IList.kt
+Path: H:\psi\examples\collections\IList.kt
+Test: 250 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: LinkedList.kt
+Path: H:\psi\examples\collections\LinkedList.kt
+Test: 251 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IIterable.kt
+Path: H:\psi\examples\collections\IIterable.kt
+Test: 252 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ISized.kt
+Path: H:\psi\examples\collections\ISized.kt
+Test: 253 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ISet.kt
+Path: H:\psi\examples\collections\ISet.kt
+Test: 254 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IMutableIterator.kt
+Path: H:\psi\examples\collections\IMutableIterator.kt
+Test: 255 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IMutableIterable.kt
+Path: H:\psi\examples\collections\IMutableIterable.kt
+Test: 256 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: HashMap.kt
+Path: H:\psi\examples\collections\HashMap.kt
+Test: 257 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IMutableList.kt
+Path: H:\psi\examples\collections\IMutableList.kt
+Test: 258 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IComparable.kt
+Path: H:\psi\examples\util\IComparable.kt
+Test: 259 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Comparison.kt
+Path: H:\psi\examples\util\Comparison.kt
+Test: 260 of 405
+line 1:22 no viable alternative at input 'naturalOrder<in T :'
+Test passed! This test was meant to be erroneous
+
+File: AnonymousObjects.kt
+Path: H:\psi\examples\AnonymousObjects.kt
+Test: 261 of 405
+line 13:5 no viable alternative at input 'enum class'
+Test passed! This test was meant to be erroneous
+
+File: Color.kt
+Path: H:\psi\examples\Color.kt
+Test: 262 of 405
+Test passed!
+
+File: Stack.kt
+Path: H:\psi\examples\Stack.kt
+Test: 263 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: LINQ.kt
+Path: H:\psi\examples\LINQ.kt
+Test: 264 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: nullableTypes.kt
+Path: H:\psi\greatSyntacticShift\nullableTypes.kt
+Test: 265 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: functionLiterals.kt
+Path: H:\psi\greatSyntacticShift\functionLiterals.kt
+Test: 266 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: FunctionTypesAsArguments.kt
+Path: H:\psi\greatSyntacticShift\FunctionTypesAsArguments.kt
+Test: 267 of 405
+Test passed!
+
+File: functionTypes.kt
+Path: H:\psi\greatSyntacticShift\functionTypes.kt
+Test: 268 of 405
+line 4:0 extraneous input 'package' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: Functions_ERR.kt
+Path: H:\psi\Functions_ERR.kt
+Test: 269 of 405
+line 1:7 no viable alternative at input 'foo)'
+Test passed! This test was meant to be erroneous
+
+File: ControlStructures.kt
+Path: H:\psi\ControlStructures.kt
+Test: 270 of 405
+line 68:7 no viable alternative at input 'for (val'
+Test passed! This test was meant to be erroneous
+
+File: AnonymousInitializer.kt
+Path: H:\psi\AnonymousInitializer.kt
+Test: 271 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BabySteps.kt
+Path: H:\psi\BabySteps.kt
+Test: 272 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EOLsInComments.kt
+Path: H:\psi\EOLsInComments.kt
+Test: 273 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: EnumInline.kt
+Path: H:\psi\EnumInline.kt
+Test: 274 of 405
+Test passed!
+
+File: Enums.kt
+Path: H:\psi\Enums.kt
+Test: 275 of 405
+Test passed!
+
+File: recovery.kt
+Path: H:\psi\newLabels\recovery.kt
+Test: 276 of 405
+line 3:16 no viable alternative at input 'x2.filter c @'
+Test passed! This test was meant to be erroneous
+
+File: oldSyntaxExpressions.kt
+Path: H:\psi\newLabels\oldSyntaxExpressions.kt
+Test: 277 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: spaceBeforeLabelReference.kt
+Path: H:\psi\newLabels\spaceBeforeLabelReference.kt
+Test: 278 of 405
+line 4:4 no viable alternative at input 'break @l1\n\n    val'
+Test passed! This test was meant to be erroneous
+
+File: basic.kt
+Path: H:\psi\newLabels\basic.kt
+Test: 279 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: BlockCommentAtBeginningOfFile1.kt
+Path: H:\psi\BlockCommentAtBeginningOfFile1.kt
+Test: 280 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TypeModifiersParenthesized.kt
+Path: H:\psi\TypeModifiersParenthesized.kt
+Test: 281 of 405
+line 23:32 no viable alternative at input '((@A C))? ->'
+Test passed! This test was meant to be erroneous
+
+File: FunctionExpressions.kt
+Path: H:\psi\FunctionExpressions.kt
+Test: 282 of 405
+line 2:0 no viable alternative at input 'fun ()\nval'
+Test passed! This test was meant to be erroneous
+
+File: ParamTag.kt
+Path: H:\psi\kdoc\ParamTag.kt
+Test: 283 of 405
+Test passed!
+
+File: DocCommentAtBeginningOfFile2.kt
+Path: H:\psi\kdoc\DocCommentAtBeginningOfFile2.kt
+Test: 284 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: ParamTagAtStart.kt
+Path: H:\psi\kdoc\ParamTagAtStart.kt
+Test: 285 of 405
+Test passed!
+
+File: Sections.kt
+Path: H:\psi\kdoc\Sections.kt
+Test: 286 of 405
+Test passed!
+
+File: Incomplete.kt
+Path: H:\psi\kdoc\Incomplete.kt
+Test: 287 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TextRightAfterLeadAsterisks.kt
+Path: H:\psi\kdoc\TextRightAfterLeadAsterisks.kt
+Test: 288 of 405
+Test passed!
+
+File: EndOnLeadingAsterisks.kt
+Path: H:\psi\kdoc\EndOnLeadingAsterisks.kt
+Test: 289 of 405
+Test passed!
+
+File: MarkdownLinkWithError.kt
+Path: H:\psi\kdoc\MarkdownLinkWithError.kt
+Test: 290 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: SeeLink.kt
+Path: H:\psi\kdoc\SeeLink.kt
+Test: 291 of 405
+Test passed!
+
+File: Markdown.kt
+Path: H:\psi\kdoc\Markdown.kt
+Test: 292 of 405
+Test passed!
+
+File: DocCommentAtBeginningOfFile3.kt
+Path: H:\psi\kdoc\DocCommentAtBeginningOfFile3.kt
+Test: 293 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: EndRightAfterText.kt
+Path: H:\psi\kdoc\EndRightAfterText.kt
+Test: 294 of 405
+Test passed!
+
+File: AtTags.kt
+Path: H:\psi\kdoc\AtTags.kt
+Test: 295 of 405
+Test passed!
+
+File: Simple.kt
+Path: H:\psi\kdoc\Simple.kt
+Test: 296 of 405
+line 1:6 extraneous input '/*' expecting <EOF>
+Test failed!
+
+File: HttpLink.kt
+Path: H:\psi\kdoc\HttpLink.kt
+Test: 297 of 405
+Test passed!
+
+File: ReturnWithBrackets.kt
+Path: H:\psi\kdoc\ReturnWithBrackets.kt
+Test: 298 of 405
+Test passed!
+
+File: DocCommentAtBeginningOfFile1.kt
+Path: H:\psi\kdoc\DocCommentAtBeginningOfFile1.kt
+Test: 299 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: DocCommentAtBeginningOfFile4.kt
+Path: H:\psi\kdoc\DocCommentAtBeginningOfFile4.kt
+Test: 300 of 405
+line 1:0 extraneous input '/*' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TwoTags.kt
+Path: H:\psi\kdoc\TwoTags.kt
+Test: 301 of 405
+Test passed!
+
+File: MarkdownLinkWithLabel.kt
+Path: H:\psi\kdoc\MarkdownLinkWithLabel.kt
+Test: 302 of 405
+Test passed!
+
+File: MarkdownQualifiedName.kt
+Path: H:\psi\kdoc\MarkdownQualifiedName.kt
+Test: 303 of 405
+Test passed!
+
+File: SeeEmpty.kt
+Path: H:\psi\kdoc\SeeEmpty.kt
+Test: 304 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ParameterType_ERR.kt
+Path: H:\psi\ParameterType_ERR.kt
+Test: 305 of 405
+line 1:12 no viable alternative at input ')'
+Test passed! This test was meant to be erroneous
+
+File: QuotedIdentifiers.kt
+Path: H:\psi\QuotedIdentifiers.kt
+Test: 306 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: ValNoName.kt
+Path: H:\psi\recovery\ValNoName.kt
+Test: 307 of 405
+line 3:11 no viable alternative at input '\n'
+Test passed! This test was meant to be erroneous
+
+File: ValueParameterNoTypeRecovery.kt
+Path: H:\psi\recovery\ValueParameterNoTypeRecovery.kt
+Test: 308 of 405
+line 1:17 extraneous input '=' expecting ':'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteTypeRefWithPackageKeyword.kt
+Path: H:\psi\recovery\IncompleteTypeRefWithPackageKeyword.kt
+Test: 309 of 405
+line 2:11 no viable alternative at input 'package'
+Test passed! This test was meant to be erroneous
+
+File: DoWhileWithEmptyCondition.kt
+Path: H:\psi\recovery\DoWhileWithEmptyCondition.kt
+Test: 310 of 405
+line 4:12 no viable alternative at input 'do {\n\n    } while()'
+Test passed! This test was meant to be erroneous
+
+File: ForWithOnlyOneLParInEOF.kt
+Path: H:\psi\recovery\ForWithOnlyOneLParInEOF.kt
+Test: 311 of 405
+line 1:18 no viable alternative at input 'for ('
+Test passed! This test was meant to be erroneous
+
+File: lambdaExpressionInString_2.kt
+Path: H:\psi\recovery\lambdaExpressionInString_2.kt
+Test: 312 of 405
+line 2:9 token recognition error at: '\n'
+Test passed! This test was meant to be erroneous
+
+File: ForWithoutBodyInEOF.kt
+Path: H:\psi\recovery\ForWithoutBodyInEOF.kt
+Test: 313 of 405
+line 1:18 no viable alternative at input 'for ()'
+Test passed! This test was meant to be erroneous
+
+File: lambdaExpressionInString_1.kt
+Path: H:\psi\recovery\lambdaExpressionInString_1.kt
+Test: 314 of 405
+line 3:15 token recognition error at: '$'
+Test passed! This test was meant to be erroneous
+
+File: InvalidCharAfterPropertyName.kt
+Path: H:\psi\recovery\InvalidCharAfterPropertyName.kt
+Test: 315 of 405
+line 2:16 token recognition error at: '$'
+Test passed! This test was meant to be erroneous
+
+File: DoWhileWithoutLPar.kt
+Path: H:\psi\recovery\DoWhileWithoutLPar.kt
+Test: 316 of 405
+line 6:4 no viable alternative at input 'do {\n\n    } while\n\n    return'
+Test passed! This test was meant to be erroneous
+
+File: SameLineStatementRecovery.kt
+Path: H:\psi\recovery\SameLineStatementRecovery.kt
+Test: 317 of 405
+line 2:15 no viable alternative at input '12 if'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteAccessor1.kt
+Path: H:\psi\recovery\IncompleteAccessor1.kt
+Test: 318 of 405
+line 3:0 no viable alternative at input 'get(\n}'
+Test passed! This test was meant to be erroneous
+
+File: BrokenFunctionSuperType.kt
+Path: H:\psi\recovery\BrokenFunctionSuperType.kt
+Test: 319 of 405
+line 1:10 no viable alternative at input '('
+Test passed! This test was meant to be erroneous
+
+File: InterfaceInExpressionPosition.kt
+Path: H:\psi\recovery\InterfaceInExpressionPosition.kt
+Test: 320 of 405
+line 1:12 no viable alternative at input '1 < interface'
+Test passed! This test was meant to be erroneous
+
+File: ForRecovery.kt
+Path: H:\psi\recovery\ForRecovery.kt
+Test: 321 of 405
+line 2:12 no viable alternative at input 'for (v: in'
+Test passed! This test was meant to be erroneous
+
+File: InvalidCharInSingleLineLambda.kt
+Path: H:\psi\recovery\InvalidCharInSingleLineLambda.kt
+Test: 322 of 405
+line 3:11 token recognition error at: '$'
+Test passed! This test was meant to be erroneous
+
+File: ForWithoutParamButWithRange.kt
+Path: H:\psi\recovery\ForWithoutParamButWithRange.kt
+Test: 323 of 405
+line 2:9 no viable alternative at input 'for (in'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteClassDeclaration.kt
+Path: H:\psi\recovery\IncompleteClassDeclaration.kt
+Test: 324 of 405
+line 3:0 extraneous input '}' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteWhere2.kt
+Path: H:\psi\recovery\IncompleteWhere2.kt
+Test: 325 of 405
+line 3:0 extraneous input '}' expecting ':'
+Test passed! This test was meant to be erroneous
+
+File: NoArrowInWhen.kt
+Path: H:\psi\recovery\NoArrowInWhen.kt
+Test: 326 of 405
+line 3:23 no viable alternative at input 'when(element) {\n        is JetProperty when'
+Test passed! This test was meant to be erroneous
+
+File: IfWithEmptyCondition.kt
+Path: H:\psi\recovery\IfWithEmptyCondition.kt
+Test: 327 of 405
+line 2:8 no viable alternative at input 'if ()'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteTypeParameters.kt
+Path: H:\psi\recovery\IncompleteTypeParameters.kt
+Test: 328 of 405
+line 3:0 no viable alternative at input '}'
+Test passed! This test was meant to be erroneous
+
+File: ImportRecovery.kt
+Path: H:\psi\recovery\ImportRecovery.kt
+Test: 329 of 405
+line 1:17 no viable alternative at input '.\n'
+Test passed! This test was meant to be erroneous
+
+File: FunFun.kt
+Path: H:\psi\recovery\FunFun.kt
+Test: 330 of 405
+line 3:0 no viable alternative at input 'fun'
+Test passed! This test was meant to be erroneous
+
+File: kt2172.kt
+Path: H:\psi\recovery\kt2172.kt
+Test: 331 of 405
+line 5:4 no viable alternative at input 'val\n    }'
+Test passed! This test was meant to be erroneous
+
+File: DeclarationAfterIncompleteElvis.kt
+Path: H:\psi\recovery\DeclarationAfterIncompleteElvis.kt
+Test: 332 of 405
+line 3:4 no viable alternative at input 'x ?:\n    val'
+Test passed! This test was meant to be erroneous
+
+File: PackageRecovery.kt
+Path: H:\psi\recovery\PackageRecovery.kt
+Test: 333 of 405
+line 1:22 no viable alternative at input '\n'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteValTypeParameters.kt
+Path: H:\psi\recovery\IncompleteValTypeParameters.kt
+Test: 334 of 405
+line 3:0 no viable alternative at input '\n}'
+Test passed! This test was meant to be erroneous
+
+File: DeclarationAfterDotSelectorExpected.kt
+Path: H:\psi\recovery\DeclarationAfterDotSelectorExpected.kt
+Test: 335 of 405
+line 3:4 no viable alternative at input 'x.\n    val'
+Test passed! This test was meant to be erroneous
+
+File: WhileWithoutLPar.kt
+Path: H:\psi\recovery\WhileWithoutLPar.kt
+Test: 336 of 405
+line 4:4 no viable alternative at input 'while\n\n    return'
+Test passed! This test was meant to be erroneous
+
+File: initRecovery.kt
+Path: H:\psi\recovery\initRecovery.kt
+Test: 337 of 405
+line 3:0 no viable alternative at input '}'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteFunDeclaration.kt
+Path: H:\psi\recovery\IncompleteFunDeclaration.kt
+Test: 338 of 405
+line 3:0 extraneous input '}' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteAccessor2.kt
+Path: H:\psi\recovery\IncompleteAccessor2.kt
+Test: 339 of 405
+line 3:0 no viable alternative at input 'get()\n}'
+Test passed! This test was meant to be erroneous
+
+File: WhileWithEmptyCondition.kt
+Path: H:\psi\recovery\WhileWithEmptyCondition.kt
+Test: 340 of 405
+line 2:11 no viable alternative at input 'while ()'
+Test passed! This test was meant to be erroneous
+
+File: ForWithoutLParInEOF.kt
+Path: H:\psi\recovery\ForWithoutLParInEOF.kt
+Test: 341 of 405
+line 1:16 no viable alternative at input 'for'
+Test passed! This test was meant to be erroneous
+
+File: ForEmptyWithoutBody.kt
+Path: H:\psi\recovery\ForEmptyWithoutBody.kt
+Test: 342 of 405
+line 2:9 no viable alternative at input 'for ()'
+Test passed! This test was meant to be erroneous
+
+File: BareVal.kt
+Path: H:\psi\recovery\BareVal.kt
+Test: 343 of 405
+line 3:0 no viable alternative at input 'val\n}'
+Test passed! This test was meant to be erroneous
+
+File: ValWithNoNameInBlock.kt
+Path: H:\psi\recovery\ValWithNoNameInBlock.kt
+Test: 344 of 405
+line 3:11 extraneous input '(' expecting '}'
+Test passed! This test was meant to be erroneous
+
+File: ForWithoutRange.kt
+Path: H:\psi\recovery\ForWithoutRange.kt
+Test: 345 of 405
+line 2:13 no viable alternative at input 'for (some)'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteWhere.kt
+Path: H:\psi\recovery\IncompleteWhere.kt
+Test: 346 of 405
+line 3:0 no viable alternative at input '}'
+Test passed! This test was meant to be erroneous
+
+File: ForNoBodyBeforeRBrace.kt
+Path: H:\psi\recovery\ForNoBodyBeforeRBrace.kt
+Test: 347 of 405
+line 3:13 no viable alternative at input 'while (true) {\n        for ()'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteFunTypeParameters.kt
+Path: H:\psi\recovery\IncompleteFunTypeParameters.kt
+Test: 348 of 405
+line 3:0 no viable alternative at input '\n}'
+Test passed! This test was meant to be erroneous
+
+File: secondInFunction.kt
+Path: H:\psi\recovery\unnamedParameter\secondInFunction.kt
+Test: 349 of 405
+line 1:19 no viable alternative at input ':'
+Test passed! This test was meant to be erroneous
+
+File: secondInPrimaryConstructor.kt
+Path: H:\psi\recovery\unnamedParameter\secondInPrimaryConstructor.kt
+Test: 350 of 405
+line 1:19 no viable alternative at input ':'
+Test passed! This test was meant to be erroneous
+
+File: firstInPrimaryConstructor.kt
+Path: H:\psi\recovery\unnamedParameter\firstInPrimaryConstructor.kt
+Test: 351 of 405
+line 1:8 extraneous input ':' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: firstInLambda.kt
+Path: H:\psi\recovery\unnamedParameter\firstInLambda.kt
+Test: 352 of 405
+line 1:12 no viable alternative at input '{ :'
+Test passed! This test was meant to be erroneous
+
+File: firstInSetter.kt
+Path: H:\psi\recovery\unnamedParameter\firstInSetter.kt
+Test: 353 of 405
+line 2:8 no viable alternative at input '\n    set(:'
+Test passed! This test was meant to be erroneous
+
+File: secondInLambda.kt
+Path: H:\psi\recovery\unnamedParameter\secondInLambda.kt
+Test: 354 of 405
+line 1:23 no viable alternative at input '{ s: String, :'
+Test passed! This test was meant to be erroneous
+
+File: firstInFunction.kt
+Path: H:\psi\recovery\unnamedParameter\firstInFunction.kt
+Test: 355 of 405
+line 1:8 extraneous input ':' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: firstInFunctionalType.kt
+Path: H:\psi\recovery\unnamedParameter\firstInFunctionalType.kt
+Test: 356 of 405
+line 1:10 no viable alternative at input '(:'
+Test passed! This test was meant to be erroneous
+
+File: secondInSecondaryConstructor.kt
+Path: H:\psi\recovery\unnamedParameter\secondInSecondaryConstructor.kt
+Test: 357 of 405
+line 2:27 no viable alternative at input ':'
+Test passed! This test was meant to be erroneous
+
+File: firstInSecondaryConstructor.kt
+Path: H:\psi\recovery\unnamedParameter\firstInSecondaryConstructor.kt
+Test: 358 of 405
+line 2:16 extraneous input ':' expecting ')'
+Test passed! This test was meant to be erroneous
+
+File: secondInFunctionalType.kt
+Path: H:\psi\recovery\unnamedParameter\secondInFunctionalType.kt
+Test: 359 of 405
+line 1:21 no viable alternative at input ':'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteWhenElse.kt
+Path: H:\psi\recovery\IncompleteWhenElse.kt
+Test: 360 of 405
+line 5:17 no viable alternative at input 'when {\n            1 -> foo()\n            else {'
+Test passed! This test was meant to be erroneous
+
+File: AbsentLeftHandSide.kt
+Path: H:\psi\recovery\AbsentLeftHandSide.kt
+Test: 361 of 405
+line 6:15 token recognition error at: '~'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteForRBrace.kt
+Path: H:\psi\recovery\IncompleteForRBrace.kt
+Test: 362 of 405
+line 3:0 no viable alternative at input 'for(\n}'
+Test passed! This test was meant to be erroneous
+
+File: IncompleteFun.kt
+Path: H:\psi\recovery\IncompleteFun.kt
+Test: 363 of 405
+line 1:4 no viable alternative at input '{'
+Test passed! This test was meant to be erroneous
+
+File: CloseBraceAtTopLevel.kt
+Path: H:\psi\recovery\CloseBraceAtTopLevel.kt
+Test: 364 of 405
+Test passed! This test was meant to be erroneous
+
+File: MissingCommaInValueParameterList.kt
+Path: H:\psi\recovery\MissingCommaInValueParameterList.kt
+Test: 365 of 405
+line 4:4 no viable alternative at input 'c'
+Test passed! This test was meant to be erroneous
+
+File: WhenWithoutBraces.kt
+Path: H:\psi\recovery\WhenWithoutBraces.kt
+Test: 366 of 405
+line 4:4 no viable alternative at input 'when\n\n    bar'
+Test passed! This test was meant to be erroneous
+
+File: ForWithoutLPar.kt
+Path: H:\psi\recovery\ForWithoutLPar.kt
+Test: 367 of 405
+line 4:4 no viable alternative at input 'for\n\n    return'
+Test passed! This test was meant to be erroneous
+
+File: ForEmptyParentheses.kt
+Path: H:\psi\recovery\ForEmptyParentheses.kt
+Test: 368 of 405
+line 2:9 no viable alternative at input 'for ()'
+Test passed! This test was meant to be erroneous
+
+File: PackageNewLineRecovery.kt
+Path: H:\psi\recovery\PackageNewLineRecovery.kt
+Test: 369 of 405
+line 1:25 no viable alternative at input '\n'
+Test passed! This test was meant to be erroneous
+
+File: MissingCommaInValueParameterListWithValOrVar.kt
+Path: H:\psi\recovery\MissingCommaInValueParameterListWithValOrVar.kt
+Test: 370 of 405
+line 1:22 no viable alternative at input 'var'
+Test passed! This test was meant to be erroneous
+
+File: noSafeQualifiedExpression.kt
+Path: H:\psi\recovery\qualifiedExpression\noSafeQualifiedExpression.kt
+Test: 371 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: safeQualifiedExpressionWithoutSelector.kt
+Path: H:\psi\recovery\qualifiedExpression\safeQualifiedExpressionWithoutSelector.kt
+Test: 372 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: safeQualifiedExpressionWithSelector.kt
+Path: H:\psi\recovery\qualifiedExpression\safeQualifiedExpressionWithSelector.kt
+Test: 373 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: noQualifiedExpression.kt
+Path: H:\psi\recovery\qualifiedExpression\noQualifiedExpression.kt
+Test: 374 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: qualifiedExpressionWithSelector.kt
+Path: H:\psi\recovery\qualifiedExpression\qualifiedExpressionWithSelector.kt
+Test: 375 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: qualifiedExpressionWithoutSelector.kt
+Path: H:\psi\recovery\qualifiedExpression\qualifiedExpressionWithoutSelector.kt
+Test: 376 of 405
+line 2:12 no viable alternative at input 'MyClass.<'
+Test passed! This test was meant to be erroneous
+
+File: MissingCommaInConstructorValueParameterList.kt
+Path: H:\psi\recovery\MissingCommaInConstructorValueParameterList.kt
+Test: 377 of 405
+line 1:30 no viable alternative at input 'b'
+Test passed! This test was meant to be erroneous
+
+File: IfKeywordRBrace.kt
+Path: H:\psi\recovery\IfKeywordRBrace.kt
+Test: 378 of 405
+line 3:0 no viable alternative at input 'if\n}'
+Test passed! This test was meant to be erroneous
+
+File: Where.kt
+Path: H:\psi\recovery\objects\expressions\Where.kt
+Test: 379 of 405
+line 1:30 no viable alternative at input 'object Name where T :'
+Test passed! This test was meant to be erroneous
+
+File: TypeParameterss.kt
+Path: H:\psi\recovery\objects\expressions\TypeParameterss.kt
+Test: 380 of 405
+line 3:23 no viable alternative at input 'object<T, R> :'
+Test passed! This test was meant to be erroneous
+
+File: Everything.kt
+Path: H:\psi\recovery\objects\expressions\Everything.kt
+Test: 381 of 405
+line 1:23 no viable alternative at input 'object<T, R> private'
+Test passed! This test was meant to be erroneous
+
+File: ParametersInParentheses.kt
+Path: H:\psi\recovery\objects\expressions\ParametersInParentheses.kt
+Test: 382 of 405
+line 1:18 no viable alternative at input 'object(a:'
+Test passed! This test was meant to be erroneous
+
+File: TypeParametersAndParentheses.kt
+Path: H:\psi\recovery\objects\expressions\TypeParametersAndParentheses.kt
+Test: 383 of 405
+line 1:24 no viable alternative at input 'object<T, R>(x:'
+Test passed! This test was meant to be erroneous
+
+File: ConstructorModifiersAndName.kt
+Path: H:\psi\recovery\objects\expressions\ConstructorModifiersAndName.kt
+Test: 384 of 405
+line 4:33 no viable alternative at input 'object Name private () :'
+Test passed! This test was meant to be erroneous
+
+File: InFunction.kt
+Path: H:\psi\recovery\objects\expressions\InFunction.kt
+Test: 385 of 405
+line 2:30 no viable alternative at input 'object private ()'
+Test passed! This test was meant to be erroneous
+
+File: EmptyParentheses.kt
+Path: H:\psi\recovery\objects\expressions\EmptyParentheses.kt
+Test: 386 of 405
+line 3:19 no viable alternative at input 'object() :'
+Test passed! This test was meant to be erroneous
+
+File: ConstructorModifiers.kt
+Path: H:\psi\recovery\objects\expressions\ConstructorModifiers.kt
+Test: 387 of 405
+line 1:26 no viable alternative at input 'object private ()'
+Test passed! This test was meant to be erroneous
+
+File: FollowedByModifiers.kt
+Path: H:\psi\recovery\objects\declarations\FollowedByModifiers.kt
+Test: 388 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: Where.kt
+Path: H:\psi\recovery\objects\declarations\Where.kt
+Test: 389 of 405
+line 1:11 extraneous input 'where' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TypeParameterss.kt
+Path: H:\psi\recovery\objects\declarations\TypeParameterss.kt
+Test: 390 of 405
+line 1:10 extraneous input '<' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: Everything.kt
+Path: H:\psi\recovery\objects\declarations\Everything.kt
+Test: 391 of 405
+line 1:10 extraneous input '<' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: ParametersInParentheses.kt
+Path: H:\psi\recovery\objects\declarations\ParametersInParentheses.kt
+Test: 392 of 405
+line 1:10 extraneous input '(' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: TypeParametersAndParentheses.kt
+Path: H:\psi\recovery\objects\declarations\TypeParametersAndParentheses.kt
+Test: 393 of 405
+line 1:10 extraneous input '<' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: EmptyParentheses.kt
+Path: H:\psi\recovery\objects\declarations\EmptyParentheses.kt
+Test: 394 of 405
+line 1:10 extraneous input '(' expecting <EOF>
+Test passed! This test was meant to be erroneous
+
+File: ConstructorModifiers.kt
+Path: H:\psi\recovery\objects\declarations\ConstructorModifiers.kt
+Test: 395 of 405
+line 1:19 no viable alternative at input 'private ('
+Test passed! This test was meant to be erroneous
+
+File: IncompleteClassTypeParameters.kt
+Path: H:\psi\recovery\IncompleteClassTypeParameters.kt
+Test: 396 of 405
+line 3:0 no viable alternative at input 'class Inner<T\n}'
+Test passed! This test was meant to be erroneous
+
+File: kt5102.kt
+Path: H:\psi\recovery\kt5102.kt
+Test: 397 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: MissingCommaInValueArgumentList.kt
+Path: H:\psi\recovery\MissingCommaInValueArgumentList.kt
+Test: 398 of 405
+line 5:0 no viable alternative at input 'foo(\n    a,\n    b\n    c\n)'
+Test passed! This test was meant to be erroneous
+
+File: CatchKeywordRBrace.kt
+Path: H:\psi\recovery\CatchKeywordRBrace.kt
+Test: 399 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: IfWithoutLPar.kt
+Path: H:\psi\recovery\IfWithoutLPar.kt
+Test: 400 of 405
+line 4:4 no viable alternative at input 'if\n\n    if'
+Test passed! This test was meant to be erroneous
+
+File: WithWithoutInAndMultideclaration.kt
+Path: H:\psi\recovery\WithWithoutInAndMultideclaration.kt
+Test: 401 of 405
+line 2:15 no viable alternative at input 'for ((i, j))'
+Test passed! This test was meant to be erroneous
+
+File: ValWithNoNameBeforeNextDeclarationWithModifiers.kt
+Path: H:\psi\recovery\ValWithNoNameBeforeNextDeclarationWithModifiers.kt
+Test: 402 of 405
+line 11:4 no viable alternative at input 'private val\n    fun'
+Test passed! This test was meant to be erroneous
+
+File: DoubleColonWhitespaces.kt
+Path: H:\psi\DoubleColonWhitespaces.kt
+Test: 403 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+File: RawStringsWithManyQuotes.kt
+Path: H:\psi\stringTemplates\RawStringsWithManyQuotes.kt
+Test: 404 of 405
+Test passed!
+
+File: CallWithManyClosures.kt
+Path: H:\psi\CallWithManyClosures.kt
+Test: 405 of 405
+Test failed! This test was meant to be erroneous, but it passed
+
+Tests passed: 298 out of 405
+Number of failed tests: 1 3 5 6 8 9 10 11 22 27 38 43 49 51 54 61 62 64 68 74 78 79 80 83 84 91 95 97 114 115 117 119 121 131 136 138 142 150 161 176 179 180 188 190 192 193 197 199 201 202 203 205 206 207 210 212 215 216 219 224 225 229 231 233 234 235 236 237 238 239 240 241 242 243 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 263 264 265 266 271 272 273 277 279 290 296 304 306 388 397 399 403 405 

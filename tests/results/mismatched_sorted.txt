@@ -1,0 +1,3 @@
+H:\psi\TraitConstructor.kt Not valid file, but Parser passed (interface parsed same way as class (is allowed to have constructor for example))
+H:\psi\DynamicReceiver.kt Not valid file, but Parser passed (dynamic reciever must be prohibited)
+H:\psi\CallWithManyClosures.kt Not valid file, but Parser passed (many lambdas on on call suffix)
