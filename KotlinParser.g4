@@ -37,7 +37,7 @@ topLevel
     ;
 
 typeAlias
-    : (accessModifier NL*)? TYPEALIAS NL* simpleName NL* typeParameters? NL* ASSIGN NL* type semi?
+    : (modifier NL*)? TYPEALIAS NL* simpleName NL* typeParameters? NL* ASSIGN NL* type semi?
     ;
 
 //-Class
@@ -46,29 +46,19 @@ typeAlias
  is the one ending with expression, type constraints must start with new line, because parser can't make difference
  between 'where' as keyword and as infix call*/
 r_class //TODO mb devide interface, class, enum class and abstract class
-    : (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName
-        (NL* primaryConstructor)?
+    : (modifier NL*)* (CLASS | INTERFACE) NL* simpleName (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
         (NL* classBody)? semi?
-    | (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters
-        (NL* primaryConstructor)?
+    | (modifier NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* (constructorInvocation | userType))?
         (NL* typeConstraints)? (NL* classBody)? semi?
-    | (classModifier NL*| accessModifier NL*| annotations NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters
-        (NL* primaryConstructor)?
+    | (modifier NL*)* (CLASS | INTERFACE) NL* simpleName NL* typeParameters (NL* primaryConstructor)?
         (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* explicitDelegation)?
         (NL+ typeConstraints)? (NL* classBody)? semi?
     ;
 
-r_enum
-    : (FINAL NL*| accessModifier NL*| annotations NL*)* ENUM NL* (classModifier NL*| accessModifier NL*| annotations NL*)*
-        CLASS NL* simpleName (NL* primaryConstructor)?
-        (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
-        (NL* enumClassBody)? semi?
-    ;
-
 primaryConstructor
-    : ((annotations NL*| accessModifier NL*)* CONSTRUCTOR NL*)? constructorValueParameters
+    : ((modifier NL*)* CONSTRUCTOR NL*)? constructorValueParameters
     ;
 
 constructorValueParameters
@@ -76,7 +66,7 @@ constructorValueParameters
     ;
 
 constructorParameter
-    : (annotations NL*| parameterModifier NL* | memberModifier NL* | accessModifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* nestedExpression NL*)?
+    : (modifier NL*)* (VAL | VAR)? parameter NL* (ASSIGN NL* nestedExpression NL*)?
     ;
 
 classBody
@@ -102,7 +92,7 @@ typeParameters
     ;
 
 typeParameter
-    : (annotations NL* | typeParameterModifier NL*| varianceAnnotation NL*)* simpleName (NL* COLON NL* userType)?
+    : (modifier NL*)* simpleName (NL* COLON NL* userType)?
     ;
 
 typeConstraints
@@ -132,13 +122,12 @@ initializerBlock
     ;
 
 companionObject
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* COMPANION NL* (annotations NL*| accessModifier NL*| FINAL NL*)*
+    : (modifier NL*)* COMPANION NL* (modifier NL*)*
         OBJECT NL* simpleName? (NL* COLON NL* delegationSpecifier (NL* COMMA delegationSpecifier)*)? NL* classBody? semi?
     ;
 
 function
-    : (memberModifier NL*| accessModifier NL*| functionModifier NL*| annotations NL*)*
-        FUN NL* (typeParameters NL*)? (type NL* (DOT | QUESTION_DOT) NL*)? simpleName NL*
+    : (modifier NL*)* FUN NL* (typeParameters NL*)? (type NL* (DOT | QUESTION_DOT) NL*)? simpleName NL*
         valueParameters NL* (COLON NL* type NL*)? NL* (typeConstraints NL*)? functionBody? semi?
     ;
 
@@ -147,7 +136,7 @@ valueParameters
     ;
 
 functionParameter
-    : (annotations NL*| parameterModifier NL*)* parameter NL* (ASSIGN NL* nestedExpression NL*)?
+    : (modifier NL*)* parameter NL* (ASSIGN NL* nestedExpression NL*)?
     ;
 
 functionBody
@@ -164,20 +153,16 @@ block
 /*Properties declarations in global scope and in class body differ from local properties, so this rules are devided.
  Also rules have several variants, because some forms are not ccompatible with others*/
 memberOrTopLevelProperty //TODO var<T> l : Int is valid, but book says it's not allowed to declare generic non-extension type
-    : (memberModifier NL*| accessModifier NL*| annotations NL*)*
-        VAR NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL* typeConstraints?
+    : (modifier NL*)* VAR NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL*
+        typeConstraints? (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    | (modifier NL*)* VAL NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL*
+        typeConstraints? (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
+        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
+    | (modifier NL*)* VAR NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
-    | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        VAL NL* typeParameters NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry NL* typeConstraints?
-        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
-        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
-    | (memberModifier NL*| accessModifier NL*| annotations NL*)*
-        VAR NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
-        (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
-        (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
-    | (memberModifier NL*| accessModifier NL*| propertyModifier NL*| annotations NL*)*
-        VAL NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
+    | (modifier NL*)* VAL NL* (type NL* (DOT | QUESTION_DOT) NL*)? variableDeclarationEntry
         (NL* (BY | ASSIGN) NL* expression)? (SEMICOLON | NL+)?
         (getter? NL* (SEMICOLON NL*)? setter? | setter? NL* (SEMICOLON NL*)? getter?)
     ;
@@ -202,15 +187,13 @@ multipleVariableDeclarations
     ;
 
 getter
-    : (accessModifier NL*| functionModifier NL*| annotations NL*)* GET
-    | (accessModifier NL*| functionModifier NL*| annotations NL*)* GET NL* LPAREN NL* RPAREN
-        (NL* COLON NL* type)? NL* functionBody
+    : (modifier NL*)* GET
+    | (modifier NL*)* GET NL* LPAREN NL* RPAREN (NL* COLON NL* type)? NL* functionBody
     ;
 
 setter
-    : (accessModifier NL*| functionModifier NL*| annotations NL*)* SET
-    | (accessModifier NL*| functionModifier NL*| annotations NL*)* SET NL*
-        LPAREN NL* (annotations NL*| parameterModifier NL*)* (simpleName | parameter) NL* RPAREN NL* functionBody
+    : (modifier NL*)* SET
+    | (modifier NL*)* SET NL* LPAREN NL* (modifier NL*)* (simpleName | parameter) NL* RPAREN NL* functionBody
     ;
 
 parameter
@@ -218,13 +201,12 @@ parameter
     ;
 
 object
-    : (annotations NL*| accessModifier NL*| FINAL NL*)* OBJECT NL* simpleName
+    : (modifier NL*)* OBJECT NL* simpleName
         (NL* COLON NL* delegationSpecifier (NL* COMMA NL* delegationSpecifier)*)? NL* classBody? semi?
     ;
 
 secondaryConstructor
-    : (accessModifier NL*| annotations NL*)* CONSTRUCTOR NL* valueParameters
-        (NL* COLON NL* constructorDelegationCall)? (NL* block)?
+    : (modifier NL*)* CONSTRUCTOR NL* valueParameters (NL* COLON NL* constructorDelegationCall)? (NL* block)?
     ;
 
 constructorDelegationCall
@@ -234,6 +216,12 @@ constructorDelegationCall
 
 
 //--Enum
+r_enum
+    : (modifier NL*)* ENUM NL* (modifier NL*)* CLASS NL* simpleName (NL* primaryConstructor)?
+        (NL* COLON NL* annotations* NL* (delegationSpecifier NL* COMMA NL*)* delegationSpecifier)?
+        (NL* enumClassBody)? semi?
+    ;
+
 enumClassBody
     : LBRACE NL* (enumEntries NL* (COMMA NL*)?)? (SEMICOLON | SEMICOLON NL* members)? NL* RBRACE
     ;
@@ -243,7 +231,7 @@ enumEntries
     ;
 
 enumEntry
-    : (annotations NL* | INLINE NL*)* simpleName NL* (valueArguments NL*)? classBody?
+    : (modifier NL*)* simpleName NL* (valueArguments NL*)? classBody?
     ;
 
 //-Types
@@ -261,7 +249,7 @@ typeReference
     | LPAREN NL* typeReference NL* RPAREN
     | annotatedTypeReference
     | userType
-    | DYNAMIC //TODO prohibit as reciever
+    | DYNAMIC
     ;
 
 annotatedTypeReference
@@ -725,6 +713,18 @@ whenCondition
     ;
 
 //--Modifiers
+modifier
+    : classModifier
+    | memberModifier
+    | varianceAnnotation
+    | parameterModifier
+    | typeParameterModifier
+    | functionModifier
+    | propertyModifier
+    | suspendModifier
+    | annotations
+    ;
+
 classModifier
     : ABSTRACT
     | FINAL
