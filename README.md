@@ -2,32 +2,19 @@
 Target language independent ANTLR4 grammar for Kotlin.
 
 ## Known bugs and erroneous behavior
-1. 'dynamic' type is allowed as reciever:
-```
-val dynamic.s : Int = 1 //is parsed as valid declaration
-```
-
-2. Several annotated lambdas are allowed in call suffix:
+1. Several annotated lambdas are allowed in call suffix:
 ```
 foo(){}{}{} //is parsed as valid function call with 3 call suffixes
 ```
 
-3. Classes and interfaces are parsed in the same way with the only difference in keyword. This leads to correct parsing of incorrect structures. For example interfaces with constructors:
+## Noticeable behavior
+1. Though enum classes and ordinary classes are parsed in different ways, ordinary classes and interfaces are parsed in the same way with the only difference in keyword. This leads to correct parsing of incorrect structures. For example interfaces with constructors:
 ```
 interface A constructor(val b: Int) //is parsed as valid interface declaration
 ```
-There is the same problem with abstract functions which are parsed as normal functions and therefore allowed to have bodies:
+Same with abstract functions which are parsed as normal functions and therefore allowed to have bodies:
 ```
 abstract fun foo() { print("I have body") } //is parsed as valid function declaration
-```
-
-4. Also, though parser tries to match only those modifiers, that are applicable in current case, sometimes it might
-match incorrect modifier as correct.
-For example 'lateinit' is not applicable to function declaration. But this modifier is considered as 'member' modifier and function declaration is a 'member' so following code is correctly parsed:
-```
-class A {
-  lateinit fun foo() = 2 //is parsed as valid member declaration
-}
 ```
 
 ## About tests
@@ -45,6 +32,6 @@ There are two fast written (and so quite messy) programs in tests folder which I
    c) "Test passed! This test was meant to be erroneous" - File was not correctly parsed, but its name was in the exceptionsFile.
    d) "Test failed!" - File was not correctly barsed and it's name is not in the exceptionsFile. In this case output is also duplicated in mismatched.txt file.
 
-So at first I used CompilerTester to get exceptions.txt file. Then this file was used as second argument of ParserTester. After that mismatched.txt file contained names of tests, on which results of compiler and parser works differs. There were 107 out of 405 such files. As for them, I had to check myself, if compiler error had a syntax or semantic nature. After all, i came to result of passing 402 of 405 tests. Cases of failed tests are described above.
+So at first I used CompilerTester to get exceptions.txt file. Then this file was used as second argument of ParserTester. After that mismatched.txt file contained names of tests, on which results of compiler and parser works differs. There were 107 out of 405 such files. As for them, I had to check myself, if compiler error had a syntax or semantic nature. After all, i came to result of passing 404 of 405 tests. Cases of failed tests are described above.
 
 Also parser was test with ParserTester on some open source github projects and it showed a pretty good result of 100% parsing.
