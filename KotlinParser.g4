@@ -407,6 +407,9 @@ prefixUnaryExpression
 //doubleColonSuffix is made in this way to prohibit syntax, reserved for future - 'asd::asd()'
 postfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
     : atomicExpression postfixUnaryOperation* doubleColonSuffix?
+    | atomicExpression (postfixUnaryOperation* postfixUnaryOperationWithoutCallSuffix)?
+        shortCallSuffix (postfixUnaryOperation* postfixUnaryOperationWithoutCallSuffix shortCallSuffix)*
+        postfixUnaryOperation* doubleColonSuffix?
     | doubleColon NL* simpleName doubleColonSuffix
     | doubleColon NL* simpleName (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
     | userTypeWithoutNL doubleColonSuffix
@@ -415,6 +418,8 @@ postfixUnaryExpression //userType.. QUESTION* reserved syntax for future use
 doubleColonSuffix
     : doubleColon NL* (simpleName | CLASS) doubleColonSuffix
     | doubleColon NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix postfixUnaryOperation* doubleColonSuffix?)?
+    | doubleColon NL* (simpleName | CLASS) postfixUnaryOperationWithoutCallSuffix (postfixUnaryOperation* postfixUnaryOperationWithoutCallSuffix)?
+        shortCallSuffix (postfixUnaryOperation* postfixUnaryOperationWithoutCallSuffix shortCallSuffix)* postfixUnaryOperation* doubleColonSuffix?
     ;
 
 doubleColon
@@ -481,7 +486,11 @@ postfixUnaryOperationWithoutCallSuffix
 
 callSuffix //TODO proibit several lambdas in one suffix (appear in posfixOperation*)
     : (typeArguments NL*)? valueArguments (NL* annotatedLambda)?
-    | (typeArguments NL*)? annotatedLambda
+    //| (typeArguments NL*)? annotatedLambda
+    ;
+
+shortCallSuffix
+    : (typeArguments NL*)? annotatedLambda
     ;
 
 annotatedLambda
@@ -565,6 +574,9 @@ nestedPrefixUnaryExpression
 
 nestedPostfixUnaryExpression //userType QUESTION* reserved syntax for future use
     : atomicExpression (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?
+    | atomicExpression ((NL* postfixUnaryOperation)* NL* postfixUnaryOperationWithoutCallSuffix)?
+        shortCallSuffix ((NL* postfixUnaryOperation)* NL* postfixUnaryOperationWithoutCallSuffix NL* shortCallSuffix)*
+        (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?
     | doubleColon NL* simpleName NL* nestedDoubleColonSuffix
     | doubleColon NL* simpleName (NL* nestedPostfixUnaryOperationWithoutCallSuffix
         (NL* nestedPostfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
@@ -575,6 +587,8 @@ nestedDoubleColonSuffix
     : doubleColon NL* (simpleName | CLASS) NL* nestedDoubleColonSuffix
     | doubleColon NL* (simpleName | CLASS) (NL* postfixUnaryOperationWithoutCallSuffix
         (NL* postfixUnaryOperation)* (NL* nestedDoubleColonSuffix)?)?
+    | doubleColon NL* (simpleName | CLASS) NL* postfixUnaryOperationWithoutCallSuffix ((NL* postfixUnaryOperation)* NL* postfixUnaryOperationWithoutCallSuffix)?
+        NL* shortCallSuffix ((NL* postfixUnaryOperation)* NL* postfixUnaryOperationWithoutCallSuffix NL* shortCallSuffix)* (NL* postfixUnaryOperation)* (NL* doubleColonSuffix)?
     ;
 
 nestedPostfixUnaryOperation
@@ -879,8 +893,8 @@ delegationPostfixUnaryExpression //userType.. QUESTION* reserved syntax for futu
     ;
 
 delegationDoubleColonSuffix
-    : doubleColon NL* (simpleName | CLASS) doubleColonSuffix
-    | doubleColon NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* doubleColonSuffix?)?
+    : doubleColon NL* (simpleName | CLASS) delegationDoubleColonSuffix
+    | doubleColon NL* (simpleName | CLASS) (postfixUnaryOperationWithoutCallSuffix delegationPostfixUnaryOperation* delegationDoubleColonSuffix?)?
     ;
 
 delegationPostfixUnaryOperation
