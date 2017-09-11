@@ -1,12 +1,6 @@
 # Project
 Target language independent ANTLR4 grammar for Kotlin.
 
-## Known bugs and erroneous behavior
-1. Several annotated lambdas are allowed in call suffix:
-```
-foo(){}{}{} //is parsed as valid function call with 3 call suffixes
-```
-
 ## Noticeable behavior
 1. Though enum classes and ordinary classes are parsed in different ways, ordinary classes and interfaces are parsed in the same way with the only difference in keyword. This leads to correct parsing of incorrect structures. For example interfaces with constructors:
 ```
